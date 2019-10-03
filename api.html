@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>API &#8212; Concrete Settings  documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="The Basics" href="quickstart.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="quickstart.html" title="The Basics"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Concrete Settings  documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="api">
+<span id="id1"></span><h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-concrete_settings"></span><p>This part of the documentation covers all the interfaces of Concrete Settings.</p>
+<div class="section" id="settings">
+<h2>Settings<a class="headerlink" href="#settings" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="concrete_settings.Setting">
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.</code><code class="sig-name descname">Setting</code><span class="sig-paren">(</span><em class="sig-param">value: Any = &lt;class 'concrete_settings.types.Undefined'&gt;</em>, <em class="sig-param">*</em>, <em class="sig-param">doc: Union[str</em>, <em class="sig-param">&lt;class 'concrete_settings.types.Undefined'&gt;] = &lt;class 'concrete_settings.types.Undefined'&gt;</em>, <em class="sig-param">validators: Sequence[Callable] = ()</em>, <em class="sig-param">type_hint: Any = &lt;class 'concrete_settings.types.GuessSettingType'&gt;</em>, <em class="sig-param">behaviors: List = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/concrete_settings.html#Setting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Setting" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="concrete_settings.Settings">
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.</code><code class="sig-name descname">Settings</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/concrete_settings.html#Settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Settings" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="concrete_settings.Settings.is_valid">
+<code class="sig-name descname">is_valid</code><span class="sig-paren">(</span><em class="sig-param">raise_exception=False</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/concrete_settings/concrete_settings.html#Settings.is_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Settings.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate settings and return a boolean indicate whether settings are valid</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="concrete_settings.Settings.validate">
+<code class="sig-name descname">validate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/concrete_settings.html#Settings.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Settings.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate settings altogether.</p>
+<p>This is a stub method. It is called after individual
+settings’ validation is completed without any errors only.
+Override the method in your child Settings classes.</p>
+<p>SettingsValidationError should be raised in case of validation errors.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="concrete_settings.PropertySetting">
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.</code><code class="sig-name descname">PropertySetting</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/concrete_settings.html#PropertySetting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.PropertySetting" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="concrete_settings.concrete_settings.SettingsMeta">
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.concrete_settings.</code><code class="sig-name descname">SettingsMeta</code><a class="reference internal" href="_modules/concrete_settings/concrete_settings.html#SettingsMeta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.concrete_settings.SettingsMeta" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-concrete_settings.types">
+<span id="types"></span><h2>Types<a class="headerlink" href="#module-concrete_settings.types" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="concrete_settings.types.Undefined">
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.types.</code><code class="sig-name descname">Undefined</code><a class="reference internal" href="_modules/concrete_settings/types.html#Undefined"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.types.Undefined" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>Undefined</cite> is a special value which indicates
+that something has not been explicitly set by a user.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="concrete_settings.types.GuessSettingType">
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.types.</code><code class="sig-name descname">GuessSettingType</code><a class="reference internal" href="_modules/concrete_settings/types.html#GuessSettingType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.types.GuessSettingType" title="Permalink to this definition">¶</a></dt>
+<dd><p>A special value for Setting.type_hint, which indicates
+that a Setting type should be guessed from the default value.</p>
+<p>For an <cite>Undefined</cite> or an unknown type, the guessed type hint is <cite>typing.Any</cite>.</p>
+<dl class="attribute">
+<dt id="concrete_settings.types.GuessSettingType.KNOWN_TYPES">
+<code class="sig-name descname">KNOWN_TYPES</code><em class="property"> = [&lt;class 'bool'&gt;, &lt;class 'int'&gt;, &lt;class 'float'&gt;, &lt;class 'complex'&gt;, &lt;class 'list'&gt;, &lt;class 'tuple'&gt;, &lt;class 'range'&gt;, &lt;class 'bytes'&gt;, &lt;class 'str'&gt;, &lt;class 'frozenset'&gt;, &lt;class 'set'&gt;, &lt;class 'dict'&gt;]</em><a class="headerlink" href="#concrete_settings.types.GuessSettingType.KNOWN_TYPES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recognized Setting value types</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-concrete_settings.validators">
+<span id="validators"></span><h2>Validators<a class="headerlink" href="#module-concrete_settings.validators" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="concrete_settings.validators.Validator">
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.validators.</code><code class="sig-name descname">Validator</code><a class="reference internal" href="_modules/concrete_settings/validators.html#Validator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.validators.Validator" title="Permalink to this definition">¶</a></dt>
+<dd><p>A validator is a callable that raises an exception if a value is wrong.</p>
+<p>A validator accepts a value as a mandatory argument, and keyword-only arguments
+referring to settings, setting and setting’s name.</p>
+<dl class="method">
+<dt id="concrete_settings.validators.Validator.__call__">
+<em class="property">abstract </em><code class="sig-name descname">__call__</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">*</em>, <em class="sig-param">name: str = None</em>, <em class="sig-param">owner: Settings = None</em>, <em class="sig-param">setting: Setting = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/validators.html#Validator.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.validators.Validator.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate a value. Raise <cite>SettingsValidationError</cite> if value is wrong.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="concrete_settings.validators.ValueTypeValidator">
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.validators.</code><code class="sig-name descname">ValueTypeValidator</code><span class="sig-paren">(</span><em class="sig-param">type_hint=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/validators.html#ValueTypeValidator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.validators.ValueTypeValidator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-concrete_settings.sources">
+<span id="sources"></span><span id="api-sources"></span><h2>Sources<a class="headerlink" href="#module-concrete_settings.sources" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="concrete_settings.sources.Source">
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.sources.</code><code class="sig-name descname">Source</code><a class="reference internal" href="_modules/concrete_settings/sources.html#Source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.sources.Source" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="concrete_settings.sources.YamlSource">
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.sources.</code><code class="sig-name descname">YamlSource</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/sources.html#YamlSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.sources.YamlSource" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="concrete_settings.sources.JsonSource">
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.sources.</code><code class="sig-name descname">JsonSource</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/sources.html#JsonSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.sources.JsonSource" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="concrete_settings.sources.EnvVarSource">
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.sources.</code><code class="sig-name descname">EnvVarSource</code><a class="reference internal" href="_modules/concrete_settings/sources.html#EnvVarSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.sources.EnvVarSource" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">API</a><ul>
+<li><a class="reference internal" href="#settings">Settings</a></li>
+<li><a class="reference internal" href="#module-concrete_settings.types">Types</a></li>
+<li><a class="reference internal" href="#module-concrete_settings.validators">Validators</a></li>
+<li><a class="reference internal" href="#module-concrete_settings.sources">Sources</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="quickstart.html"
+                        title="previous chapter">The Basics</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/api.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="quickstart.html" title="The Basics"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Concrete Settings  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Zaur Nasibov.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+    </div>
+  </body>
+</html>

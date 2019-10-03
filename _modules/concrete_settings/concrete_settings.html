@@ -1,0 +1,443 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>concrete_settings.concrete_settings &#8212; Concrete Settings  documentation</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Concrete Settings  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for concrete_settings.concrete_settings</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">types</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">docreader</span>
+<span class="kn">from</span> <span class="nn">.behaviors</span> <span class="k">import</span> <span class="n">Behaviors</span><span class="p">,</span> <span class="n">override</span>
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="k">import</span> <span class="n">StructureError</span><span class="p">,</span> <span class="n">SettingsValidationError</span><span class="p">,</span> <span class="n">ValidationErrorDetail</span>
+<span class="kn">from</span> <span class="nn">.validators</span> <span class="k">import</span> <span class="n">ValueTypeValidator</span>
+<span class="kn">from</span> <span class="nn">.sources</span> <span class="k">import</span> <span class="n">get_source</span><span class="p">,</span> <span class="n">TAnySource</span><span class="p">,</span> <span class="n">Source</span>
+<span class="kn">from</span> <span class="nn">.types</span> <span class="k">import</span> <span class="n">Undefined</span><span class="p">,</span> <span class="n">GuessSettingType</span>
+
+<span class="n">INVALID_SETTINGS</span> <span class="o">=</span> <span class="s1">&#39;__invalid__settings__&#39;</span>
+
+
+<span class="c1"># ==== Settings classes ==== #</span>
+<span class="c1"># ========================== #</span>
+<div class="viewcode-block" id="Setting"><a class="viewcode-back" href="../../api.html#concrete_settings.Setting">[docs]</a><span class="k">class</span> <span class="nc">Setting</span><span class="p">:</span>
+    <span class="n">value</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="n">type_hint</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="n">validators</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span>
+    <span class="n">behaviors</span><span class="p">:</span> <span class="s1">&#39;Behaviors&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">Undefined</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">doc</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Undefined</span><span class="p">]</span> <span class="o">=</span> <span class="n">Undefined</span><span class="p">,</span>
+        <span class="n">validators</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(),</span>
+        <span class="n">type_hint</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">GuessSettingType</span><span class="p">,</span>
+        <span class="n">behaviors</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type_hint</span> <span class="o">=</span> <span class="n">type_hint</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validators</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">validators</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">behaviors</span> <span class="o">=</span> <span class="n">Behaviors</span><span class="p">(</span><span class="n">behaviors</span> <span class="ow">or</span> <span class="p">[])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">doc</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__set_name__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">:</span> <span class="s1">&#39;Settings&#39;</span><span class="p">,</span> <span class="n">owner_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="n">owner</span><span class="p">,</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">Settings</span><span class="p">)</span>
+        <span class="p">),</span> <span class="s2">&quot;owner should be None or an instance of Settings&quot;</span>
+
+        <span class="c1"># == class-level access ==</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">owner</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span>
+
+        <span class="c1"># == object-level access ==</span>
+        <span class="n">get_value</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__descriptor__get__</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">owner</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">behaviors</span><span class="o">.</span><span class="n">get_setting_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">get_value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">:</span> <span class="s1">&#39;Settings&#39;</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">Settings</span><span class="p">),</span> <span class="s2">&quot;owner should be an instance of Settings&quot;</span>
+
+        <span class="n">set_value</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__descriptor__set__</span><span class="p">,</span> <span class="n">owner</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">behaviors</span><span class="o">.</span><span class="n">set_setting_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">set_value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__descriptor__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">owner_type</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">f</span><span class="s2">&quot;__setting_</span><span class="si">{self.name}</span><span class="s2">_value&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__descriptor__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">f</span><span class="s2">&quot;__setting_</span><span class="si">{self.name}</span><span class="s2">_value&quot;</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PropertySetting"><a class="viewcode-back" href="../../api.html#concrete_settings.PropertySetting">[docs]</a><span class="k">class</span> <span class="nc">PropertySetting</span><span class="p">(</span><span class="n">Setting</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">callable</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fget</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fget</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fget</span> <span class="o">=</span> <span class="n">fget</span>
+
+        <span class="c1"># Extract __doc__ and return type hint from the decorated function</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">fget</span><span class="o">.</span><span class="vm">__doc__</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_hint</span> <span class="ow">is</span> <span class="n">GuessSettingType</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type_hint</span> <span class="o">=</span> <span class="n">fget</span><span class="o">.</span><span class="vm">__annotations__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;return&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_hint</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">:</span> <span class="s1">&#39;Settings&#39;</span><span class="p">,</span> <span class="n">owner_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="n">owner</span><span class="p">,</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">Settings</span><span class="p">)</span>
+        <span class="p">),</span> <span class="s2">&quot;owner should be None or an instance of Settings&quot;</span>
+
+        <span class="c1"># == class-level access ==</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">owner</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fget</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Unreadable attribute&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">behaviors</span><span class="o">.</span><span class="n">get_setting_value</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fget</span><span class="p">,</span> <span class="n">owner</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">:</span> <span class="s1">&#39;Settings&#39;</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t set attribute: property setting cannot be set&quot;</span><span class="p">)</span></div>
+
+<span class="c1"># ==== ConcreteSettings classes ==== #</span>
+<span class="c1"># ================================== #</span>
+
+
+<div class="viewcode-block" id="SettingsMeta"><a class="viewcode-back" href="../../api.html#concrete_settings.SettingsMeta">[docs]</a><span class="k">class</span> <span class="nc">SettingsMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">mcs</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">class_dict</span><span class="p">):</span>
+        <span class="n">new_dict</span> <span class="o">=</span> <span class="n">mcs</span><span class="o">.</span><span class="n">class_dict_to_settings</span><span class="p">(</span><span class="n">class_dict</span><span class="p">)</span>
+        <span class="n">mcs</span><span class="o">.</span><span class="n">add_settings_help</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">new_dict</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">mcs</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">new_dict</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">class_dict_to_settings</span><span class="p">(</span><span class="n">mcs</span><span class="p">:</span> <span class="s1">&#39;SettingsMeta&#39;</span><span class="p">,</span> <span class="n">class_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">new_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">annotations</span> <span class="o">=</span> <span class="n">class_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;__annotations__&quot;</span><span class="p">,</span> <span class="p">{})</span>
+
+        <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">class_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">new_field</span> <span class="o">=</span> <span class="n">field</span>
+
+            <span class="c1"># Make a Setting out of ALL_UPPERCASE_ATTRIBUTE</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">Setting</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="n">mcs</span><span class="o">.</span><span class="n">is_setting_name</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="n">mcs</span><span class="o">.</span><span class="n">is_safe_setting_type</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="n">new_field</span> <span class="o">=</span> <span class="n">mcs</span><span class="o">.</span><span class="n">make_setting_from_attr</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">annotations</span><span class="p">)</span>
+
+            <span class="c1"># Should we try to guess a type_hint for a Setting?</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_field</span><span class="p">,</span> <span class="n">Setting</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="n">new_field</span><span class="o">.</span><span class="n">type_hint</span> <span class="ow">is</span> <span class="n">GuessSettingType</span>
+            <span class="p">):</span>
+                <span class="n">new_field</span><span class="o">.</span><span class="n">type_hint</span> <span class="o">=</span> <span class="n">GuessSettingType</span><span class="o">.</span><span class="n">guess_type_hint</span><span class="p">(</span><span class="n">new_field</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+            <span class="n">new_dict</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_field</span>
+
+        <span class="k">return</span> <span class="n">new_dict</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">make_setting_from_attr</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">annotations</span><span class="p">):</span>
+        <span class="n">type_hint</span> <span class="o">=</span> <span class="n">annotations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">GuessSettingType</span><span class="p">)</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Setting</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span> <span class="n">type_hint</span><span class="o">=</span><span class="n">type_hint</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">is_setting_name</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return True if name is written in the upper case&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="n">name</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">is_safe_setting_type</span><span class="p">(</span><span class="n">field</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return False if field should not be converted to a Setting automatically&quot;&quot;&quot;</span>
+        <span class="n">callable_types</span> <span class="o">=</span> <span class="p">(</span><span class="nb">property</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">,</span> <span class="nb">classmethod</span><span class="p">,</span> <span class="nb">staticmethod</span><span class="p">)</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">callable_types</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">add_settings_help</span><span class="p">(</span><span class="n">cls_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">class_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;__module__&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">class_dict</span><span class="p">:</span>
+            <span class="c1"># class is not coming from a module</span>
+            <span class="k">return</span>
+
+        <span class="n">settings</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">attr</span><span class="p">:</span> <span class="n">field</span>
+            <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">class_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">Setting</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">settings</span><span class="p">:</span>
+            <span class="c1"># class seems to contain to settings</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">setting</span><span class="o">.</span><span class="vm">__doc__</span> <span class="k">for</span> <span class="n">setting</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+            <span class="c1"># All settings of the class have been explicitly documented.</span>
+            <span class="c1"># Since explicit documentation overrides comment-docs,</span>
+            <span class="c1"># there is no need to proceed further</span>
+            <span class="k">return</span>
+
+        <span class="c1"># read the contents of the module which contains the settings</span>
+        <span class="c1"># and parse it via Sphinx parser</span>
+        <span class="n">cls_module_name</span> <span class="o">=</span> <span class="n">class_dict</span><span class="p">[</span><span class="s1">&#39;__module__&#39;</span><span class="p">]</span>
+
+        <span class="n">comments</span> <span class="o">=</span> <span class="n">docreader</span><span class="o">.</span><span class="n">extract_doc_comments_from_class_or_module</span><span class="p">(</span>
+            <span class="n">cls_module_name</span><span class="p">,</span> <span class="n">cls_name</span>
+        <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">setting</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">setting</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">:</span>
+                <span class="c1"># do not modify an explicitly-made setting documentation</span>
+                <span class="k">continue</span>
+
+            <span class="n">comment_key</span> <span class="o">=</span> <span class="p">(</span><span class="n">cls_name</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">setting</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">comments</span><span class="p">[</span><span class="n">comment_key</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="c1"># no comment-style documentation exists</span>
+                <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Settings"><a class="viewcode-back" href="../../api.html#concrete_settings.Settings">[docs]</a><span class="k">class</span> <span class="nc">Settings</span><span class="p">(</span><span class="n">Setting</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">SettingsMeta</span><span class="p">):</span>
+    <span class="n">default_validators</span><span class="p">:</span> <span class="n">Tuple</span> <span class="o">=</span> <span class="p">(</span><span class="n">ValueTypeValidator</span><span class="p">(),)</span>
+    <span class="n">mandatory_validators</span><span class="p">:</span> <span class="n">Tuple</span> <span class="o">=</span> <span class="p">()</span>
+
+    <span class="n">validating</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">validated</span><span class="p">:</span> <span class="nb">bool</span>
+
+    <span class="n">_errors</span><span class="p">:</span> <span class="n">ValidationErrorDetail</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="s1">&#39;value&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span>
+        <span class="p">),</span> <span class="s1">&#39;value argument should not be passed to Settings.__init__()&#39;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">validating</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validated</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_verify_structure</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_verify_structure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># verify whether the setting on Nth level of the inheritance hierarchy</span>
+        <span class="c1"># corresponds to the setting on N-1th level of the hierarchy.</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">classes</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_settings_classes</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">c0</span><span class="p">,</span> <span class="n">c1</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">classes</span><span class="p">,</span> <span class="n">classes</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+                <span class="c1"># start with setting object of the first classes</span>
+                <span class="n">s0</span> <span class="o">=</span> <span class="n">c0</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+                <span class="n">s1</span> <span class="o">=</span> <span class="n">c1</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+                <span class="n">differences</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_settings_diff</span><span class="p">(</span><span class="n">s0</span><span class="p">,</span> <span class="n">s1</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">differences</span><span class="p">:</span>
+                    <span class="n">diff</span> <span class="o">=</span> <span class="s1">&#39;; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">differences</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">StructureError</span><span class="p">(</span>
+                        <span class="n">f</span><span class="s1">&#39;in classes </span><span class="si">{c0}</span><span class="s1"> and </span><span class="si">{c1}</span><span class="s1"> setting </span><span class="si">{name}</span><span class="s1"> has&#39;</span>
+                        <span class="n">f</span><span class="s1">&#39; the following difference(s): </span><span class="si">{diff}</span><span class="s1">&#39;</span>
+                    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_settings_classes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="s1">&#39;Settings&#39;</span><span class="p">]]]:</span>
+        <span class="c1"># _settings_classes is helper list which can be used in</span>
+        <span class="c1"># settings reading and validation routines.</span>
+        <span class="c1"># 1. Iterate through __mro__ classes in reverse order - so that</span>
+        <span class="c1">#    iteration happens from the most-base class to the current one.</span>
+        <span class="c1"># 2. Store found settigns as {name: [cls, ...]} to settings_classes</span>
+        <span class="n">settings_classes</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__mro__</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="ow">is</span> <span class="n">Settings</span>
+
+        <span class="c1"># __mro__[:-2] - skip ConcreteSettings and object bases</span>
+        <span class="k">for</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__mro__</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]):</span>
+            <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">Setting</span><span class="p">):</span>
+                    <span class="n">settings_classes</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">settings_classes</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_settings_diff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s0</span><span class="p">:</span> <span class="n">Setting</span><span class="p">,</span> <span class="n">s1</span><span class="p">:</span> <span class="n">Setting</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">NO_DIFF</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">differences</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># No checks are performed if setting is overriden</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">override</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">s1</span><span class="o">.</span><span class="n">behaviors</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">NO_DIFF</span>
+
+        <span class="k">if</span> <span class="n">s0</span><span class="o">.</span><span class="n">type_hint</span> <span class="o">!=</span> <span class="n">s1</span><span class="o">.</span><span class="n">type_hint</span><span class="p">:</span>
+            <span class="n">differences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;types differ: </span><span class="si">{s0.type_hint}</span><span class="s1"> != </span><span class="si">{s1.type_hint}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">differences</span>
+
+<div class="viewcode-block" id="Settings.is_valid"><a class="viewcode-back" href="../../api.html#concrete_settings.Settings.is_valid">[docs]</a>    <span class="k">def</span> <span class="nf">is_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Validate settings and return a boolean indicate whether settings are valid&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">validated</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_errors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_validation</span><span class="p">(</span><span class="n">raise_exception</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_errors</span> <span class="o">==</span> <span class="p">{}</span></div>
+
+    <span class="k">def</span> <span class="nf">_iter_settings_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+            <span class="n">attr</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">Setting</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">name</span><span class="p">,</span> <span class="n">attr</span>
+
+    <span class="k">def</span> <span class="nf">_run_validation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValidationErrorDetail</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validating</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># validate each setting individually</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">setting</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iter_settings_attributes</span><span class="p">():</span>
+            <span class="n">setting_errors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_setting</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">setting</span><span class="p">,</span> <span class="n">raise_exception</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">setting_errors</span><span class="p">:</span>
+                <span class="n">errors</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">setting_errors</span>
+
+        <span class="k">if</span> <span class="n">errors</span> <span class="o">==</span> <span class="p">{}:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+            <span class="k">except</span> <span class="n">SettingsValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">raise_exception</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">e</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">errors</span><span class="p">[</span><span class="n">INVALID_SETTINGS</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">validating</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validated</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">errors</span>
+
+    <span class="k">def</span> <span class="nf">_validate_setting</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">setting</span><span class="p">:</span> <span class="n">Setting</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValidationErrorDetail</span><span class="p">:</span>
+        <span class="n">value</span><span class="p">:</span> <span class="n">Setting</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">validators</span> <span class="o">=</span> <span class="n">setting</span><span class="o">.</span><span class="n">validators</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_validators</span>
+        <span class="n">validators</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mandatory_validators</span>
+
+        <span class="k">for</span> <span class="n">validator</span> <span class="ow">in</span> <span class="n">validators</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">validator</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="o">=</span><span class="n">setting</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">SettingsValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">raise_exception</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">e</span>
+                <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+        <span class="c1"># nested Settings</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Settings</span><span class="p">):</span>
+            <span class="n">nested_settings</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">nested_settings</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">raise_exception</span><span class="o">=</span><span class="n">raise_exception</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">SettingsValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="n">raise_exception</span>
+                <span class="n">e</span><span class="o">.</span><span class="n">prepend_source</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">e</span>
+
+            <span class="k">if</span> <span class="n">nested_settings</span><span class="o">.</span><span class="n">errors</span><span class="p">:</span>
+                <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nested_settings</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">errors</span>
+
+<div class="viewcode-block" id="Settings.validate"><a class="viewcode-back" href="../../api.html#concrete_settings.Settings.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Validate settings altogether.</span>
+
+<span class="sd">        This is a stub method. It is called after individual</span>
+<span class="sd">        settings&#39; validation is completed without any errors only.</span>
+<span class="sd">        Override the method in your child Settings classes.</span>
+
+<span class="sd">        SettingsValidationError should be raised in case of validation errors.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">sources</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">TAnySource</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sources</span><span class="p">:</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="n">get_source</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_update</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="s1">&#39;Settings&#39;</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Source</span><span class="p">,</span> <span class="n">parents</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">()):</span>
+        <span class="sd">&quot;&quot;&quot;Recursively update settings object from dictionary&quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">setting</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">_iter_settings_attributes</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">setting</span><span class="p">,</span> <span class="n">Settings</span><span class="p">):</span>
+                <span class="n">settings</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="n">setting</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="p">(</span><span class="o">*</span><span class="n">parents</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">source</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">setting</span><span class="p">,</span> <span class="n">parents</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">errors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_errors</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Concrete Settings  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Zaur Nasibov.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+    </div>
+  </body>
+</html>
