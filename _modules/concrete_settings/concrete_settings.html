@@ -36,16 +36,20 @@
             
   <h1>Source code for concrete_settings.concrete_settings</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">types</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">docreader</span>
 <span class="kn">from</span> <span class="nn">.behaviors</span> <span class="k">import</span> <span class="n">Behaviors</span><span class="p">,</span> <span class="n">override</span>
+<span class="kn">from</span> <span class="nn">.docreader</span> <span class="k">import</span> <span class="n">extract_doc_comments_from_class_or_module</span>
 <span class="kn">from</span> <span class="nn">.exceptions</span> <span class="k">import</span> <span class="n">StructureError</span><span class="p">,</span> <span class="n">SettingsValidationError</span><span class="p">,</span> <span class="n">ValidationErrorDetail</span>
-<span class="kn">from</span> <span class="nn">.validators</span> <span class="k">import</span> <span class="n">ValueTypeValidator</span>
 <span class="kn">from</span> <span class="nn">.sources</span> <span class="k">import</span> <span class="n">get_source</span><span class="p">,</span> <span class="n">TAnySource</span><span class="p">,</span> <span class="n">Source</span>
+<span class="kn">from</span> <span class="nn">.sources.strategies</span> <span class="k">import</span> <span class="n">default</span> <span class="k">as</span> <span class="n">default_update_strategy</span>
 <span class="kn">from</span> <span class="nn">.types</span> <span class="k">import</span> <span class="n">Undefined</span><span class="p">,</span> <span class="n">GuessSettingType</span>
+<span class="kn">from</span> <span class="nn">.validators</span> <span class="k">import</span> <span class="n">ValueTypeValidator</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="n">INVALID_SETTINGS</span> <span class="o">=</span> <span class="s1">&#39;__invalid__settings__&#39;</span>
 
@@ -144,6 +148,7 @@
     <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">:</span> <span class="s1">&#39;Settings&#39;</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t set attribute: property setting cannot be set&quot;</span><span class="p">)</span></div>
 
+
 <span class="c1"># ==== ConcreteSettings classes ==== #</span>
 <span class="c1"># ================================== #</span>
 
@@ -223,9 +228,7 @@
         <span class="c1"># and parse it via Sphinx parser</span>
         <span class="n">cls_module_name</span> <span class="o">=</span> <span class="n">class_dict</span><span class="p">[</span><span class="s1">&#39;__module__&#39;</span><span class="p">]</span>
 
-        <span class="n">comments</span> <span class="o">=</span> <span class="n">docreader</span><span class="o">.</span><span class="n">extract_doc_comments_from_class_or_module</span><span class="p">(</span>
-            <span class="n">cls_module_name</span><span class="p">,</span> <span class="n">cls_name</span>
-        <span class="p">)</span>
+        <span class="n">comments</span> <span class="o">=</span> <span class="n">extract_doc_comments_from_class_or_module</span><span class="p">(</span><span class="n">cls_module_name</span><span class="p">,</span> <span class="n">cls_name</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">setting</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">setting</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">:</span>
@@ -383,20 +386,39 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">sources</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">TAnySource</span><span class="p">]):</span>
-        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sources</span><span class="p">:</span>
-            <span class="n">source</span> <span class="o">=</span> <span class="n">get_source</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">TAnySource</span><span class="p">,</span> <span class="n">strategies</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">strategies</span> <span class="o">=</span> <span class="n">strategies</span> <span class="ow">or</span> <span class="p">{}</span>
+
+        <span class="n">source_obj</span> <span class="o">=</span> <span class="n">get_source</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_obj</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="p">(),</span> <span class="n">strategies</span><span class="o">=</span><span class="n">strategies</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_update</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="s1">&#39;Settings&#39;</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Source</span><span class="p">,</span> <span class="n">parents</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">()):</span>
+    <span class="k">def</span> <span class="nf">_update</span><span class="p">(</span>
+        <span class="n">settings</span><span class="p">:</span> <span class="s1">&#39;Settings&#39;</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Source</span><span class="p">,</span> <span class="n">parents</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">strategies</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Recursively update settings object from dictionary&quot;&quot;&quot;</span>
+        <span class="n">strategies</span> <span class="o">=</span> <span class="n">strategies</span> <span class="ow">or</span> <span class="p">{}</span>
 
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">setting</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">_iter_settings_attributes</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">setting</span><span class="p">,</span> <span class="n">Settings</span><span class="p">):</span>
-                <span class="n">settings</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="n">setting</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="p">(</span><span class="o">*</span><span class="n">parents</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+                <span class="n">settings</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="n">setting</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="p">(</span><span class="o">*</span><span class="n">parents</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">strategies</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="nb">setattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">source</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">setting</span><span class="p">,</span> <span class="n">parents</span><span class="p">))</span>
+                <span class="n">full_setting_name</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;{&quot;.&quot;.join(parents) and &quot;.&quot;}</span><span class="si">{name}</span><span class="s1">&#39;</span>
+
+                <span class="k">if</span> <span class="n">full_setting_name</span> <span class="ow">in</span> <span class="n">strategies</span><span class="p">:</span>
+                    <span class="n">update_strategy</span> <span class="o">=</span> <span class="n">strategies</span><span class="p">[</span><span class="n">full_setting_name</span><span class="p">]</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                        <span class="s1">&#39;Updating setting </span><span class="si">%s</span><span class="s1"> with strategy </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span>
+                        <span class="n">full_setting_name</span><span class="p">,</span>
+                        <span class="n">update_strategy</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">update_strategy</span> <span class="o">=</span> <span class="n">default_update_strategy</span>
+
+                <span class="n">current_val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+                <span class="n">update_to_val</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">setting</span><span class="p">,</span> <span class="n">parents</span><span class="p">)</span>
+                <span class="n">new_val</span> <span class="o">=</span> <span class="n">update_strategy</span><span class="p">(</span><span class="n">current_val</span><span class="p">,</span> <span class="n">update_to_val</span><span class="p">)</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">new_val</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">errors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
