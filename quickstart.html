@@ -183,6 +183,36 @@ For example, to update the settings from a JSON file:</p>
 <span class="c1"># &gt;&gt;&gt; alex@my-super-app.io</span>
 </pre></div>
 </div>
+<div class="section" id="update-strategies">
+<h3>Update strategies<a class="headerlink" href="#update-strategies" title="Permalink to this headline">¶</a></h3>
+<p>In most of the cases, a developer wants to overwrite a setting value
+when updating it from a source. But there are exceptions.
+Think of a list setting, which contains administrators emails, e.g.:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">Settings</span>
+
+<span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
+    <span class="n">ADMIN_EMAILS</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;admin@example.com&#39;</span>
+    <span class="p">]</span>
+</pre></div>
+</div>
+<p>What if you want to <strong>append</strong> the emails defined in sources, instead
+of overwriting them? Concrete Settings provides a concept of
+<em>update strategies</em> for this case:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;ADMIN_EMAILS&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;alex@my-super-app.io&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings.sources</span> <span class="k">import</span> <span class="n">strategies</span>
+
+<span class="o">...</span>
+
+<span class="n">app_settings</span> <span class="o">=</span> <span class="n">AppSettings</span><span class="p">()</span>
+<span class="n">app_settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;/path/to/settings.json&#39;</span><span class="p">,</span> <span class="n">strategies</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;ADMIN_EMAILS&#39;</span><span class="p">:</span> <span class="n">strategies</span><span class="o">.</span><span class="n">append</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="validation">
 <h2>Validation<a class="headerlink" href="#validation" title="Permalink to this headline">¶</a></h2>
@@ -283,7 +313,10 @@ just plain Python module.:</p>
   <ul>
 <li><a class="reference internal" href="#">The Basics</a><ul>
 <li><a class="reference internal" href="#defining-settings">Defining settings</a></li>
-<li><a class="reference internal" href="#reading-settings-from-files-and-environment">Reading settings from files and environment</a></li>
+<li><a class="reference internal" href="#reading-settings-from-files-and-environment">Reading settings from files and environment</a><ul>
+<li><a class="reference internal" href="#update-strategies">Update strategies</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#validation">Validation</a></li>
 <li><a class="reference internal" href="#type-hint">Type hint</a></li>
 <li><a class="reference internal" href="#nested-settings">Nested settings</a><ul>
