@@ -41,7 +41,7 @@
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
 
-<span class="kn">from</span> <span class="nn">.behaviors</span> <span class="k">import</span> <span class="n">Behaviors</span><span class="p">,</span> <span class="n">override</span>
+<span class="kn">from</span> <span class="nn">.behavior</span> <span class="k">import</span> <span class="n">Behaviors</span><span class="p">,</span> <span class="n">override</span>
 <span class="kn">from</span> <span class="nn">.docreader</span> <span class="k">import</span> <span class="n">extract_doc_comments_from_class_or_module</span>
 <span class="kn">from</span> <span class="nn">.exceptions</span> <span class="k">import</span> <span class="n">StructureError</span><span class="p">,</span> <span class="n">SettingsValidationError</span><span class="p">,</span> <span class="n">ValidationErrorDetail</span>
 <span class="kn">from</span> <span class="nn">.sources</span> <span class="k">import</span> <span class="n">get_source</span><span class="p">,</span> <span class="n">TAnySource</span><span class="p">,</span> <span class="n">Source</span>
@@ -255,8 +255,12 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">assert</span> <span class="p">(</span>
             <span class="s1">&#39;value&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span>
-        <span class="p">),</span> <span class="s1">&#39;value argument should not be passed to Settings.__init__()&#39;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="p">),</span> <span class="s1">&#39;&quot;value&quot; argument should not be passed to Settings.__init__()&#39;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="s1">&#39;type_hint&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span>
+        <span class="p">),</span> <span class="s1">&#39;&quot;type_hint&quot; argument should not be passed to Settings.__init__()&#39;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_hint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">validating</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">validated</span> <span class="o">=</span> <span class="kc">False</span>
@@ -386,11 +390,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">TAnySource</span><span class="p">,</span> <span class="n">strategies</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Settings.update"><a class="viewcode-back" href="../../api.html#concrete_settings.Settings.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">TAnySource</span><span class="p">,</span> <span class="n">strategies</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update the object from given source and strategies.&quot;&quot;&quot;</span>
         <span class="n">strategies</span> <span class="o">=</span> <span class="n">strategies</span> <span class="ow">or</span> <span class="p">{}</span>
 
         <span class="n">source_obj</span> <span class="o">=</span> <span class="n">get_source</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_obj</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="p">(),</span> <span class="n">strategies</span><span class="o">=</span><span class="n">strategies</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_obj</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="p">(),</span> <span class="n">strategies</span><span class="o">=</span><span class="n">strategies</span><span class="p">)</span></div>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_update</span><span class="p">(</span>

@@ -65,6 +65,52 @@ configuration management in applications.</p>
 <p>Concrete Settings aims to provide a conveniet way to
 define and use application startup settings
 for developers and an end-users:</p>
+<p class="plantuml">
+<img src="_images/plantuml-bbd37d6af1072587d6aa9b6ff07da80531fe6930.png" alt="&#64;startuml
+:Developer: as Dev
+:Application User: as User
+(.yaml) as (yaml_source)
+(.json) as (json_source)
+(.py) as (py_source)
+(Environmental Variables) as (envvar)
+
+note top of User
+    **User** sets configuration
+    in files, environmental variables
+    and other **sources**.
+end note
+
+note top of Dev
+    **Developer** defines configuration
+    via ConcreteSettings
+end note
+
+User ==&gt; (yaml_source)
+User ==&gt; (json_source)
+User ==&gt; (envvar)
+User ==&gt; (py_source)
+User ==&gt; (...)
+
+note &quot;Read from sources&quot; as note_read_settings
+
+Dev ==&gt; (Settings)
+
+(yaml_source) .. note_read_settings
+(json_source) .. note_read_settings
+(envvar) .. note_read_settings
+(...) .. note_read_settings
+note_read_settings ..&gt; (Settings)
+
+note &quot;Verify definition structure&quot; as note_verify
+note &quot;Validate values&quot; as note_validate
+
+(Settings) .. note_verify
+note_verify ..&gt; (Application)
+(Settings) .. note_validate
+note_validate ..&gt; (Application)
+
+&#64;enduml"/>
+</p>
 <p>This flow is a perfect fit for</p>
 <ul class="simple">
 <li><p>A web application backend. Think of Django or Flask application
@@ -81,7 +127,7 @@ Then you are very welcome to ConcreteSettings documentation!</p>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#reading-settings-from-files-and-environment">Reading settings from files and environment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#validation">Validation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#type-hint">Type hint</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#id1">Nested settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#quickstart-behavior">Bound behavior</a></li>
 </ul>
 </li>
 </ul>
