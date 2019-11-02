@@ -1,71 +1,185 @@
 
-<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="utf-8" />
-    <title>Quickstart &#8212; Concrete Settings  documentation</title>
-    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Quickstart &mdash; Concrete Settings  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="API" href="api.html" />
+    <link rel="next" title="Advanced topics" href="advanced.html" />
     <link rel="prev" title="Welcome to ConcreteSettings" href="index.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="api.html" title="API"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="index.html" title="Welcome to ConcreteSettings"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Concrete Settings  documentation</a> &#187;</li> 
-      </ul>
-    </div>  
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Concrete Settings
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#defining-settings">Defining settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reading-settings">Reading settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#validation">Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#type-hint">Type hint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-behavior">Setting Behavior</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#automated-setting-creation">Automated Setting creation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#combining-settings">Combining settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced topics</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Concrete Settings</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Quickstart</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/quickstart.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="quickstart">
 <h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
 <p>In this chapter we cover the essentials of Concrete Settings.</p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><p><a class="reference internal" href="#defining-settings" id="id2">Defining settings</a></p></li>
-<li><p><a class="reference internal" href="#nested-settings" id="id3">Nested Settings</a></p></li>
-<li><p><a class="reference internal" href="#reading-settings-from-files-and-environment" id="id4">Reading settings from files and environment</a></p>
+<li><p><a class="reference internal" href="#defining-settings" id="id1">Defining settings</a></p></li>
+<li><p><a class="reference internal" href="#reading-settings" id="id2">Reading settings</a></p></li>
+<li><p><a class="reference internal" href="#validation" id="id3">Validation</a></p></li>
+<li><p><a class="reference internal" href="#type-hint" id="id4">Type hint</a></p></li>
+<li><p><a class="reference internal" href="#setting-behavior" id="id5">Setting Behavior</a></p>
 <ul>
-<li><p><a class="reference internal" href="#update-strategies" id="id5">Update strategies</a></p></li>
-</ul>
-</li>
-<li><p><a class="reference internal" href="#validation" id="id6">Validation</a></p></li>
-<li><p><a class="reference internal" href="#type-hint" id="id7">Type hint</a></p></li>
-<li><p><a class="reference internal" href="#quickstart-behavior" id="id8">Bound behavior</a></p>
-<ul>
-<li><p><a class="reference internal" href="#automated-setting-creation" id="id9">Automated Setting creation</a></p></li>
-<li><p><a class="reference internal" href="#combining-settings" id="id10">Combining settings</a></p></li>
-<li><p><a class="reference internal" href="#internal-workflow" id="id11">Internal workflow</a></p></li>
+<li><p><a class="reference internal" href="#automated-setting-creation" id="id6">Automated Setting creation</a></p></li>
+<li><p><a class="reference internal" href="#combining-settings" id="id7">Combining settings</a></p></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="section" id="defining-settings">
-<h2><a class="toc-backref" href="#id2">Defining settings</a><a class="headerlink" href="#defining-settings" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id1">Defining settings</a><a class="headerlink" href="#defining-settings" title="Permalink to this headline">¶</a></h2>
 <p>As you have probably guessed, defining settings starts
 by subclassing the <a class="reference internal" href="api.html#concrete_settings.Settings" title="concrete_settings.Settings"><code class="xref py py-class docutils literal notranslate"><span class="pre">Settings</span></code></a>
 class.
@@ -90,15 +204,15 @@ For example, the following two definitions are identical:</p>
         <span class="kc">True</span><span class="p">,</span>
         <span class="n">type_hint</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span>
         <span class="n">validators</span><span class="o">=</span><span class="p">(</span><span class="n">ValueTypeValidator</span><span class="p">(),</span> <span class="p">),</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Turns debug mode on/off&quot;</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Turns debug mode on/off&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 </pre></div>
 </div>
-<p>This behaviour does not truly comply with the Zen of Python:</p>
+<p>Though this does not truly comply with the Zen of Python</p>
 <blockquote>
 <div><p><em>Explicit is better than implicit</em>.</p>
 </div></blockquote>
-<p>But wouldn’t you agree that the first definition
+<p>wouldn’t you agree that the first definition
 is easier to comprehend than the second one?
 The first definition looks like a boring class attribute
 with a sphinx-style documentation above it.
@@ -114,7 +228,9 @@ For now please accept that Concrete Settings way of declaring
 basic settings is by omitting the <code class="docutils literal notranslate"><span class="pre">Setting(...)</span></code> call at all.
 Ideally a setting should be declared with a type annotation and documentation
 as follows:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span>
+
+<span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
 
     <span class="c1">#: Maximum number of parallel connections.</span>
     <span class="c1">#: Note that a high number of connections can slow down</span>
@@ -147,13 +263,15 @@ a Python read-only <a class="reference external" href="https://docs.python.org/3
 <p>Before we go further, let’s take a look at the contents of a Setting object.
 Each implicitly or explicitly defined setting consists of a
 <strong>name</strong>, <strong>default value</strong>, a <strong>type hint</strong>,
-a <strong>list of validators</strong> and <strong>documentation</strong>:</p>
+lists of <strong>validators</strong> and <strong>behaviors</strong>
+and <strong>documentation</strong>:</p>
 <div class="figure align-center">
 <p class="plantuml">
-<img src="_images/plantuml-71b5309c3c7466072a035244bbd65a38f279464d.png" alt="&#64;startuml
+<img src="_images/plantuml-6116093f7e698ad7becdf8446b2739eb2001f940.png" alt="&#64;startuml
 (Default value) --&gt; (Setting)
 (Type hint) --&gt; (Setting)
 (Validators) --&gt; (Setting)
+(Behaviors) --&gt; (Setting)
 (Documentation) --&gt; (Setting)
 
 note left of (Setting) : NAME
@@ -167,56 +285,15 @@ meaning on its own. However a <strong>validator</strong> like the built-in
 <a class="reference internal" href="api.html#concrete_settings.validators.ValueTypeValidator" title="concrete_settings.validators.ValueTypeValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueTypeValidator</span></code></a>
 can use the <em>type hint</em> to check whether the setting value corresponds
 to the given type.</p></li>
-<li><p><strong>Validators</strong> is a list of callables which validate the value of the setting.</p></li>
+<li><p><strong>Validators</strong> is a collection of callables which validate the value of the setting.</p></li>
+<li><p><strong>Behaviors</strong> is a collection of <a class="reference internal" href="api.html#concrete_settings.behaviors.SettingBehavior" title="concrete_settings.behaviors.SettingBehavior"><code class="xref py py-class docutils literal notranslate"><span class="pre">SettingBehavior</span></code></a>
+objects which modify the behavior of the setting during its <em>get</em> and <em>set</em> invocations and
+its owner <em>initialization</em>.</p></li>
 <li><p><strong>Documentation</strong> is a multi-line doc string intended for the end user.</p></li>
 </ul>
 </div>
-<div class="section" id="nested-settings">
-<h2><a class="toc-backref" href="#id3">Nested Settings</a><a class="headerlink" href="#nested-settings" title="Permalink to this headline">¶</a></h2>
-<p>Nesting is a great way to logically group and isolate settings.
-Let’s try grouping <em>database</em>, <em>cache</em> and <em>logging</em> in
-application settings as follows:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span>
-
-<span class="k">class</span> <span class="nc">DBSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
-    <span class="n">USER</span> <span class="o">=</span> <span class="s1">&#39;alex&#39;</span>
-    <span class="n">PASSWORD</span>  <span class="o">=</span> <span class="s1">&#39;secret&#39;</span>
-    <span class="n">SERVER</span> <span class="o">=</span> <span class="s1">&#39;localhost@5432&#39;</span>
-
-<span class="k">class</span> <span class="nc">CacheSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
-    <span class="n">ENGINE</span> <span class="o">=</span> <span class="s1">&#39;DatabaseCache&#39;</span>
-    <span class="n">TIMEOUT</span> <span class="o">=</span> <span class="mi">300</span>
-
-<span class="k">class</span> <span class="nc">LoggingSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
-    <span class="n">LEVEL</span> <span class="o">=</span> <span class="s1">&#39;INFO&#39;</span>
-    <span class="n">FORMAT</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)-8s</span><span class="s1"> </span><span class="si">%(name)-15s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span>
-
-
-<span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
-    <span class="n">DB</span> <span class="o">=</span> <span class="n">DBSettings</span><span class="p">()</span>
-    <span class="n">CACHE</span> <span class="o">=</span> <span class="n">CacheSettings</span><span class="p">()</span>
-    <span class="n">LOG</span> <span class="o">=</span> <span class="n">LoggingSettings</span><span class="p">()</span>
-
-<span class="n">app_settings</span> <span class="o">=</span> <span class="n">AppSettings</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">app_settings</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">LEVEL</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Output:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>INFO
-</pre></div>
-</div>
-<p>At first glance, there is nothing special about this code.
-What makes it special and somewhat confusing is
-that <a class="reference internal" href="api.html#concrete_settings.Settings" title="concrete_settings.Settings"><code class="xref py py-class docutils literal notranslate"><span class="pre">Settings</span></code></a> is a
-subclass of <a class="reference internal" href="api.html#concrete_settings.Setting" title="concrete_settings.Setting"><code class="xref py py-class docutils literal notranslate"><span class="pre">Setting</span></code></a>!
-Hence, each nested Settings behaves and can be treated
-as a Setting descriptor - e.g. have validators, documentation
-or <a class="reference external" href="quickstart_behavior">bound behavior</a>.</p>
-<p>Additionally, <a class="reference external" href="quickstart_validation">validating</a> top-level settings
-automatically cascades to all nested settings.</p>
-</div>
-<div class="section" id="reading-settings-from-files-and-environment">
-<h2><a class="toc-backref" href="#id4">Reading settings from files and environment</a><a class="headerlink" href="#reading-settings-from-files-and-environment" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="reading-settings">
+<h2><a class="toc-backref" href="#id2">Reading settings</a><a class="headerlink" href="#reading-settings" title="Permalink to this headline">¶</a></h2>
 <p>After a Settings object has initialized successfully it can be updated
 with values from different <a class="reference internal" href="api.html#api-sources"><span class="std std-ref">Sources</span></a>, such as
 <a class="reference internal" href="api.html#concrete_settings.contrib.sources.YamlSource" title="concrete_settings.contrib.sources.YamlSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">YAML</span></code></a> or
@@ -227,7 +304,7 @@ or a plain Python dict.</p>
 <p>And if none of the above fits your needs, check out
 <a class="reference internal" href="api.html#module-concrete_settings.sources" title="concrete_settings.sources"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sources</span> <span class="pre">API</span></code></a> for creating
 a required settings source.</p>
-<p>To update a settings object, call <a class="reference internal" href="api.html#concrete_settings.Settings.update" title="concrete_settings.Settings.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a>.
+<p>Updating is done by calling <a class="reference internal" href="api.html#concrete_settings.Settings.update" title="concrete_settings.Settings.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Settings.update(source)</span></code></a>.
 For example, to update the settings from a JSON file:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="nt">&quot;ADMIN_EMAIL&quot;</span><span class="p">:</span> <span class="s2">&quot;alex@my-super-app.io&quot;</span><span class="p">,</span>
@@ -256,63 +333,107 @@ For example, to update the settings from a JSON file:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>alex@my-super-app.io
 </pre></div>
 </div>
-<div class="section" id="update-strategies">
-<h3><a class="toc-backref" href="#id5">Update strategies</a><a class="headerlink" href="#update-strategies" title="Permalink to this headline">¶</a></h3>
-<p>In most of the cases, a developer wants to overwrite a setting value
-when updating it from a source. But there are exceptions.
-Think of a list setting, which contains administrators’ emails, e.g.:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span>
-<span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span>
+</div>
+<div class="section" id="validation">
+<span id="quickstart-validation"></span><h2><a class="toc-backref" href="#id3">Validation</a><a class="headerlink" href="#validation" title="Permalink to this headline">¶</a></h2>
+<p>When Settings values have been finaly loaded, it is time
+to validate each and all settings’ values altogether.</p>
+<p>A Settings object validates its setting-fields and itself when
+<a class="reference internal" href="api.html#concrete_settings.Settings.is_valid" title="concrete_settings.Settings.is_valid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Settings.is_valid()</span></code></a>
+is called for the first time.
+Validation consists of two stages:</p>
+<ol class="arabic simple">
+<li><p>Each <a class="reference internal" href="api.html#concrete_settings.validators.Validator" title="concrete_settings.validators.Validator"><code class="xref py py-class docutils literal notranslate"><span class="pre">validator</span></code></a>
+of every setting-field’s <code class="docutils literal notranslate"><span class="pre">.validators</span></code> list is called
+to validate the setting-field’s value.</p></li>
+<li><p><a class="reference internal" href="api.html#concrete_settings.Settings.validate" title="concrete_settings.Settings.validate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Settings.validate()</span></code></a> is called.
+It is indtended to validate the Settings object as a whole.</p></li>
+</ol>
+<p>All validation errors are collected and stored in <a class="reference internal" href="api.html#concrete_settings.Settings.errors" title="concrete_settings.Settings.errors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Settings.errors</span></code></a></p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Setting</span>
+<span class="kn">from</span> <span class="nn">concrete_settings.exceptions</span> <span class="k">import</span> <span class="n">SettingsValidationError</span>
+
+<span class="k">def</span> <span class="nf">not_too_fast</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">speed</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">SettingsValidationError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="si">{speed}</span><span class="s1"> is too fast!&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">not_too_slow</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">speed</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">SettingsValidationError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="si">{speed}</span><span class="s1"> is too slow!&#39;</span><span class="p">)</span>
 
 <span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
-    <span class="n">ADMIN_EMAILS</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s1">&#39;admin@example.com&#39;</span>
-    <span class="p">]</span>
-</pre></div>
-</div>
-<p>What if you want to <strong>append</strong> the emails defined in sources, instead
-of overwriting them? Concrete Settings provides a concept of
-<a class="reference internal" href="api.html#module-concrete_settings.sources.strategies" title="concrete_settings.sources.strategies"><code class="xref py py-mod docutils literal notranslate"><span class="pre">update</span> <span class="pre">strategies</span></code></a>
-for such cases:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="nt">&quot;ADMIN_EMAILS&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;alex@my-super-app.io&quot;</span><span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings.sources</span> <span class="k">import</span> <span class="n">strategies</span>
-
-<span class="o">...</span>
+    <span class="n">SPEED</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Setting</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">(</span><span class="n">not_too_fast</span><span class="p">,</span> <span class="n">not_too_slow</span><span class="p">))</span>
 
 <span class="n">app_settings</span> <span class="o">=</span> <span class="n">AppSettings</span><span class="p">()</span>
-<span class="n">app_settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;/tmp/cs-quickstart-settings.json&#39;</span><span class="p">,</span> <span class="n">strategies</span><span class="o">=</span><span class="p">{</span>
-    <span class="s1">&#39;ADMIN_EMAILS&#39;</span><span class="p">:</span> <span class="n">strategies</span><span class="o">.</span><span class="n">append</span>
-<span class="p">})</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">app_settings</span><span class="o">.</span><span class="n">ADMIN_EMAILS</span><span class="p">)</span>
+<span class="n">app_settings</span><span class="o">.</span><span class="n">SPEED</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">app_settings</span><span class="o">.</span><span class="n">is_valid</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">app_settings</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Output:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;admin@example.com&#39;, &#39;alex@my-super-app.io&#39;]
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>False
+{&#39;SPEED&#39;: [&#39;5 is too slow!&#39;]}
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="validation">
-<span id="quickstart-validation"></span><h2><a class="toc-backref" href="#id6">Validation</a><a class="headerlink" href="#validation" title="Permalink to this headline">¶</a></h2>
-<blockquote>
-<div><p><a class="reference internal" href="api.html#concrete_settings.validators.Validator" title="concrete_settings.validators.Validator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Validator</span></code></a> objects</p>
-</div></blockquote>
-</div>
 <div class="section" id="type-hint">
-<h2><a class="toc-backref" href="#id7">Type hint</a><a class="headerlink" href="#type-hint" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id4">Type hint</a><a class="headerlink" href="#type-hint" title="Permalink to this headline">¶</a></h2>
+<p>Type hint is a setting type.
+It is intended to be used by validators, like the built-in
+<a class="reference internal" href="api.html#concrete_settings.validators.ValueTypeValidator" title="concrete_settings.validators.ValueTypeValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueTypeValidator</span></code></a>
+to validate a setting’s value.
+Otherwise it carries no meaning and is just a valid Python value.</p>
+<p>The <a class="reference internal" href="api.html#concrete_settings.validators.ValueTypeValidator" title="concrete_settings.validators.ValueTypeValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueTypeValidator</span></code></a>
+is a <a class="reference internal" href="advanced.html#advanced-validators"><span class="std std-ref">default validator</span></a> for settings which have no validators defined explicitly:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span>
+
+<span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
+    <span class="n">SPEED</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="s1">&#39;abc&#39;</span>
+
+<span class="n">app_settings</span> <span class="o">=</span> <span class="n">AppSettings</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">app_settings</span><span class="o">.</span><span class="n">is_valid</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">app_settings</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
+</pre></div>
 </div>
-<div class="section" id="quickstart-behavior">
-<span id="id1"></span><h2><a class="toc-backref" href="#id8">Bound behavior</a><a class="headerlink" href="#quickstart-behavior" title="Permalink to this headline">¶</a></h2>
-<p>What makes it very fascinating and maybe a bit confusing is
-that <a class="reference internal" href="api.html#concrete_settings.Settings" title="concrete_settings.Settings"><code class="xref py py-class docutils literal notranslate"><span class="pre">Settings</span></code></a> is a
-subclass of <a class="reference internal" href="api.html#concrete_settings.Setting" title="concrete_settings.Setting"><code class="xref py py-class docutils literal notranslate"><span class="pre">Setting</span></code></a>!</p>
-<p>In practice, this allows you to</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>False
+{&#39;SPEED&#39;: [&quot;Expected value of type `&lt;class &#39;int&#39;&gt;` got value of type `&lt;class &#39;str&#39;&gt;`&quot;]}
+</pre></div>
+</div>
+</div>
+<div class="section" id="setting-behavior">
+<span id="quickstart-behavior"></span><h2><a class="toc-backref" href="#id5">Setting Behavior</a><a class="headerlink" href="#setting-behavior" title="Permalink to this headline">¶</a></h2>
+<p>Imagine that you want to notify the users that a setting is now deprecated.
+You would like to raise a warning when settings are initialized and
+every time the setting is being read.</p>
+<p>A straightforward way to do this is by sublassing the
+<a class="reference internal" href="api.html#concrete_settings.Setting" title="concrete_settings.Setting"><code class="xref py py-class docutils literal notranslate"><span class="pre">Setting</span></code></a> class and overriding
+<a class="reference internal" href="api.html#concrete_settings.Setting.__get__" title="concrete_settings.Setting.__get__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Setting.__get__()</span></code></a>.</p>
+<p>Another way would be using the supplied Settings Behavior mechanism.
+For example, the built-in <a class="reference internal" href="api.html#concrete_settings.contrib.behaviors.deprecated" title="concrete_settings.contrib.behaviors.deprecated"><code class="xref py py-class docutils literal notranslate"><span class="pre">deprecated</span></code></a>
+validator adds the <a class="reference internal" href="api.html#concrete_settings.contrib.validators.DeprecatedValidator" title="concrete_settings.contrib.validators.DeprecatedValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeprecatedValidator</span></code></a> to the setting looks like this:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span>
+<span class="kn">from</span> <span class="nn">concrete_settings.contrib.behaviors</span> <span class="k">import</span> <span class="n">deprecated</span>
+
+<span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
+    <span class="n">MAX_SPEED</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span> <span class="nd">@deprecated</span>
+
+<span class="n">app_settings</span> <span class="o">=</span> <span class="n">AppSettings</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If Python warnings are enabled (e.g. <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-Wdefault</span></code>), you would
+get the warning in stderr:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>DeprecationWarning: Setting `MAX_SPEED` in class `&lt;class &#39;__main__.AppSettings&#39;&gt;` is deprecated.
+</pre></div>
+</div>
+<p>A <em>behavior</em> is a way to change how a setting field behaves
+during Settings object initialization and setting descriptor’s
+<a class="reference internal" href="api.html#concrete_settings.Setting.__get__" title="concrete_settings.Setting.__get__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get</span></code></a>
+and
+<a class="reference internal" href="api.html#concrete_settings.Setting.__set__" title="concrete_settings.Setting.__set__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set</span></code></a>
+invocations.</p>
 <div class="section" id="automated-setting-creation">
-<span id="automated-settings"></span><h3><a class="toc-backref" href="#id9">Automated Setting creation</a><a class="headerlink" href="#automated-setting-creation" title="Permalink to this headline">¶</a></h3>
+<span id="automated-settings"></span><h3><a class="toc-backref" href="#id6">Automated Setting creation</a><a class="headerlink" href="#automated-setting-creation" title="Permalink to this headline">¶</a></h3>
 <p><strong>Name</strong></p>
 <p>Every attribute with <strong>name</strong> written in upper case
 is considered a potential Setting.
@@ -346,7 +467,7 @@ If the type is not recognized, the type hint is set to <a class="reference exter
 </div>
 </div>
 <div class="section" id="combining-settings">
-<h3><a class="toc-backref" href="#id10">Combining settings</a><a class="headerlink" href="#combining-settings" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id7">Combining settings</a><a class="headerlink" href="#combining-settings" title="Permalink to this headline">¶</a></h3>
 <p class="plantuml">
 <img src="_images/plantuml-ea159c02fbbb7ad9164e5819f9767fa09cd2e0f5.png" alt="&#64;startuml
 (Feature X settings) --&gt; (Settings)
@@ -373,100 +494,56 @@ file be it YAML, JSON, Environmental variables or
 just plain Python module.:</p>
 <p>Sounds intriguing? We have to go deeper!</p>
 </div>
-<div class="section" id="internal-workflow">
-<h3><a class="toc-backref" href="#id11">Internal workflow</a><a class="headerlink" href="#internal-workflow" title="Permalink to this headline">¶</a></h3>
-<p>The equivalent verbose form is:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Setting</span>
-<span class="kn">from</span> <span class="nn">concrete_settings.validators</span> <span class="kn">import</span> <span class="n">ValueTypeValidator</span>
-
-<span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
-    <span class="n">DEBUG</span> <span class="o">=</span> <span class="n">Setting</span><span class="p">(</span>
-        <span class="bp">True</span><span class="p">,</span>
-        <span class="n">type_hint</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span>
-        <span class="n">validators</span><span class="o">=</span><span class="p">(</span><span class="n">ValueTypeValidator</span><span class="p">(),</span> <span class="p">),</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Turns debug mode on/off&quot;</span>
-    <span class="p">)</span>
-</pre></div>
-</div>
-</div>
 </div>
 </div>
 
 
+           </div>
+           
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Quickstart</a><ul>
-<li><a class="reference internal" href="#defining-settings">Defining settings</a></li>
-<li><a class="reference internal" href="#nested-settings">Nested Settings</a></li>
-<li><a class="reference internal" href="#reading-settings-from-files-and-environment">Reading settings from files and environment</a><ul>
-<li><a class="reference internal" href="#update-strategies">Update strategies</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#validation">Validation</a></li>
-<li><a class="reference internal" href="#type-hint">Type hint</a></li>
-<li><a class="reference internal" href="#quickstart-behavior">Bound behavior</a><ul>
-<li><a class="reference internal" href="#automated-setting-creation">Automated Setting creation</a></li>
-<li><a class="reference internal" href="#combining-settings">Combining settings</a></li>
-<li><a class="reference internal" href="#internal-workflow">Internal workflow</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="advanced.html" class="btn btn-neutral float-right" title="Advanced topics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to ConcreteSettings" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="index.html"
-                        title="previous chapter">Welcome to ConcreteSettings</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="api.html"
-                        title="next chapter">API</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/quickstart.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Zaur Nasibov
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="api.html" title="API"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="index.html" title="Welcome to ConcreteSettings"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Concrete Settings  documentation</a> &#187;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2019, Zaur Nasibov.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
-    </div>
-  </body>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
 </html>

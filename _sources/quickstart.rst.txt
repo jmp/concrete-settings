@@ -37,14 +37,14 @@ For example, the following two definitions are identical:
            True,
            type_hint=bool,
            validators=(ValueTypeValidator(), ),
-           doc="Turns debug mode on/off"
+           doc="Turns debug mode on/off",
        )
 
-This behaviour does not truly comply with the Zen of Python:
+Though this does not truly comply with the Zen of Python
 
   *Explicit is better than implicit*.
 
-But wouldn't you agree that the first definition
+wouldn't you agree that the first definition
 is easier to comprehend than the second one?
 The first definition looks like a boring class attribute
 with a sphinx-style documentation above it.
@@ -63,7 +63,9 @@ basic settings is by omitting the ``Setting(...)`` call at all.
 Ideally a setting should be declared with a type annotation and documentation
 as follows:
 
-.. code-block::
+.. testcode:: quickstart-define-setting
+
+   from concrete_settings import Settings
 
    class AppSettings(Settings):
 
@@ -102,7 +104,8 @@ Output:
 Before we go further, let's take a look at the contents of a Setting object.
 Each implicitly or explicitly defined setting consists of a
 **name**, **default value**, a **type hint**,
-a **list of validators** and **documentation**:
+lists of **validators** and **behaviors**
+and **documentation**:
 
 .. uml::
    :align: center
@@ -111,6 +114,7 @@ a **list of validators** and **documentation**:
    (Default value) --> (Setting)
    (Type hint) --> (Setting)
    (Validators) --> (Setting)
+   (Behaviors) --> (Setting)
    (Documentation) --> (Setting)
 
    note left of (Setting) : NAME
@@ -122,63 +126,15 @@ a **list of validators** and **documentation**:
   :class:`ValueTypeValidator <concrete_settings.validators.ValueTypeValidator>`
   can use the *type hint* to check whether the setting value corresponds
   to the given type.
-* **Validators** is a list of callables which validate the value of the setting.
+* **Validators** is a collection of callables which validate the value of the setting.
+* **Behaviors** is a collection of :class:`SettingBehavior <concrete_settings.behaviors.SettingBehavior>`
+  objects which modify the behavior of the setting during its *get* and *set* invocations and
+  its owner *initialization*.
 * **Documentation** is a multi-line doc string intended for the end user.
 
 
-Nested Settings
----------------
-
-Nesting is a great way to logically group and isolate settings.
-Let's try grouping *database*, *cache* and *logging* in
-application settings as follows:
-
-.. testcode:: quickstart-nested
-
-   from concrete_settings import Settings
-
-   class DBSettings(Settings):
-       USER = 'alex'
-       PASSWORD  = 'secret'
-       SERVER = 'localhost@5432'
-
-   class CacheSettings(Settings):
-       ENGINE = 'DatabaseCache'
-       TIMEOUT = 300
-
-   class LoggingSettings(Settings):
-       LEVEL = 'INFO'
-       FORMAT = '%(asctime)s %(levelname)-8s %(name)-15s %(message)s'
-
-
-   class AppSettings(Settings):
-       DB = DBSettings()
-       CACHE = CacheSettings()
-       LOG = LoggingSettings()
-
-   app_settings = AppSettings()
-   print(app_settings.LOG.LEVEL)
-
-Output:
-
-.. testoutput:: quickstart-nested
-
-   INFO
-
-At first glance, there is nothing special about this code.
-What makes it special and somewhat confusing is
-that :class:`Settings <concrete_settings.Settings>` is a
-subclass of :class:`Setting <concrete_settings.Setting>`!
-Hence, each nested Settings behaves and can be treated
-as a Setting descriptor - e.g. have validators, documentation
-or `bound behavior <quickstart_behavior>`_.
-
-Additionally, `validating <quickstart_validation>`_ top-level settings
-automatically cascades to all nested settings.
-
-
-Reading settings from files and environment
--------------------------------------------
+Reading settings
+----------------
 
 After a Settings object has initialized successfully it can be updated
 with values from different :ref:`api_sources`, such as
@@ -192,7 +148,7 @@ And if none of the above fits your needs, check out
 :mod:`sources API <concrete_settings.sources>` for creating
 a required settings source.
 
-To update a settings object, call :meth:`update() <concrete_settings.Settings.update>`.
+Updating is done by calling :meth:`Settings.update(source) <concrete_settings.Settings.update>`.
 For example, to update the settings from a JSON file:
 
 
@@ -243,90 +199,132 @@ Output:
    os.remove('/tmp/cs-quickstart-settings.json')
 
 
-Update strategies
-.................
-
-In most of the cases, a developer wants to overwrite a setting value
-when updating it from a source. But there are exceptions.
-Think of a list setting, which contains administrators' emails, e.g.:
-
-.. testcode:: quickstart-update-strategies
-
-   from typing import List
-   from concrete_settings import Settings
-
-   class AppSettings(Settings):
-       ADMIN_EMAILS: List[str] = [
-           'admin@example.com'
-       ]
-
-
-What if you want to **append** the emails defined in sources, instead
-of overwriting them? Concrete Settings provides a concept of
-:mod:`update strategies <concrete_settings.sources.strategies>`
-for such cases:
-
-.. code-block:: json
-
-   {
-       "ADMIN_EMAILS": ["alex@my-super-app.io"]
-   }
-
-.. testsetup:: quickstart-update-strategies
-
-   with open('/tmp/cs-quickstart-settings.json', 'w') as f:
-       f.write('''
-           {
-               "ADMIN_EMAILS": ["alex@my-super-app.io"]
-           }
-       ''')
-
-.. testcode:: quickstart-update-strategies
-
-   from concrete_settings.sources import strategies
-
-   ...
-
-   app_settings = AppSettings()
-   app_settings.update('/tmp/cs-quickstart-settings.json', strategies={
-       'ADMIN_EMAILS': strategies.append
-   })
-   print(app_settings.ADMIN_EMAILS)
-
-.. testcleanup:: quickstart-update-strategies
-
-   import os
-   os.remove('/tmp/cs-quickstart-settings.json')
-
-Output:
-
-.. testoutput:: quickstart-update-strategies
-
-   ['admin@example.com', 'alex@my-super-app.io']
-
-
-
 .. _quickstart_validation:
 
 Validation
 ----------
 
-  :class:`Validator <concrete_settings.validators.Validator>` objects
+When Settings values have been finaly loaded, it is time
+to validate each and all settings' values altogether.
+
+A Settings object validates its setting-fields and itself when
+:meth:`Settings.is_valid() <concrete_settings.Settings.is_valid()>`
+is called for the first time.
+Validation consists of two stages:
+
+1. Each :class:`validator <concrete_settings.validators.Validator>`
+   of every setting-field's ``.validators`` list is called
+   to validate the setting-field's value.
+
+2. :meth:`Settings.validate() <concrete_settings.Settings.validate>` is called.
+   It is indtended to validate the Settings object as a whole.
+
+All validation errors are collected and stored in :meth:`Settings.errors <concrete_settings.Settings.errors>`
+
+.. testcode:: quickstart-validation
+
+   from concrete_settings import Settings, Setting
+   from concrete_settings.exceptions import SettingsValidationError
+
+   def not_too_fast(speed, **kwargs):
+       if speed > 100:
+           raise SettingsValidationError(f'{speed} is too fast!')
+
+   def not_too_slow(speed, **kwargs):
+       if speed < 10:
+           raise SettingsValidationError(f'{speed} is too slow!')
+
+   class AppSettings(Settings):
+       SPEED: int = Setting(50, validators=(not_too_fast, not_too_slow))
+
+   app_settings = AppSettings()
+   app_settings.SPEED = 5
+
+   print(app_settings.is_valid())
+   print(app_settings.errors)
+
+Output:
+
+.. testoutput:: quickstart-validation
+
+   False
+   {'SPEED': ['5 is too slow!']}
 
 
 Type hint
 ---------
 
+Type hint is a setting type.
+It is intended to be used by validators, like the built-in
+:class:`ValueTypeValidator <concrete_settings.validators.ValueTypeValidator>`
+to validate a setting's value.
+Otherwise it carries no meaning and is just a valid Python value.
+
+The :class:`ValueTypeValidator <concrete_settings.validators.ValueTypeValidator>`
+is a :ref:`default validator <advanced_validators>` for settings which have no validators defined explicitly:
+
+
+.. testcode:: quickstart-type-hint
+
+   from concrete_settings import Settings
+
+   class AppSettings(Settings):
+       SPEED: int = 'abc'
+
+   app_settings = AppSettings()
+   print(app_settings.is_valid())
+   print(app_settings.errors)
+
+.. testoutput:: quickstart-type-hint
+
+   False
+   {'SPEED': ["Expected value of type `<class 'int'>` got value of type `<class 'str'>`"]}
+
+
 .. _quickstart_behavior:
 
-Bound behavior
---------------
+Setting Behavior
+----------------
 
-What makes it very fascinating and maybe a bit confusing is
-that :class:`Settings <concrete_settings.Settings>` is a
-subclass of :class:`Setting <concrete_settings.Setting>`!
+Imagine that you want to notify the users that a setting is now deprecated.
+You would like to raise a warning when settings are initialized and
+every time the setting is being read.
 
-In practice, this allows you to
+A straightforward way to do this is by sublassing the
+:class:`Setting <concrete_settings.Setting>` class and overriding
+:meth:`Setting.__get__() <concrete_settings.Setting.__get__>`.
+
+Another way would be using the supplied Settings Behavior mechanism.
+For example, the built-in :class:`deprecated <concrete_settings.contrib.behaviors.deprecated>`
+validator adds the :class:`DeprecatedValidator <concrete_settings.contrib.validators.DeprecatedValidator>` to the setting looks like this:
+
+.. testcode:: quickstart-behavior:
+
+   from concrete_settings import Settings
+   from concrete_settings.contrib.behaviors import deprecated
+
+   class AppSettings(Settings):
+       MAX_SPEED: int = 30 @deprecated
+
+   app_settings = AppSettings()
+
+If Python warnings are enabled (e.g. ``python -Wdefault``), you would
+get the warning in stderr:
+
+
+.. code-block:: none
+
+   DeprecationWarning: Setting `MAX_SPEED` in class `<class '__main__.AppSettings'>` is deprecated.
+
+
+A *behavior* is a way to change how a setting field behaves
+during Settings object initialization and setting descriptor's
+:meth:`get <concrete_settings.Setting.__get__>`
+and
+:meth:`set <concrete_settings.Setting.__set__>`
+invocations.
+
+
 
 .. _automated_settings:
 
@@ -410,24 +408,3 @@ file be it YAML, JSON, Environmental variables or
 just plain Python module.:
 
 Sounds intriguing? We have to go deeper!
-
-
-Internal workflow
-.................
-
-
-
-The equivalent verbose form is:
-
-.. code-block:: python
-
-  from concrete_settings import Settings, Setting
-  from concrete_settings.validators import ValueTypeValidator
-
-  class AppSettings(Settings):
-      DEBUG = Setting(
-          True,
-          type_hint=bool,
-          validators=(ValueTypeValidator(), ),
-          doc="Turns debug mode on/off"
-      )
