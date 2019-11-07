@@ -219,7 +219,7 @@ with a sphinx-style documentation above it.
 At the same time, all the required details are extracted and processed,
 and a substitute <code class="docutils literal notranslate"><span class="pre">Setting</span></code> attribute is created.</p>
 <p>The magic behind the scenes is happening in the metaclass
-<a class="reference internal" href="api.html#concrete_settings.concrete_settings.SettingsMeta" title="concrete_settings.concrete_settings.SettingsMeta"><code class="xref py py-class docutils literal notranslate"><span class="pre">SettingsMeta</span></code></a>.
+<a class="reference internal" href="api.html#concrete_settings.core.SettingsMeta" title="concrete_settings.core.SettingsMeta"><code class="xref py py-class docutils literal notranslate"><span class="pre">SettingsMeta</span></code></a>.
 In a nutshell, if a field looks like a setting, but is not explicitly
 defined (e.g. <code class="docutils literal notranslate"><span class="pre">DEBUG</span> <span class="pre">=</span> <span class="pre">True</span></code>), a corresponding instance of
 <a class="reference internal" href="api.html#concrete_settings.Setting" title="concrete_settings.Setting"><code class="xref py py-class docutils literal notranslate"><span class="pre">Setting</span></code></a> is created instead.</p>
