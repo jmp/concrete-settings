@@ -410,8 +410,12 @@ every time the setting is being read.</p>
 <a class="reference internal" href="api.html#concrete_settings.Setting" title="concrete_settings.Setting"><code class="xref py py-class docutils literal notranslate"><span class="pre">Setting</span></code></a> class and overriding
 <a class="reference internal" href="api.html#concrete_settings.Setting.__get__" title="concrete_settings.Setting.__get__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Setting.__get__()</span></code></a>.</p>
 <p>Another way would be using the supplied Settings Behavior mechanism.
-For example, the built-in <a class="reference internal" href="api.html#concrete_settings.contrib.behaviors.deprecated" title="concrete_settings.contrib.behaviors.deprecated"><code class="xref py py-class docutils literal notranslate"><span class="pre">deprecated</span></code></a>
-validator adds the <a class="reference internal" href="api.html#concrete_settings.contrib.validators.DeprecatedValidator" title="concrete_settings.contrib.validators.DeprecatedValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeprecatedValidator</span></code></a> to the setting looks like this:</p>
+Behaviors can be passed to a Setting explicitly.
+But the preferred way is to use the syntactic sugar - by “decorating” settings.
+For example, let’s take a look at the built-in <a class="reference internal" href="api.html#concrete_settings.contrib.behaviors.deprecated" title="concrete_settings.contrib.behaviors.deprecated"><code class="xref py py-class docutils literal notranslate"><span class="pre">deprecated</span></code></a>
+validator. It simply adds <a class="reference internal" href="api.html#concrete_settings.contrib.validators.DeprecatedValidator" title="concrete_settings.contrib.validators.DeprecatedValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeprecatedValidator</span></code></a>
+to the setting. The rationale of using the behavior instead of a validator is dramatically improved readability.
+Have a look:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span>
 <span class="kn">from</span> <span class="nn">concrete_settings.contrib.behaviors</span> <span class="k">import</span> <span class="n">deprecated</span>
 
