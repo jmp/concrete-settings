@@ -550,8 +550,10 @@
 <span class="n">identifier_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[^\d\W]\w*\Z&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">prefix</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;TODO&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="prefix"><a class="viewcode-back" href="../../api.html#concrete_settings.prefix">[docs]</a><span class="k">class</span> <span class="nc">prefix</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A decorator for Settings classes which</span>
+<span class="sd">       appends the defined prefix to each Setting field.&quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">prefix</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;prefix cannot be empty&#39;</span><span class="p">)</span>
@@ -578,7 +580,7 @@
             <span class="nb">delattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">new_name</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
             <span class="n">attr</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">new_name</span>
-        <span class="k">return</span> <span class="n">settings</span>
+        <span class="k">return</span> <span class="n">settings</span></div>
 </pre></div>
 
            </div>
