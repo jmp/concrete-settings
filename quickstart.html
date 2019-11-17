@@ -182,9 +182,9 @@
 <p>Defining settings starts
 by subclassing the <a class="reference internal" href="api.html#concrete_settings.Settings" title="concrete_settings.Settings"><code class="xref py py-class docutils literal notranslate"><span class="pre">Settings</span></code></a>
 class.
-Each setting is defined by an attributes of type
-<a class="reference internal" href="api.html#concrete_settings.Setting" title="concrete_settings.Setting"><code class="xref py py-class docutils literal notranslate"><span class="pre">Setting</span></code></a>.
-The catch is that a developer does not have
+A setting is defined by
+<a class="reference internal" href="api.html#concrete_settings.Setting" title="concrete_settings.Setting"><code class="xref py py-class docutils literal notranslate"><span class="pre">Setting</span></code></a> descriptor.
+The catch is that one does not have
 to declare each setting explicitly.</p>
 <p>Let’s take a look is a small example, where we declare <code class="docutils literal notranslate"><span class="pre">AppSettings</span></code>
 class with a single boolean-type setting named <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>:</p>
@@ -223,11 +223,11 @@ and a corresponding <code class="docutils literal notranslate"><span class="pre"
 <a class="reference internal" href="api.html#concrete_settings.core.SettingsMeta" title="concrete_settings.core.SettingsMeta"><code class="xref py py-class docutils literal notranslate"><span class="pre">SettingsMeta</span></code></a>.
 In a nutshell, if a field looks like a setting, but is not explicitly
 defined as an instance of class <a class="reference internal" href="api.html#concrete_settings.Setting" title="concrete_settings.Setting"><code class="xref py py-class docutils literal notranslate"><span class="pre">Setting</span></code></a>,
-a corresponding <code class="docutils literal notranslate"><span class="pre">Setting</span></code> object
-is created instead.</p>
-<p>We will <a class="reference internal" href="advanced.html#automated-settings"><span class="std std-ref">later</span></a> discuss the setting creation rules in-depth.
-For now please accept that Concrete Settings preferred way of declaring
-basic settings is by omitting the <code class="docutils literal notranslate"><span class="pre">Setting(...)</span></code> call at all.
+a corresponding object is created instead.</p>
+<p><a class="reference internal" href="advanced.html#automated-setting"><span class="std std-ref">Later in the documentation</span></a> the setting creation
+rules are explored in-depth.
+For now please accept that Concrete Settings’ preferred way of declaring
+<em>basic</em> settings is by omitting the <code class="docutils literal notranslate"><span class="pre">Setting(...)</span></code> call at all.
 Ideally a setting should be declared with a type annotation and documentation
 as follows:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span>
@@ -262,10 +262,10 @@ a Python read-only <a class="reference external" href="https://docs.python.org/3
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>postgresql://alex:secret@localhost:5432
 </pre></div>
 </div>
-<p>Before we go further, let’s take a look at the contents of a Setting object.
+<p>Before going further, let’s take a look at the contents of a Setting object.
 Each implicitly or explicitly defined setting consists of a
 <strong>name</strong>, <strong>default value</strong>, a <strong>type hint</strong>,
-lists of <strong>validators</strong> and <strong>behaviors</strong>
+lists of <strong>validators</strong>, list of <strong>behaviors</strong>
 and <strong>documentation</strong>:</p>
 <div class="figure align-center">
 <p class="plantuml">
@@ -289,21 +289,20 @@ can use the <em>type hint</em> to check whether the setting value corresponds
 to the given type.</p></li>
 <li><p><strong>Validators</strong> is a collection of callables which validate the value of the setting.</p></li>
 <li><p><strong>Behaviors</strong> is a collection of <a class="reference internal" href="api.html#concrete_settings.behaviors.SettingBehavior" title="concrete_settings.behaviors.SettingBehavior"><code class="xref py py-class docutils literal notranslate"><span class="pre">SettingBehavior</span></code></a>
-objects which modify the behavior of the setting during its <em>get</em> and <em>set</em> invocations and
-its owner <em>initialization</em>.</p></li>
+objects which modify a setting’s behavior during different stages of its life cycle.</p></li>
 <li><p><strong>Documentation</strong> is a multi-line doc string intended for the end user.</p></li>
 </ul>
 </div>
 <div class="section" id="reading-settings">
 <h2><a class="toc-backref" href="#id2">Reading settings</a><a class="headerlink" href="#reading-settings" title="Permalink to this headline">¶</a></h2>
-<p>After a Settings object has initialized successfully it can be updated
+<p>After a Settings object has been initialized successfully it can be updated
 with values from different <a class="reference internal" href="api.html#api-sources"><span class="std std-ref">Sources</span></a>, such as
 <a class="reference internal" href="api.html#concrete_settings.contrib.sources.YamlSource" title="concrete_settings.contrib.sources.YamlSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">YAML</span></code></a> or
 <a class="reference internal" href="api.html#concrete_settings.contrib.sources.JsonSource" title="concrete_settings.contrib.sources.JsonSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">JSON</span></code></a>
 files,
 <a class="reference internal" href="api.html#concrete_settings.contrib.sources.EnvVarSource" title="concrete_settings.contrib.sources.EnvVarSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">enironmental</span> <span class="pre">variables</span></code></a>
 or a plain Python dict.</p>
-<p>And if none of the above fits your needs, check out
+<p>If none of the above fits your needs, check out
 <a class="reference internal" href="api.html#module-concrete_settings.sources" title="concrete_settings.sources"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sources</span> <span class="pre">API</span></code></a> for creating
 a required settings source.</p>
 <p>Updating is done by calling <a class="reference internal" href="api.html#concrete_settings.Settings.update" title="concrete_settings.Settings.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Settings.update(source)</span></code></a>.
@@ -385,7 +384,7 @@ It is indtended to validate the Settings object as a whole.</p></li>
 It is intended to be used by validators, like the built-in
 <a class="reference internal" href="api.html#concrete_settings.validators.ValueTypeValidator" title="concrete_settings.validators.ValueTypeValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueTypeValidator</span></code></a>
 to validate a setting’s value.
-Otherwise it carries no meaning and is just a valid Python value.</p>
+Otherwise it carries no meaning and is just a valid Python object.</p>
 <p>The <a class="reference internal" href="api.html#concrete_settings.validators.ValueTypeValidator" title="concrete_settings.validators.ValueTypeValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueTypeValidator</span></code></a>
 is the <a class="reference internal" href="advanced.html#advanced-validators"><span class="std std-ref">default validator</span></a> for settings which have no validators defined explicitly:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span>
@@ -415,7 +414,7 @@ every time the setting is being read.</p>
 Behaviors can be passed to a Setting explicitly.
 But the preferred way is to use the syntactic sugar - by “decorating” settings.
 For example, let’s take a look at the built-in <a class="reference internal" href="api.html#concrete_settings.contrib.behaviors.deprecated" title="concrete_settings.contrib.behaviors.deprecated"><code class="xref py py-class docutils literal notranslate"><span class="pre">deprecated</span></code></a>
-validator. It simply adds <a class="reference internal" href="api.html#concrete_settings.contrib.validators.DeprecatedValidator" title="concrete_settings.contrib.validators.DeprecatedValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeprecatedValidator</span></code></a>
+behavior. It simply adds <a class="reference internal" href="api.html#concrete_settings.contrib.validators.DeprecatedValidator" title="concrete_settings.contrib.validators.DeprecatedValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeprecatedValidator</span></code></a>
 to the setting. The rationale of using the behavior instead of a validator is improved readability.
 Just have a look:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Setting</span>
@@ -537,7 +536,7 @@ module interface, but want to keep settings logic separated.</p>
 <span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span>
     <span class="n">DBSettings</span><span class="p">,</span>
     <span class="n">CacheSettings</span><span class="p">,</span>
-    <span class="n">prefix</span><span class="p">(</span><span class="s1">&#39;LOG&#39;</span><span class="p">)(</span><span class="n">LoggingSettings</span><span class="p">)</span>
+    <span class="n">LoggingSettings</span> <span class="nd">@prefix</span><span class="p">(</span><span class="s1">&#39;LOG&#39;</span><span class="p">)</span>  <span class="c1"># prefer this</span>
 <span class="p">):</span>
     <span class="k">pass</span>
 
@@ -546,8 +545,22 @@ module interface, but want to keep settings logic separated.</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">app_settings</span><span class="o">.</span><span class="n">DB_USER</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>We can also use the <a class="reference internal" href="api.html#concrete_settings.prefix" title="concrete_settings.prefix"><code class="xref py py-class docutils literal notranslate"><span class="pre">prefix</span></code></a> decorator to add
+<p>The <a class="reference internal" href="api.html#concrete_settings.prefix" title="concrete_settings.prefix"><code class="xref py py-class docutils literal notranslate"><span class="pre">prefix</span></code></a> decorator is used to add
 relevant prefixes to the combined settings.</p>
+<p>Note that Python rules of multiple inheritance are applied.
+For example <a class="reference internal" href="api.html#concrete_settings.Settings.validate" title="concrete_settings.Settings.validate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">validate()</span></code></a>
+must be explicitly called for each of the base classes:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span>
+    <span class="n">DBSettings</span><span class="p">,</span>
+    <span class="n">CacheSettings</span><span class="p">,</span>
+    <span class="n">prefix</span><span class="p">(</span><span class="s1">&#39;LOG&#39;</span><span class="p">)(</span><span class="n">LoggingSettings</span><span class="p">)</span>
+<span class="p">):</span>
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">():</span>
+        <span class="n">DBSettings</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">CacheSettings</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">LoggingSettings</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="start-me-up">
 <h2><a class="toc-backref" href="#id8">Start me up</a><a class="headerlink" href="#start-me-up" title="Permalink to this headline">¶</a></h2>

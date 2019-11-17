@@ -83,11 +83,9 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#automated-setting-creation">Automated Setting creation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#update-strategies">Update strategies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#validators">Validators</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#automated-setting-creation">Automated Setting creation</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#validators">Validators</a></li>
 </ul>
 </li>
 </ul>
@@ -159,20 +157,86 @@
             
   <div class="section" id="advanced-topics">
 <h1>Advanced topics<a class="headerlink" href="#advanced-topics" title="Permalink to this headline">¶</a></h1>
-<p>In this chapter we discover Concrete Settings in-depth</p>
+<p>In this chapter we explore the Concrete Settings in-depth.</p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><p><a class="reference internal" href="#update-strategies" id="id1">Update strategies</a></p></li>
-<li><p><a class="reference internal" href="#validators" id="id2">Validators</a></p>
-<ul>
-<li><p><a class="reference internal" href="#automated-setting-creation" id="id3">Automated Setting creation</a></p></li>
-</ul>
-</li>
+<li><p><a class="reference internal" href="#automated-setting-creation" id="id1">Automated Setting creation</a></p></li>
+<li><p><a class="reference internal" href="#update-strategies" id="id2">Update strategies</a></p></li>
+<li><p><a class="reference internal" href="#validators" id="id3">Validators</a></p></li>
 </ul>
 </div>
+<div class="section" id="automated-setting-creation">
+<span id="automated-setting"></span><h2><a class="toc-backref" href="#id1">Automated Setting creation</a><a class="headerlink" href="#automated-setting-creation" title="Permalink to this headline">¶</a></h2>
+<p>Quickstart introduced the concept of automated setting creation.
+Recall, that a setting object is created out of an implicit
+definition, such as</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span>
+
+<span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
+
+    <span class="c1">#: Turns debug mode on/off</span>
+    <span class="n">DEBUG</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p>In this section we discuss this process, i.e. how
+<code class="docutils literal notranslate"><span class="pre">DEBUG</span></code> from the example above turns into
+<a class="reference internal" href="api.html#concrete_settings.Setting" title="concrete_settings.Setting"><code class="xref py py-class docutils literal notranslate"><span class="pre">Setting</span></code></a>
+descriptor instance.</p>
+<p>The challenge of converting the implicit definition
+to an explicit one, is to figure out the
+setting attribute <a class="reference internal" href="#automated-setting-name"><span class="std std-ref">name</span></a>,
+its <a class="reference internal" href="#automated-setting-default-value"><span class="std std-ref">default value</span></a>,</p>
+<div class="figure align-center">
+<p class="plantuml">
+<img src="_images/plantuml-6116093f7e698ad7becdf8446b2739eb2001f940.png" alt="&#64;startuml
+(Default value) --&gt; (Setting)
+(Type hint) --&gt; (Setting)
+(Validators) --&gt; (Setting)
+(Behaviors) --&gt; (Setting)
+(Documentation) --&gt; (Setting)
+
+note left of (Setting) : NAME
+&#64;enduml"/>
+</p>
+</div>
+<p id="automated-setting-name"><strong>Name</strong></p>
+<p>Every attribute with <strong>name</strong> written in upper case
+is considered a potential Setting.
+The exceptions are attributes starting with underscore:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
+
+    <span class="n">debug</span> <span class="o">=</span> <span class="kc">True</span>   <span class="c1"># not considered a setting</span>
+
+    <span class="n">_DEBUG</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># not considered a setting</span>
+
+    <span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">True</span>   <span class="c1"># considered a setting</span>
+</pre></div>
+</div>
+<p id="automated-setting-default-value"><strong>Default value</strong></p>
+<p>The <em>default value</em> is the initial value of the attribute:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
+    <span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># the default value is `True`</span>
+</pre></div>
+</div>
+<p>If an attribute is not type-annotated, a <em>type hint</em> is computed
+by calling <code class="docutils literal notranslate"><span class="pre">type()</span></code> on the default value. The recognized types
+are declared in
+<a class="reference internal" href="api.html#concrete_settings.types.GuessSettingType.KNOWN_TYPES" title="concrete_settings.types.GuessSettingType.KNOWN_TYPES"><code class="xref py py-attr docutils literal notranslate"><span class="pre">GuessSettingType.KNOWN_TYPES</span></code></a> field.
+If the type is not recognized, the type hint is set to <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">typing.Any</span></code></a>.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
+
+    <span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># default value `True`, type `bool`</span>
+
+    <span class="n">MAX_SPEED</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">300</span>   <span class="c1"># default value `300`, type `int`</span>
+</pre></div>
+</div>
+<p id="automated-setting-type-hint"><strong>Type hint</strong></p>
+<p id="automated-setting-validators"><strong>Validators</strong></p>
+<p id="automated-setting-behaviors"><strong>Behaviors</strong></p>
+</div>
 <div class="section" id="update-strategies">
-<h2><a class="toc-backref" href="#id1">Update strategies</a><a class="headerlink" href="#update-strategies" title="Permalink to this headline">¶</a></h2>
-<p>In most of the cases, a developer wants to overwrite a setting value
+<h2><a class="toc-backref" href="#id2">Update strategies</a><a class="headerlink" href="#update-strategies" title="Permalink to this headline">¶</a></h2>
+<p>In most cases, a developer wants to overwrite a setting value
 when updating it from a source. But there are exceptions.
 Think of a list setting, which contains administrators’ emails, e.g.:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span>
@@ -210,66 +274,7 @@ for such cases:</p>
 </div>
 </div>
 <div class="section" id="validators">
-<span id="advanced-validators"></span><h2><a class="toc-backref" href="#id2">Validators</a><a class="headerlink" href="#validators" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="automated-setting-creation">
-<span id="automated-settings"></span><h3><a class="toc-backref" href="#id3">Automated Setting creation</a><a class="headerlink" href="#automated-setting-creation" title="Permalink to this headline">¶</a></h3>
-<p><strong>Name</strong></p>
-<p>Every attribute with <strong>name</strong> written in upper case
-is considered a potential Setting.
-The exceptions are attributes starting with underscore:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
-
-    <span class="n">debug</span> <span class="o">=</span> <span class="kc">True</span>   <span class="c1"># not considered a setting</span>
-
-    <span class="n">_DEBUG</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># not considered a setting</span>
-
-    <span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">True</span>   <span class="c1"># considered a setting</span>
-</pre></div>
-</div>
-<p><strong>Default value</strong></p>
-<p>The <em>default value</em> is the initial value of the attribute:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
-    <span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># the default value is `True`</span>
-</pre></div>
-</div>
-<p>If an attribute is not type-annotated, a <em>type hint</em> is computed
-by calling <code class="docutils literal notranslate"><span class="pre">type()</span></code> on the default value. The recognized types
-are declared in
-<a class="reference internal" href="api.html#concrete_settings.types.GuessSettingType.KNOWN_TYPES" title="concrete_settings.types.GuessSettingType.KNOWN_TYPES"><code class="xref py py-attr docutils literal notranslate"><span class="pre">GuessSettingType.KNOWN_TYPES</span></code></a> field.
-If the type is not recognized, the type hint is set to <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">typing.Any</span></code></a>.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
-
-    <span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># default value `True`, type `bool`</span>
-
-    <span class="n">MAX_SPEED</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">300</span>   <span class="c1"># default value `300`, type `int`</span>
-</pre></div>
-</div>
-<p class="plantuml">
-<img src="_images/plantuml-ea159c02fbbb7ad9164e5819f9767fa09cd2e0f5.png" alt="&#64;startuml
-(Feature X settings) --&gt; (Settings)
-(Feature Y settings) --&gt; (Settings)
-(Feature Z settings) --&gt; (Settings)
-&#64;enduml"/>
-</p>
-<p>Concrete Settings provides a simple way to define the start-up
-configuration of an application</p>
-<p>Could you name the favourite setting of all the developers around the globe?
-I think it is the <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code> flag. Let’s define a settings class for an
-application:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">app_settings</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="kc">True</span>
-</pre></div>
-</div>
-<p>This example demonstrates the basic concepts of Concrete Settings.
-We define a settings class with a setting called <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>.
-Its type is <code class="docutils literal notranslate"><span class="pre">bool</span></code> and the default value is <code class="docutils literal notranslate"><span class="pre">True</span></code>.
-The docstring of the setting is defined in a <code class="docutils literal notranslate"><span class="pre">#:</span></code> comment block.</p>
-<p>Does the end user has to see all of this? Of course not!
-A user can adjust the values in a configuration-friendly
-file be it YAML, JSON, Environmental variables or
-just plain Python module.:</p>
-<p>Sounds intriguing? We have to go deeper!</p>
-</div>
+<span id="advanced-validators"></span><h2><a class="toc-backref" href="#id3">Validators</a><a class="headerlink" href="#validators" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
