@@ -386,7 +386,8 @@ It is intended to be used by validators, like the built-in
 to validate a setting’s value.
 Otherwise it carries no meaning and is just a valid Python object.</p>
 <p>The <a class="reference internal" href="api.html#concrete_settings.validators.ValueTypeValidator" title="concrete_settings.validators.ValueTypeValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueTypeValidator</span></code></a>
-is the <a class="reference internal" href="advanced.html#advanced-validators"><span class="std std-ref">default validator</span></a> for settings which have no validators defined explicitly:</p>
+is the <a class="reference internal" href="advanced.html#advanced-validators"><span class="std std-ref">default validator</span></a>
+for settings which have no validators defined explicitly:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span>
 
 <span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
@@ -525,10 +526,12 @@ module interface, but want to keep settings logic separated.</p>
     <span class="n">PASSWORD</span>  <span class="o">=</span> <span class="s1">&#39;secret&#39;</span>
     <span class="n">SERVER</span> <span class="o">=</span> <span class="s1">&#39;localhost@5432&#39;</span>
 
+<span class="nd">@prefix</span><span class="p">(</span><span class="s1">&#39;CACHE&#39;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">CacheSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
-    <span class="n">CACHE_ENGINE</span> <span class="o">=</span> <span class="s1">&#39;DatabaseCache&#39;</span>
-    <span class="n">CACHE_TIMEOUT</span> <span class="o">=</span> <span class="mi">300</span>
+    <span class="n">ENGINE</span> <span class="o">=</span> <span class="s1">&#39;DatabaseCache&#39;</span>
+    <span class="n">TIMEOUT</span> <span class="o">=</span> <span class="mi">300</span>
 
+<span class="nd">@prefix</span><span class="p">(</span><span class="s1">&#39;LOG&#39;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">LoggingSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
     <span class="n">LEVEL</span> <span class="o">=</span> <span class="s1">&#39;INFO&#39;</span>
     <span class="n">FORMAT</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)-8s</span><span class="s1"> </span><span class="si">%(name)-15s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span>
@@ -536,7 +539,7 @@ module interface, but want to keep settings logic separated.</p>
 <span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span>
     <span class="n">DBSettings</span><span class="p">,</span>
     <span class="n">CacheSettings</span><span class="p">,</span>
-    <span class="n">LoggingSettings</span> <span class="nd">@prefix</span><span class="p">(</span><span class="s1">&#39;LOG&#39;</span><span class="p">)</span>  <span class="c1"># prefer this</span>
+    <span class="n">LoggingSettings</span>
 <span class="p">):</span>
     <span class="k">pass</span>
 
@@ -546,7 +549,7 @@ module interface, but want to keep settings logic separated.</p>
 </pre></div>
 </div>
 <p>The <a class="reference internal" href="api.html#concrete_settings.prefix" title="concrete_settings.prefix"><code class="xref py py-class docutils literal notranslate"><span class="pre">prefix</span></code></a> decorator is used to add
-relevant prefixes to the combined settings.</p>
+a common prefix to all  prefixes to the combined settings.</p>
 <p>Note that Python rules of multiple inheritance are applied.
 For example <a class="reference internal" href="api.html#concrete_settings.Settings.validate" title="concrete_settings.Settings.validate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">validate()</span></code></a>
 must be explicitly called for each of the base classes:</p>

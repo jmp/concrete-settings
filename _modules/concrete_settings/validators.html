@@ -178,14 +178,14 @@
         <span class="k">pass</span></div></div>
 
 
-<span class="k">class</span> <span class="nc">RequiredValidator</span><span class="p">(</span><span class="n">Validator</span><span class="p">):</span>
+<div class="viewcode-block" id="RequiredValidator"><a class="viewcode-back" href="../../api.html#concrete_settings.validators.RequiredValidator">[docs]</a><span class="k">class</span> <span class="nc">RequiredValidator</span><span class="p">(</span><span class="n">Validator</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
 
     <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="o">**</span><span class="n">ignore</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="n">Undefined</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="nb">type</span><span class="p">(</span><span class="n">owner</span><span class="p">))</span>
-            <span class="k">raise</span> <span class="n">SettingsValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">SettingsValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ValueTypeValidator"><a class="viewcode-back" href="../../api.html#concrete_settings.validators.ValueTypeValidator">[docs]</a><span class="k">class</span> <span class="nc">ValueTypeValidator</span><span class="p">(</span><span class="n">Validator</span><span class="p">):</span>

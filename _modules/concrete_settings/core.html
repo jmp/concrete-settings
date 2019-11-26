@@ -561,14 +561,12 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">identifier_re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;prefix should be a valid Python identifier&#39;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">prefix</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
-            <span class="n">prefix</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;</span><span class="si">{prefix}</span><span class="s1">_&#39;</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="n">prefix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;</span><span class="si">{prefix}</span><span class="s1">_&#39;</span>
 
     <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">Settings</span><span class="p">),</span> \
-            <span class="s1">&#39;Intended to decorate Settings sub-classes only&#39;</span>
+        <span class="k">assert</span> <span class="nb">issubclass</span><span class="p">(</span>
+            <span class="n">settings</span><span class="p">,</span> <span class="n">Settings</span>
+        <span class="p">),</span> <span class="s1">&#39;Intended to decorate Settings sub-classes only&#39;</span>
 
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">_iter_settings_attributes</span><span class="p">():</span>
             <span class="n">new_name</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;</span><span class="si">{self.prefix}{name}</span><span class="s1">&#39;</span>
@@ -580,10 +578,7 @@
             <span class="nb">delattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">new_name</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
             <span class="n">attr</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">new_name</span>
-        <span class="k">return</span> <span class="n">settings</span>
-
-    <span class="k">def</span> <span class="nf">__rmatmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">Settings</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">settings</span></div>
 </pre></div>
 
            </div>

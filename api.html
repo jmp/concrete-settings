@@ -88,6 +88,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#settings">Settings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-concrete_settings.types">Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-concrete_settings.validators">Validators</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#valuetypevalidator">ValueTypeValidator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#requiredvalidator">RequiredValidator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#deprecatedvalidator">DeprecatedValidator</a></li>
 </ul>
 </li>
@@ -280,10 +282,27 @@ referring to settings, setting and setting’s name.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="concrete_settings.exceptions.SettingsValidationError">
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.exceptions.</code><code class="sig-name descname">SettingsValidationError</code><span class="sig-paren">(</span><em class="sig-param">detail: Union[str, List[ValidationErrorDetail], Dict[str, ValidationErrorDetail]] = ''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/exceptions.html#SettingsValidationError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.exceptions.SettingsValidationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised by a setting validator when a setting value is invalid</p>
+</dd></dl>
+
+<div class="section" id="valuetypevalidator">
+<h3>ValueTypeValidator<a class="headerlink" href="#valuetypevalidator" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
 <dt id="concrete_settings.validators.ValueTypeValidator">
 <em class="property">class </em><code class="sig-prename descclassname">concrete_settings.validators.</code><code class="sig-name descname">ValueTypeValidator</code><span class="sig-paren">(</span><em class="sig-param">type_hint=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/validators.html#ValueTypeValidator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.validators.ValueTypeValidator" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+</div>
+<div class="section" id="requiredvalidator">
+<h3>RequiredValidator<a class="headerlink" href="#requiredvalidator" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="concrete_settings.validators.RequiredValidator">
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.validators.</code><code class="sig-name descname">RequiredValidator</code><span class="sig-paren">(</span><em class="sig-param">message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/validators.html#RequiredValidator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.validators.RequiredValidator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
 <div class="section" id="deprecatedvalidator">
 <h3>DeprecatedValidator<a class="headerlink" href="#deprecatedvalidator" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
