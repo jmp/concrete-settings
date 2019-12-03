@@ -188,8 +188,8 @@ The catch is that one does not have
 to declare each setting explicitly.</p>
 <p>Let’s take a look is a small example, where we declare <code class="docutils literal notranslate"><span class="pre">AppSettings</span></code>
 class with a single boolean-type setting named <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Setting</span>
-<span class="kn">from</span> <span class="nn">concrete_settings.validators</span> <span class="k">import</span> <span class="n">ValueTypeValidator</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Setting</span>
+<span class="kn">from</span> <span class="nn">concrete_settings.validators</span> <span class="kn">import</span> <span class="n">ValueTypeValidator</span>
 
 <span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
     <span class="n">DEBUG</span> <span class="o">=</span> <span class="n">Setting</span><span class="p">(</span>
@@ -201,7 +201,7 @@ class with a single boolean-type setting named <code class="docutils literal not
 </pre></div>
 </div>
 <p>And here is the short version which produces the same class as the one above:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span>
 
 <span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
 
@@ -230,7 +230,7 @@ For now please accept that ConcreteSettings’ preferred way of declaring
 <em>basic</em> settings is by omitting the <code class="docutils literal notranslate"><span class="pre">Setting(...)</span></code> call at all.
 Ideally a setting should be declared with a type annotation and documentation
 as follows:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span>
 
 <span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
 
@@ -242,7 +242,7 @@ as follows:</p>
 </div>
 <p>You can also declare a setting as a method, similar to
 a Python read-only <a class="reference external" href="https://docs.python.org/3/library/functions.html#property" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">property</span></code></a>:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">setting</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">setting</span>
 
 <span class="k">class</span> <span class="nc">DBSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
     <span class="n">USER</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;alex&#39;</span>
@@ -253,7 +253,7 @@ a Python read-only <a class="reference external" href="https://docs.python.org/3
     <span class="nd">@setting</span>
     <span class="k">def</span> <span class="nf">URL</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Database connection URL&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">f</span><span class="s1">&#39;postgresql://</span><span class="si">{self.USER}</span><span class="s1">:</span><span class="si">{self.PASSWORD}</span><span class="s1">@</span><span class="si">{self.SERVER}</span><span class="s1">:</span><span class="si">{self.PORT}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;postgresql://</span><span class="si">{self.USER}</span><span class="s1">:</span><span class="si">{self.PASSWORD}</span><span class="s1">@</span><span class="si">{self.SERVER}</span><span class="s1">:</span><span class="si">{self.PORT}</span><span class="s1">&#39;</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">DBSettings</span><span class="p">()</span><span class="o">.</span><span class="n">URL</span><span class="p">)</span>
 </pre></div>
@@ -313,9 +313,9 @@ For example, to update the settings from a JSON file:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span>
-<span class="kn">from</span> <span class="nn">concrete_settings.contrib.sources</span> <span class="k">import</span> <span class="n">JsonSource</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span>
+<span class="kn">from</span> <span class="nn">concrete_settings.contrib.sources</span> <span class="kn">import</span> <span class="n">JsonSource</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 
 <span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
     <span class="n">ADMIN_EMAIL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;admin@example.com&#39;</span>
@@ -351,16 +351,16 @@ to validate the setting-field’s value.</p></li>
 It is indtended to validate the Settings object as a whole.</p></li>
 </ol>
 <p>All validation errors are collected and stored in <a class="reference internal" href="api.html#concrete_settings.Settings.errors" title="concrete_settings.Settings.errors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Settings.errors</span></code></a></p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Setting</span>
-<span class="kn">from</span> <span class="nn">concrete_settings.exceptions</span> <span class="k">import</span> <span class="n">SettingsValidationError</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Setting</span>
+<span class="kn">from</span> <span class="nn">concrete_settings.exceptions</span> <span class="kn">import</span> <span class="n">SettingsValidationError</span>
 
 <span class="k">def</span> <span class="nf">not_too_fast</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">speed</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">SettingsValidationError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="si">{speed}</span><span class="s1"> is too fast!&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">SettingsValidationError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{speed}</span><span class="s1"> is too fast!&#39;</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">not_too_slow</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">speed</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">SettingsValidationError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="si">{speed}</span><span class="s1"> is too slow!&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">SettingsValidationError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{speed}</span><span class="s1"> is too slow!&#39;</span><span class="p">)</span>
 
 <span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
     <span class="n">SPEED</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Setting</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">(</span><span class="n">not_too_fast</span><span class="p">,</span> <span class="n">not_too_slow</span><span class="p">))</span>
@@ -388,7 +388,7 @@ Otherwise it carries no meaning and is just a valid Python object.</p>
 <p>The <a class="reference internal" href="api.html#concrete_settings.validators.ValueTypeValidator" title="concrete_settings.validators.ValueTypeValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueTypeValidator</span></code></a>
 is the <a class="reference internal" href="advanced.html#advanced-validators"><span class="std std-ref">default validator</span></a>
 for settings which have no validators defined explicitly:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span>
 
 <span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
     <span class="n">SPEED</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="s1">&#39;abc&#39;</span>
@@ -418,8 +418,8 @@ For example, let’s take a look at the built-in <a class="reference internal" h
 behavior. It simply adds <a class="reference internal" href="api.html#concrete_settings.contrib.validators.DeprecatedValidator" title="concrete_settings.contrib.validators.DeprecatedValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeprecatedValidator</span></code></a>
 to the setting. The rationale of using the behavior instead of a validator is improved readability.
 Just have a look:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Setting</span>
-<span class="kn">from</span> <span class="nn">concrete_settings.contrib.behaviors</span> <span class="k">import</span> <span class="n">deprecated</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Setting</span>
+<span class="kn">from</span> <span class="nn">concrete_settings.contrib.behaviors</span> <span class="kn">import</span> <span class="n">deprecated</span>
 
 <span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
     <span class="n">MAX_SPEED</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span> <span class="nd">@deprecated</span>
@@ -452,7 +452,7 @@ or by using <code class="docutils literal notranslate"><span class="pre">&#64;</
 <p>Nesting is a nice and simple way to logically group and isolate settings.
 Let’s try grouping <em>database</em>, <em>cache</em> and <em>logging</em> in
 application settings as follows:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span>
 
 <span class="k">class</span> <span class="nc">DBSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
     <span class="n">USER</span> <span class="o">=</span> <span class="s1">&#39;alex&#39;</span>
@@ -491,7 +491,7 @@ or <a class="reference internal" href="#quickstart-behavior"><span class="std st
 <p>Additionally, <a class="reference internal" href="#quickstart-validation"><span class="std std-ref">validating</span></a> top-level settings
 automatically cascades to all nested settings and the following
 would end up in a validation error:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span>
 
 <span class="k">class</span> <span class="nc">DBSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
     <span class="n">USER</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="mi">123</span>
@@ -518,7 +518,7 @@ multiple-base-classes inheritance mechanism.
 It can be useful, when you have to mimic a legacy settings
 module interface, but want to keep settings logic separated.</p>
 <p>Let’s combine Database, Log and Cache settings:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">prefix</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">prefix</span>
 
 <span class="nd">@prefix</span><span class="p">(</span><span class="s1">&#39;DB&#39;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">DBSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>

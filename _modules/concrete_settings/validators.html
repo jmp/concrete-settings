@@ -148,15 +148,15 @@
             
   <h1>Source code for concrete_settings.validators</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">abc</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">TYPE_CHECKING</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 
-<span class="kn">from</span> <span class="nn">typeguard</span> <span class="k">import</span> <span class="n">check_type</span>
+<span class="kn">from</span> <span class="nn">typeguard</span> <span class="kn">import</span> <span class="n">check_type</span>
 
-<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="k">import</span> <span class="n">SettingsValidationError</span>
-<span class="kn">from</span> <span class="nn">.types</span> <span class="k">import</span> <span class="n">Undefined</span>
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">SettingsValidationError</span>
+<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">Undefined</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">.concrete_settings</span> <span class="k">import</span> <span class="n">Setting</span><span class="p">,</span> <span class="n">Settings</span>
+    <span class="kn">from</span> <span class="nn">.concrete_settings</span> <span class="kn">import</span> <span class="n">Setting</span><span class="p">,</span> <span class="n">Settings</span>
 
 
 <div class="viewcode-block" id="Validator"><a class="viewcode-back" href="../../api.html#concrete_settings.validators.Validator">[docs]</a><span class="k">class</span> <span class="nc">Validator</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span><span class="p">):</span>
@@ -166,7 +166,7 @@
 <span class="sd">    referring to settings, setting and setting&#39;s name.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Validator.__call__"><a class="viewcode-back" href="../../api.html#concrete_settings.validators.Validator.__call__">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">value</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -179,7 +179,7 @@
 
 
 <div class="viewcode-block" id="RequiredValidator"><a class="viewcode-back" href="../../api.html#concrete_settings.validators.RequiredValidator">[docs]</a><span class="k">class</span> <span class="nc">RequiredValidator</span><span class="p">(</span><span class="n">Validator</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">message</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="s1">&#39;Setting `</span><span class="si">{name}</span><span class="s1">` is required to have a value. &#39;</span>
@@ -187,7 +187,7 @@
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="o">**</span><span class="n">ignore</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="o">**</span><span class="n">ignore</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="n">Undefined</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="nb">type</span><span class="p">(</span><span class="n">owner</span><span class="p">))</span>
             <span class="k">raise</span> <span class="n">SettingsValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
@@ -196,10 +196,10 @@
 <div class="viewcode-block" id="ValueTypeValidator"><a class="viewcode-back" href="../../api.html#concrete_settings.validators.ValueTypeValidator">[docs]</a><span class="k">class</span> <span class="nc">ValueTypeValidator</span><span class="p">(</span><span class="n">Validator</span><span class="p">):</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;type_hint&#39;</span><span class="p">,</span> <span class="s1">&#39;strict&#39;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_hint</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_hint</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type_hint</span> <span class="o">=</span> <span class="n">type_hint</span>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">setting</span><span class="p">,</span> <span class="o">**</span><span class="n">ignore</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">setting</span><span class="p">,</span> <span class="o">**</span><span class="n">ignore</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="n">Undefined</span><span class="p">:</span>
             <span class="k">return</span>
 
@@ -209,8 +209,8 @@
             <span class="n">check_type</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">type_hint</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">SettingsValidationError</span><span class="p">(</span>
-                <span class="n">f</span><span class="s1">&#39;Expected value of type `</span><span class="si">{type_hint}</span><span class="s1">` &#39;</span>
-                <span class="n">f</span><span class="s1">&#39;got value of type `{type(value)}`&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;Expected value of type `</span><span class="si">{type_hint}</span><span class="s1">` &#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;got value of type `{type(value)}`&#39;</span>
             <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span></div>
 </pre></div>
 

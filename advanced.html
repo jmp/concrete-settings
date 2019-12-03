@@ -187,7 +187,7 @@
 <p>Quickstart introduced the concept of automated setting creation.
 Recall, that a setting object is created out of an implicit
 definition, such as:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span>
 
 <span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
 
@@ -244,7 +244,7 @@ The exceptions are attributes starting with underscore:</p>
 <p>When default value is not available (e.g. database credentials),
 use the special <a class="reference internal" href="api.html#concrete_settings.types.Undefined" title="concrete_settings.types.Undefined"><code class="xref py py-class docutils literal notranslate"><span class="pre">Undefined</span></code></a>
 value:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Undefined</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Undefined</span>
 
 <span class="k">class</span> <span class="nc">DBSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
     <span class="n">USERNAME</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Undefined</span>
@@ -311,8 +311,8 @@ concatenation. In the following example
 is added to <code class="docutils literal notranslate"><span class="pre">default_validators</span></code> to prevent any
 <a class="reference internal" href="api.html#concrete_settings.types.Undefined" title="concrete_settings.types.Undefined"><code class="xref py py-class docutils literal notranslate"><span class="pre">Undefined</span></code></a> values appearing
 in the validated settings:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Undefined</span>
-<span class="kn">from</span> <span class="nn">concrete_settings.validators</span> <span class="k">import</span> <span class="n">RequiredValidator</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Undefined</span>
+<span class="kn">from</span> <span class="nn">concrete_settings.validators</span> <span class="kn">import</span> <span class="n">RequiredValidator</span>
 
 <span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
     <span class="n">default_validators</span> <span class="o">=</span> <span class="n">Settings</span><span class="o">.</span><span class="n">default_validators</span> <span class="o">+</span> <span class="p">(</span><span class="n">RequiredValidator</span><span class="p">(),</span> <span class="p">)</span>
@@ -340,24 +340,24 @@ one has to bind a
 ConcreteSettings utilizes matrix multiplication <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> (<a class="reference external" href="https://docs.python.org/3/reference/datamodel.html#object.__rmatmul__" title="(in Python v3.8)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">object.__rmatmul__()</span></code></a>) to
 add a behavior to a Setting. Let’s declare the <code class="docutils literal notranslate"><span class="pre">ADMIN_NAME</span></code> setting from the
 example above as <a class="reference internal" href="api.html#concrete_settings.contrib.behaviors.required" title="concrete_settings.contrib.behaviors.required"><code class="xref py py-class docutils literal notranslate"><span class="pre">required</span></code></a>:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Undefined</span>
-<span class="kn">from</span> <span class="nn">concrete_settings.contrib.behaviors</span> <span class="k">import</span> <span class="n">required</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Undefined</span>
+<span class="kn">from</span> <span class="nn">concrete_settings.contrib.behaviors</span> <span class="kn">import</span> <span class="n">required</span>
 
 <span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
     <span class="n">ADMIN_NAME</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Undefined</span> <span class="nd">@required</span>
 </pre></div>
 </div>
 <p>The equivalent explicit form is:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Setting</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Undefined</span>
-<span class="kn">from</span> <span class="nn">concrete_settings.contrib.behaviors</span> <span class="k">import</span> <span class="n">required</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Setting</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Undefined</span>
+<span class="kn">from</span> <span class="nn">concrete_settings.contrib.behaviors</span> <span class="kn">import</span> <span class="n">required</span>
 
 <span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
     <span class="n">ADMIN_NAME</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Setting</span><span class="p">(</span><span class="n">Undefined</span><span class="p">,</span> <span class="n">behaviors</span><span class="o">=</span><span class="p">(</span><span class="n">required</span><span class="p">,</span> <span class="p">))</span>
 </pre></div>
 </div>
 <p>Behaviors can also decorate the property-setting getters:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Undefined</span><span class="p">,</span> <span class="n">setting</span>
-<span class="kn">from</span> <span class="nn">concrete_settings.contrib.behaviors</span> <span class="k">import</span> <span class="n">required</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Undefined</span><span class="p">,</span> <span class="n">setting</span>
+<span class="kn">from</span> <span class="nn">concrete_settings.contrib.behaviors</span> <span class="kn">import</span> <span class="n">required</span>
 
 <span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
     <span class="nd">@required</span>
@@ -388,8 +388,8 @@ example above as <a class="reference internal" href="api.html#concrete_settings.
 <p>In most cases, a developer wants to overwrite a setting value
 when updating it from a source. But there are exceptions.
 Think of a list setting, which contains administrators’ emails, e.g.:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span>
-<span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span>
 
 <span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
     <span class="n">ADMIN_EMAILS</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
@@ -406,7 +406,7 @@ for such cases:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings.sources</span> <span class="k">import</span> <span class="n">strategies</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings.sources</span> <span class="kn">import</span> <span class="n">strategies</span>
 
 <span class="o">...</span>
 
