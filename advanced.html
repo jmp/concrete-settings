@@ -88,6 +88,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#default-value">Default value</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#type-hint">Type hint</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#validators">Validators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#behaviors">Behaviors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#documentation">Documentation</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#update-strategies">Update strategies</a></li>
@@ -163,7 +165,7 @@
             
   <div class="section" id="advanced-topics">
 <h1>Advanced topics<a class="headerlink" href="#advanced-topics" title="Permalink to this headline">¶</a></h1>
-<p>In this chapter we explore the Concrete Settings in-depth.</p>
+<p>In this chapter we explore the ConcreteSettings in-depth.</p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
 <li><p><a class="reference internal" href="#automated-setting-creation" id="id2">Automated Setting creation</a></p>
@@ -172,10 +174,12 @@
 <li><p><a class="reference internal" href="#default-value" id="id4">Default value</a></p></li>
 <li><p><a class="reference internal" href="#type-hint" id="id5">Type hint</a></p></li>
 <li><p><a class="reference internal" href="#validators" id="id6">Validators</a></p></li>
+<li><p><a class="reference internal" href="#behaviors" id="id7">Behaviors</a></p></li>
+<li><p><a class="reference internal" href="#documentation" id="id8">Documentation</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#update-strategies" id="id7">Update strategies</a></p></li>
-<li><p><a class="reference internal" href="#advanced-validators" id="id8">Validators</a></p></li>
+<li><p><a class="reference internal" href="#update-strategies" id="id9">Update strategies</a></p></li>
+<li><p><a class="reference internal" href="#advanced-validators" id="id10">Validators</a></p></li>
 </ul>
 </div>
 <div class="section" id="automated-setting-creation">
@@ -195,7 +199,7 @@ definition, such as:</p>
 <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code> from the example above turns into
 <a class="reference internal" href="api.html#concrete_settings.Setting" title="concrete_settings.Setting"><code class="xref py py-class docutils literal notranslate"><span class="pre">Setting</span></code></a>
 descriptor instance.</p>
-<p>Concrete Settings has to find
+<p>ConcreteSettings has to find
 a setting attribute <a class="reference internal" href="#automated-setting-name"><span class="std std-ref">name</span></a>,
 <a class="reference internal" href="#automated-setting-default-value"><span class="std std-ref">default value</span></a>
 and <a class="reference internal" href="#automated-setting-type-hint"><span class="std std-ref">type hint</span></a>,
@@ -217,6 +221,7 @@ note left of (Setting) : NAME
 </div>
 <div class="section" id="name">
 <span id="automated-setting-name"></span><h3><a class="toc-backref" href="#id3">Name</a><a class="headerlink" href="#name" title="Permalink to this headline">¶</a></h3>
+<p><strong>TODO</strong>: &#64;setting</p>
 <p>Every attribute with <strong>name</strong> written in upper case
 is considered a potential Setting.
 The exceptions are attributes starting with underscore:</p>
@@ -229,6 +234,7 @@ The exceptions are attributes starting with underscore:</p>
 </div>
 <div class="section" id="default-value">
 <span id="automated-setting-default-value"></span><h3><a class="toc-backref" href="#id4">Default value</a><a class="headerlink" href="#default-value" title="Permalink to this headline">¶</a></h3>
+<p><strong>TODO</strong>: &#64;setting</p>
 <p>The <em>default value</em> is the value assigned to the attribute:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
     <span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># default value is `True`</span>
@@ -252,6 +258,7 @@ would fail validation if the setting’s value is <code class="docutils literal 
 </div>
 <div class="section" id="type-hint">
 <span id="automated-setting-type-hint"></span><h3><a class="toc-backref" href="#id5">Type hint</a><a class="headerlink" href="#type-hint" title="Permalink to this headline">¶</a></h3>
+<p><strong>TODO</strong>: &#64;setting</p>
 <p>A type hint is defined by a standard Python type annotation:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
     <span class="n">MAX_SPEED</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># type hint is `int`</span>
@@ -281,16 +288,18 @@ value does not correspond to the type hint.</p>
 </div>
 <div class="section" id="validators">
 <span id="automated-setting-validators"></span><h3><a class="toc-backref" href="#id6">Validators</a><a class="headerlink" href="#validators" title="Permalink to this headline">¶</a></h3>
+<p><strong>TODO</strong>: &#64;setting</p>
 <p>Validators is a collection of callables which validate the value of the setting.
 The interface of the callable is defined in <a class="reference internal" href="api.html#concrete_settings.validators.Validator.__call__" title="concrete_settings.validators.Validator.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Validator.__call__()</span></code></a>.
 If validation fails, a validator raises
 <a class="reference internal" href="api.html#concrete_settings.exceptions.SettingsValidationError" title="concrete_settings.exceptions.SettingsValidationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SettingsValidationError</span></code></a>
-with failure details.</p>
-<p>The mandatory validators, which are applied to every Setting in Settings
-are defined
+with failure details.
+Individual Setting validators are supplied in <code class="docutils literal notranslate"><span class="pre">validators</span></code> argument of an explicit Setting declaration.
+Also some <a class="reference internal" href="#automated-setting-behaviors"><span class="std std-ref">behaviors</span></a> add certain validators to a setting.</p>
+<p>The <em>mandatory validators</em> are applied to every Setting in Settings.
+They are defined
 in <a class="reference internal" href="api.html#concrete_settings.Settings.mandatory_validators" title="concrete_settings.Settings.mandatory_validators"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Settings.mandatory_validators</span></code></a> tuple.
-The default validators are applied to a Setting
-that has no validators of its own.
+The <em>default validators</em> are applied to a Setting that has no validators of its own.
 They are defined in
 <a class="reference internal" href="api.html#concrete_settings.Settings.default_validators" title="concrete_settings.Settings.default_validators"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Settings.default_validators</span></code></a>.
 <a class="reference internal" href="api.html#concrete_settings.validators.ValueTypeValidator" title="concrete_settings.validators.ValueTypeValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueTypeValidator</span></code></a> is
@@ -305,27 +314,77 @@ in the validated settings:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Undefined</span>
 <span class="kn">from</span> <span class="nn">concrete_settings.validators</span> <span class="k">import</span> <span class="n">RequiredValidator</span>
 
-<span class="k">class</span> <span class="nc">AppSettingsOfStrings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
     <span class="n">default_validators</span> <span class="o">=</span> <span class="n">Settings</span><span class="o">.</span><span class="n">default_validators</span> <span class="o">+</span> <span class="p">(</span><span class="n">RequiredValidator</span><span class="p">(),</span> <span class="p">)</span>
 
     <span class="n">ADMIN_NAME</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Undefined</span>
 
-<span class="n">app_settings</span> <span class="o">=</span> <span class="n">AppSettingsOfStrings</span><span class="p">()</span>
+<span class="n">app_settings</span> <span class="o">=</span> <span class="n">AppSettings</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">app_settings</span><span class="o">.</span><span class="n">is_valid</span><span class="p">())</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">app_settings</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Output:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>False
-{&#39;ADMIN_NAME&#39;: [&#39;Setting `ADMIN_NAME` is required to have a value.&#39;]}
+{&#39;ADMIN_NAME&#39;: [&#39;Setting `ADMIN_NAME` is required to have a value. Current value is `Undefined`&#39;]}
 </pre></div>
 </div>
-<p id="automated-setting-behaviors"><strong>Behaviors</strong></p>
-<p id="automated-setting-documentation"><strong>Documentation</strong></p>
+</div>
+<div class="section" id="behaviors">
+<span id="automated-setting-behaviors"></span><h3><a class="toc-backref" href="#id7">Behaviors</a><a class="headerlink" href="#behaviors" title="Permalink to this headline">¶</a></h3>
+<p><em>Setting Behaviors</em> allow executing some logic on different stages of a Setting lifecycle.
+one has to bind a
+<a class="reference internal" href="api.html#concrete_settings.behaviors.SettingBehavior" title="concrete_settings.behaviors.SettingBehavior"><code class="xref py py-class docutils literal notranslate"><span class="pre">SettingBehavior</span></code></a> to it.</p>
+<p>In addition to declaring behaviors in a Setting
+<a class="reference internal" href="api.html#concrete_settings.Setting" title="concrete_settings.Setting"><code class="xref py py-class docutils literal notranslate"><span class="pre">constructor</span></code></a>,
+ConcreteSettings utilizes matrix multiplication <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> (<a class="reference external" href="https://docs.python.org/3/reference/datamodel.html#object.__rmatmul__" title="(in Python v3.8)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">object.__rmatmul__()</span></code></a>) to
+add a behavior to a Setting. Let’s declare the <code class="docutils literal notranslate"><span class="pre">ADMIN_NAME</span></code> setting from the
+example above as <a class="reference internal" href="api.html#concrete_settings.contrib.behaviors.required" title="concrete_settings.contrib.behaviors.required"><code class="xref py py-class docutils literal notranslate"><span class="pre">required</span></code></a>:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Undefined</span>
+<span class="kn">from</span> <span class="nn">concrete_settings.contrib.behaviors</span> <span class="k">import</span> <span class="n">required</span>
+
+<span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
+    <span class="n">ADMIN_NAME</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Undefined</span> <span class="nd">@required</span>
+</pre></div>
+</div>
+<p>The equivalent explicit form is:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Setting</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Undefined</span>
+<span class="kn">from</span> <span class="nn">concrete_settings.contrib.behaviors</span> <span class="k">import</span> <span class="n">required</span>
+
+<span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
+    <span class="n">ADMIN_NAME</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Setting</span><span class="p">(</span><span class="n">Undefined</span><span class="p">,</span> <span class="n">behaviors</span><span class="o">=</span><span class="p">(</span><span class="n">required</span><span class="p">,</span> <span class="p">))</span>
+</pre></div>
+</div>
+<p>Behaviors can also decorate the property-setting getters:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="k">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Undefined</span><span class="p">,</span> <span class="n">setting</span>
+<span class="kn">from</span> <span class="nn">concrete_settings.contrib.behaviors</span> <span class="k">import</span> <span class="n">required</span>
+
+<span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
+    <span class="nd">@required</span>
+    <span class="nd">@setting</span>
+    <span class="k">def</span> <span class="nf">ADMIN_NAME</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Undefined</span>
+</pre></div>
+</div>
+<p>Validating any of the previous examples as</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">app_settings</span> <span class="o">=</span> <span class="n">AppSettings</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">app_settings</span><span class="o">.</span><span class="n">is_valid</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">app_settings</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>yields the following output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>False
+{&#39;ADMIN_NAME&#39;: [&#39;Setting `ADMIN_NAME` is required to have a value. Current value is `Undefined`&#39;]}
+</pre></div>
+</div>
+</div>
+<div class="section" id="documentation">
+<span id="automated-setting-documentation"></span><h3><a class="toc-backref" href="#id8">Documentation</a><a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h3>
+<p><strong>TODO</strong>: &#64;setting</p>
 </div>
 </div>
 <div class="section" id="update-strategies">
-<h2><a class="toc-backref" href="#id7">Update strategies</a><a class="headerlink" href="#update-strategies" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id9">Update strategies</a><a class="headerlink" href="#update-strategies" title="Permalink to this headline">¶</a></h2>
 <p>In most cases, a developer wants to overwrite a setting value
 when updating it from a source. But there are exceptions.
 Think of a list setting, which contains administrators’ emails, e.g.:</p>
@@ -339,7 +398,7 @@ Think of a list setting, which contains administrators’ emails, e.g.:</p>
 </pre></div>
 </div>
 <p>What if you want to <strong>append</strong> the emails defined in sources, instead
-of overwriting them? Concrete Settings provides a concept of
+of overwriting them? ConcreteSettings provides a concept of
 <a class="reference internal" href="api.html#module-concrete_settings.sources.strategies" title="concrete_settings.sources.strategies"><code class="xref py py-mod docutils literal notranslate"><span class="pre">update</span> <span class="pre">strategies</span></code></a>
 for such cases:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -364,7 +423,7 @@ for such cases:</p>
 </div>
 </div>
 <div class="section" id="advanced-validators">
-<span id="id1"></span><h2><a class="toc-backref" href="#id8">Validators</a><a class="headerlink" href="#advanced-validators" title="Permalink to this headline">¶</a></h2>
+<span id="id1"></span><h2><a class="toc-backref" href="#id10">Validators</a><a class="headerlink" href="#advanced-validators" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
