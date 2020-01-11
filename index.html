@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Quickstart" href="quickstart.html" /> 
+    <link rel="next" title="Basic concepts" href="basic_concepts.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -80,7 +80,8 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_concepts.html">Basic concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="startup.html">Start me up</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced topics</a></li>
 </ul>
 <ul>
@@ -152,7 +153,7 @@
   <div class="section" id="welcome-to-concretesettings">
 <h1>Welcome to ConcreteSettings<a class="headerlink" href="#welcome-to-concretesettings" title="Permalink to this headline">¶</a></h1>
 <p><strong>WARNING!</strong> ConcreteSettings is currently under development!
-There is no stable, not even an alpha version available at the moment.</p>
+There is no stable version available at the moment.</p>
 <p>ConcreteSettings is a Python library which facilitates startup
 configuration management in applications.</p>
 <p>A minimal developer-facing settings class might look like this:</p>
@@ -171,10 +172,10 @@ configuration management in applications.</p>
 <p>While the end-user could set the values in a YAML file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># settings.yml</span>
 
-<span class="nt">DEBUG</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">off</span>
+<span class="nt">DEBUG</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
 </pre></div>
 </div>
-<p>Concrete Settings aims to provide a conveniet way to
+<p>ConcreteSettings aims to provide a conveniet way to
 define and use application startup settings
 for developers and an end-users:</p>
 <p class="plantuml">
@@ -231,18 +232,30 @@ and all the settings required to start it up.</p></li>
 </ul>
 <p>Sounds interesting?
 Then you are very welcome to ConcreteSettings documentation!</p>
+</div>
+<div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>TODO</p>
+</div>
+<div class="section" id="documentation">
+<h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#defining-settings">Defining settings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#reading-settings">Reading settings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#validation">Validation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#type-hint">Type hint</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#behavior">Behavior</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#nested-settings">Nested settings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#combining-settings">Combining settings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#start-me-up">Start me up</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#what-s-next">What’s next?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_concepts.html">Basic concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="basic_concepts.html#defining-settings">Defining settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_concepts.html#reading-settings">Reading settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_concepts.html#validation">Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_concepts.html#type-hint">Type hint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_concepts.html#behavior">Behavior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_concepts.html#nested-settings">Nested settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_concepts.html#combining-settings">Combining settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_concepts.html#what-s-next">What’s next?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="startup.html">Start me up</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="startup.html#i-define-settings">I. Define Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="startup.html#ii-think-of-an-end-user">II. Think of an end-user</a></li>
+<li class="toctree-l2"><a class="reference internal" href="startup.html#iii-remember-to-unit-test-settings-object-initialization">III. Remember to unit-test settings object initialization</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced topics</a><ul>
@@ -288,7 +301,7 @@ method, this part of the documentation is for you.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="quickstart.html" class="btn btn-neutral float-right" title="Quickstart" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="basic_concepts.html" class="btn btn-neutral float-right" title="Basic concepts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Quickstart &mdash; Concrete Settings  documentation</title>
+  <title>Basic concepts &mdash; Concrete Settings  documentation</title>
   
 
   
@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Advanced topics" href="advanced.html" />
+    <link rel="next" title="Start me up" href="startup.html" />
     <link rel="prev" title="Welcome to ConcreteSettings" href="index.html" /> 
 </head>
 
@@ -81,7 +81,7 @@
             
             
               <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Basic concepts</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#defining-settings">Defining settings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#reading-settings">Reading settings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#validation">Validation</a></li>
@@ -89,10 +89,10 @@
 <li class="toctree-l2"><a class="reference internal" href="#behavior">Behavior</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nested-settings">Nested settings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#combining-settings">Combining settings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#start-me-up">Start me up</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#what-s-next">What’s next?</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="startup.html">Start me up</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced topics</a></li>
 </ul>
 <ul>
@@ -142,13 +142,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Quickstart</li>
+      <li>Basic concepts</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/quickstart.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/basic_concepts.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -161,8 +161,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="quickstart">
-<h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="basic-concepts">
+<h1>Basic concepts<a class="headerlink" href="#basic-concepts" title="Permalink to this headline">¶</a></h1>
 <p>In this chapter we cover the essentials of ConcreteSettings.</p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
@@ -173,8 +173,7 @@
 <li><p><a class="reference internal" href="#behavior" id="id5">Behavior</a></p></li>
 <li><p><a class="reference internal" href="#nested-settings" id="id6">Nested settings</a></p></li>
 <li><p><a class="reference internal" href="#combining-settings" id="id7">Combining settings</a></p></li>
-<li><p><a class="reference internal" href="#start-me-up" id="id8">Start me up</a></p></li>
-<li><p><a class="reference internal" href="#what-s-next" id="id9">What’s next?</a></p></li>
+<li><p><a class="reference internal" href="#what-s-next" id="id8">What’s next?</a></p></li>
 </ul>
 </div>
 <div class="section" id="defining-settings">
@@ -186,7 +185,7 @@ A setting is defined by
 <a class="reference internal" href="api.html#concrete_settings.Setting" title="concrete_settings.Setting"><code class="xref py py-class docutils literal notranslate"><span class="pre">Setting</span></code></a> descriptor.
 The catch is that one does not have
 to declare each setting explicitly.</p>
-<p>Let’s take a look is a small example, where we declare <code class="docutils literal notranslate"><span class="pre">AppSettings</span></code>
+<p>Let’s take a look at a small example, where we declare <code class="docutils literal notranslate"><span class="pre">AppSettings</span></code>
 class with a single boolean-type setting named <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Setting</span>
 <span class="kn">from</span> <span class="nn">concrete_settings.validators</span> <span class="kn">import</span> <span class="n">ValueTypeValidator</span>
@@ -200,7 +199,7 @@ class with a single boolean-type setting named <code class="docutils literal not
     <span class="p">)</span>
 </pre></div>
 </div>
-<p>And here is the short version which produces the same class as the one above:</p>
+<p>And here is the short version which produces the same class as above:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span>
 
 <span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
@@ -325,7 +324,7 @@ For example, to update the settings from a JSON file:</p>
     <span class="p">]</span>
 
 <span class="n">app_settings</span> <span class="o">=</span> <span class="n">AppSettings</span><span class="p">()</span>
-<span class="n">app_settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;/tmp/cs-quickstart-settings.json&#39;</span><span class="p">)</span>
+<span class="n">app_settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;/tmp/quickstart-settings.json&#39;</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">app_settings</span><span class="o">.</span><span class="n">ADMIN_EMAIL</span><span class="p">)</span>
 </pre></div>
@@ -434,7 +433,7 @@ Just have a look:</p>
 </pre></div>
 </div>
 <p>If Python warnings are enabled (e.g. <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-Wdefault</span></code>), you would
-get the warning in stderr:</p>
+get a warning in stderr:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>DeprecationWarning: Setting `MAX_SPEED` in class `&lt;class &#39;__main__.AppSettings&#39;&gt;` is deprecated.
 </pre></div>
 </div>
@@ -514,7 +513,7 @@ concrete_settings.exceptions.SettingsValidationError: DB: Expected value of type
 <div class="section" id="combining-settings">
 <h2><a class="toc-backref" href="#id7">Combining settings</a><a class="headerlink" href="#combining-settings" title="Permalink to this headline">¶</a></h2>
 <p>Another way of putting settings together is by using Python’s
-multiple-base-classes inheritance mechanism.
+multi-inheritance mechanism.
 It can be useful, when you have to mimic a legacy settings
 module interface, but want to keep settings logic separated.</p>
 <p>Let’s combine Database, Log and Cache settings:</p>
@@ -558,19 +557,19 @@ must be explicitly called for each of the base classes:</p>
     <span class="n">CacheSettings</span><span class="p">,</span>
     <span class="n">LoggingSettings</span>
 <span class="p">):</span>
-    <span class="k">def</span> <span class="nf">validate</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
         <span class="n">DBSettings</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">CacheSettings</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">LoggingSettings</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="start-me-up">
-<h2><a class="toc-backref" href="#id8">Start me up</a><a class="headerlink" href="#start-me-up" title="Permalink to this headline">¶</a></h2>
-</div>
 <div class="section" id="what-s-next">
-<h2><a class="toc-backref" href="#id9">What’s next?</a><a class="headerlink" href="#what-s-next" title="Permalink to this headline">¶</a></h2>
-<p>TODO</p>
+<h2><a class="toc-backref" href="#id8">What’s next?</a><a class="headerlink" href="#what-s-next" title="Permalink to this headline">¶</a></h2>
+<p>Now that you know the basics, why not to try adding
+ConcreteSettings to your application?
+A minimal user-friendly setup is shown in <a class="reference internal" href="startup.html#startup"><span class="std std-ref">Start me up</span></a> section.</p>
 </div>
 </div>
 
@@ -582,7 +581,7 @@ must be explicitly called for each of the base classes:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="advanced.html" class="btn btn-neutral float-right" title="Advanced topics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="startup.html" class="btn btn-neutral float-right" title="Start me up" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral float-left" title="Welcome to ConcreteSettings" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
