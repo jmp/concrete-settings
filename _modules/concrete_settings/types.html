@@ -199,6 +199,15 @@
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">t</span>
         <span class="k">return</span> <span class="n">Any</span></div>
+
+
+<span class="k">def</span> <span class="nf">type_hints_equal</span><span class="p">(</span><span class="n">hint1</span><span class="p">,</span> <span class="n">hint2</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">hint1</span> <span class="o">==</span> <span class="n">hint2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="n">h1</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">hint1</span><span class="p">,</span> <span class="s1">&#39;__origin__&#39;</span><span class="p">,</span> <span class="n">hint1</span><span class="p">)</span>
+    <span class="n">h2</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">hint2</span><span class="p">,</span> <span class="s1">&#39;__origin__&#39;</span><span class="p">,</span> <span class="n">hint2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">h1</span> <span class="o">==</span> <span class="n">h2</span>
 </pre></div>
 
            </div>

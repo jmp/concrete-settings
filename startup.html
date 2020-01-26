@@ -83,9 +83,13 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="basic_concepts.html">Basic concepts</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Start me up</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#i-define-settings">I. Define Settings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ii-think-of-an-end-user">II. Think of an end-user</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#iii-remember-to-unit-test-settings-object-initialization">III. Remember to unit-test settings object initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scratch">Scratch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#i-define-settings">I. Define Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ii-think-of-an-end-user">II. Think of an end-user</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#iii-remember-to-unit-test-settings-object-initialization">III. Remember to unit-test settings object initialization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#new-django-projects">New Django Projects</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced topics</a></li>
@@ -158,9 +162,11 @@
             
   <div class="section" id="start-me-up">
 <span id="startup"></span><h1>Start me up<a class="headerlink" href="#start-me-up" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="scratch">
+<h2>Scratch<a class="headerlink" href="#scratch" title="Permalink to this headline">¶</a></h2>
 <p>An extremely short guide to start using ConcreteSetting in your application.</p>
 <div class="section" id="i-define-settings">
-<h2>I. Define Settings<a class="headerlink" href="#i-define-settings" title="Permalink to this headline">¶</a></h2>
+<h3>I. Define Settings<a class="headerlink" href="#i-define-settings" title="Permalink to this headline">¶</a></h3>
 <p>As a <em>developer</em> of an application, define the settings
 in a file <em>inside</em> your application.</p>
 <p>For example, <code class="docutils literal notranslate"><span class="pre">my_app/app_settings.py</span></code> file:</p>
@@ -173,7 +179,7 @@ in a file <em>inside</em> your application.</p>
 </div>
 </div>
 <div class="section" id="ii-think-of-an-end-user">
-<h2>II. Think of an end-user<a class="headerlink" href="#ii-think-of-an-end-user" title="Permalink to this headline">¶</a></h2>
+<h3>II. Think of an end-user<a class="headerlink" href="#ii-think-of-an-end-user" title="Permalink to this headline">¶</a></h3>
 <p>Provide a conventient way of entering the application settings to an end-user.
 For example  via a <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file passed as a command-line argument:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># my_app/main.py</span>
@@ -212,7 +218,7 @@ For example  via a <code class="docutils literal notranslate"><span class="pre">
 </div>
 </div>
 <div class="section" id="iii-remember-to-unit-test-settings-object-initialization">
-<h2>III. Remember to unit-test settings object initialization<a class="headerlink" href="#iii-remember-to-unit-test-settings-object-initialization" title="Permalink to this headline">¶</a></h2>
+<h3>III. Remember to unit-test settings object initialization<a class="headerlink" href="#iii-remember-to-unit-test-settings-object-initialization" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we love pytest!</span>
 
 <span class="kn">from</span> <span class="nn">my_app.app_settings</span> <span class="kn">import</span> <span class="n">ApplicationSettings</span>
@@ -221,6 +227,11 @@ For example  via a <code class="docutils literal notranslate"><span class="pre">
     <span class="n">ApplicationSettings</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+</div>
+<div class="section" id="new-django-projects">
+<h2>New Django Projects<a class="headerlink" href="#new-django-projects" title="Permalink to this headline">¶</a></h2>
+<p>from concrete_settings.contrib.conf import django30</p>
 </div>
 </div>
 
