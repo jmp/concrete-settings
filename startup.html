@@ -86,13 +86,17 @@
 <li class="toctree-l2"><a class="reference internal" href="#scratch">Scratch</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#i-define-settings">I. Define Settings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ii-think-of-an-end-user">II. Think of an end-user</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#iii-remember-to-unit-test-settings-object-initialization">III. Remember to unit-test settings object initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#iii-remember-to-test-settings-object-definition">III. Remember to test settings object definition</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#new-django-projects">New Django Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#django-projects">Django Projects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#django-3-0">Django 3.0</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batteries.html">Batteries</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
@@ -164,12 +168,11 @@
 <span id="startup"></span><h1>Start me up<a class="headerlink" href="#start-me-up" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="scratch">
 <h2>Scratch<a class="headerlink" href="#scratch" title="Permalink to this headline">¶</a></h2>
-<p>An extremely short guide to start using ConcreteSetting in your application.</p>
+<p>An extremely short guide to start using Concrete Setting in your application.</p>
 <div class="section" id="i-define-settings">
 <h3>I. Define Settings<a class="headerlink" href="#i-define-settings" title="Permalink to this headline">¶</a></h3>
-<p>As a <em>developer</em> of an application, define the settings
-in a file <em>inside</em> your application.</p>
-<p>For example, <code class="docutils literal notranslate"><span class="pre">my_app/app_settings.py</span></code> file:</p>
+<p>As a <em>developer</em> of an application, define the settings:</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">my_app/settings_definition.py</span></code> file:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span>
 
 <span class="k">class</span> <span class="nc">ApplicationSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
@@ -187,7 +190,7 @@ For example  via a <code class="docutils literal notranslate"><span class="pre">
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="kn">from</span> <span class="nn">.app_settings</span> <span class="kn">import</span> <span class="n">ApplicationSettings</span>
+<span class="kn">from</span> <span class="nn">.settings_definition</span> <span class="kn">import</span> <span class="n">ApplicationSettings</span>
 
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
@@ -213,25 +216,32 @@ For example  via a <code class="docutils literal notranslate"><span class="pre">
 </div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># settings.yaml</span>
 
-<span class="nt">debug</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">DEBUG</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="iii-remember-to-unit-test-settings-object-initialization">
-<h3>III. Remember to unit-test settings object initialization<a class="headerlink" href="#iii-remember-to-unit-test-settings-object-initialization" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="iii-remember-to-test-settings-object-definition">
+<h3>III. Remember to test settings object definition<a class="headerlink" href="#iii-remember-to-test-settings-object-definition" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we love pytest!</span>
 
-<span class="kn">from</span> <span class="nn">my_app.app_settings</span> <span class="kn">import</span> <span class="n">ApplicationSettings</span>
+<span class="kn">from</span> <span class="nn">my_app.settings_definition</span> <span class="kn">import</span> <span class="n">ApplicationSettings</span>
 
-<span class="k">def</span> <span class="nf">test_smoke_the_settings</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">test_settings_definiton</span><span class="p">():</span>
     <span class="n">ApplicationSettings</span><span class="p">()</span>
 </pre></div>
 </div>
+<p>That’s it! You are ready to start using Concrete Settings in your programs!</p>
 </div>
 </div>
-<div class="section" id="new-django-projects">
-<h2>New Django Projects<a class="headerlink" href="#new-django-projects" title="Permalink to this headline">¶</a></h2>
-<p>from concrete_settings.contrib.conf import django30</p>
+<div class="section" id="django-projects">
+<h2>Django Projects<a class="headerlink" href="#django-projects" title="Permalink to this headline">¶</a></h2>
+<p>Concrete Settings is shipped with batteries which help bootstrapping
+settings in a legacy or a brand new Django project.
+First, there is <a class="reference internal" href="batteries.html#concrete_settings.contrib.frameworks.django30.Django30Settings" title="concrete_settings.contrib.frameworks.django30.Django30Settings"><code class="xref py py-class docutils literal notranslate"><span class="pre">Django30Settings</span></code></a>
+class which reflects Django’s <cite>global_settings</cite> definitions.</p>
+<div class="section" id="django-3-0">
+<h3>Django 3.0<a class="headerlink" href="#django-3-0" title="Permalink to this headline">¶</a></h3>
+</div>
 </div>
 </div>
 

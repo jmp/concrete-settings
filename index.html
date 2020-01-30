@@ -83,6 +83,7 @@
 <li class="toctree-l1"><a class="reference internal" href="basic_concepts.html">Basic concepts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="startup.html">Start me up</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batteries.html">Batteries</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
@@ -156,7 +157,7 @@
 There is no stable version available at the moment.</p>
 <p>ConcreteSettings is a Python library which facilitates startup
 configuration management in applications.</p>
-<p>A minimal developer-facing settings class might look like this:</p>
+<p>Here is an example of a minimal developer-facing setup:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span>
 
 <span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
@@ -175,11 +176,11 @@ configuration management in applications.</p>
 <span class="nt">DEBUG</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
 </pre></div>
 </div>
-<p>ConcreteSettings aims to provide a conveniet way to
+<p>Concrete Settings aims to provide a conveniet way to
 define and use application startup settings
 for developers and an end-users:</p>
 <p class="plantuml">
-<img src="_images/plantuml-bbd37d6af1072587d6aa9b6ff07da80531fe6930.png" alt="&#64;startuml
+<img src="_images/plantuml-869a729f6ea139c88b198527affa3e56b2b63880.png" alt="&#64;startuml
 :Developer: as Dev
 :Application User: as User
 (.yaml) as (yaml_source)
@@ -195,7 +196,7 @@ end note
 
 note top of Dev
     **Developer** defines configuration
-    via ConcreteSettings
+    via Concrete Settings
 end note
 
 User ==&gt; (yaml_source)
@@ -254,13 +255,17 @@ Then you are very welcome to ConcreteSettings documentation!</p>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="startup.html">Start me up</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="startup.html#scratch">Scratch</a></li>
-<li class="toctree-l2"><a class="reference internal" href="startup.html#new-django-projects">New Django Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="startup.html#django-projects">Django Projects</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced topics</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="advanced.html#setting-declaration">Setting declaration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="advanced.html#update-strategies">Update strategies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="advanced.html#advanced-validators">Validators</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="batteries.html">Batteries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="batteries.html#frameworks">Frameworks</a></li>
 </ul>
 </li>
 </ul>
