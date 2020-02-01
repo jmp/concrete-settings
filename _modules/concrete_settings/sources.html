@@ -149,23 +149,15 @@
            <div itemprop="articleBody">
             
   <h1>Source code for concrete_settings.sources</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">..exceptions</span> <span class="kn">import</span> <span class="n">ConcreteSettingsError</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">strategies</span>  <span class="c1"># noqa: F401 # imported but unused</span>
 
-
 <span class="n">_registered_sources</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
-<span class="n">TAnySource</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;Source&#39;</span><span class="p">]</span>
-
-
-<span class="k">class</span> <span class="nc">CannotHandleType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="n">token</span> <span class="o">=</span> <span class="mi">0</span>
-
-
-<span class="n">CannotHandle</span> <span class="o">=</span> <span class="n">CannotHandleType</span><span class="o">.</span><span class="n">token</span>
+<span class="n">AnySource</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;Source&#39;</span><span class="p">,</span> <span class="n">Path</span><span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">register_source</span><span class="p">(</span><span class="n">source_cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s1">&#39;Source&#39;</span><span class="p">]):</span>
@@ -175,20 +167,20 @@
 
 
 <span class="k">class</span> <span class="nc">NoSuitableSourceFoundError</span><span class="p">(</span><span class="n">ConcreteSettingsError</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">:</span> <span class="n">TAnySource</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">:</span> <span class="n">AnySource</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s1">&#39;No suitable source found to handle &quot;</span><span class="si">{src}</span><span class="s1">&quot;.&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;No suitable source found to handle &quot;</span><span class="si">{src}</span><span class="s1">&quot;.</span><span class="se">\n</span><span class="s1">&#39;</span>
             <span class="s1">&#39;Perhaps you have forgotten to register the source?&#39;</span>
         <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">get_source</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">TAnySource</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Source&#39;</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">get_source</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">AnySource</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Source&#39;</span><span class="p">:</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">Source</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">src</span>
 
     <span class="k">for</span> <span class="n">src_cls</span> <span class="ow">in</span> <span class="n">_registered_sources</span><span class="p">:</span>
         <span class="n">source</span> <span class="o">=</span> <span class="n">src_cls</span><span class="o">.</span><span class="n">get_source</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">CannotHandle</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">source</span>
 
     <span class="k">raise</span> <span class="n">NoSuitableSourceFoundError</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
@@ -196,10 +188,10 @@
 
 <div class="viewcode-block" id="Source"><a class="viewcode-back" href="../../api.html#concrete_settings.sources.Source">[docs]</a><span class="k">class</span> <span class="nc">Source</span><span class="p">:</span>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">get_source</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">TAnySource</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="s1">&#39;Source&#39;</span><span class="p">,</span> <span class="n">CannotHandleType</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="n">CannotHandle</span>
+    <span class="k">def</span> <span class="nf">get_source</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">AnySource</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;Source&#39;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">,</span> <span class="n">parents</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">())</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">,</span> <span class="n">parents</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">())</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
         <span class="k">pass</span></div>
 
 
@@ -227,15 +219,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">s</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">get_source</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">TAnySource</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="s1">&#39;DictSource&#39;</span><span class="p">,</span> <span class="n">CannotHandleType</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">get_source</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">AnySource</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;DictSource&#39;</span><span class="p">]:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">DictSource</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">DictSource</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">src</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">CannotHandle</span>
+            <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">,</span> <span class="n">parents</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">())</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">,</span> <span class="n">parents</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">())</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
         <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">:</span>
             <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
@@ -253,15 +245,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">get_source</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">src</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="s1">&#39;FileSource&#39;</span><span class="p">,</span> <span class="n">CannotHandleType</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">get_source</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">src</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;FileSource&#39;</span><span class="p">]:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">src</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
+            <span class="n">src</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">extensions</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">ext</span><span class="p">):</span>
                     <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">CannotHandle</span>
+        <span class="k">return</span> <span class="kc">None</span>
 </pre></div>
 
            </div>
