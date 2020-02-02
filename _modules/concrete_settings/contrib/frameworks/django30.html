@@ -151,11 +151,15 @@
   <h1>Source code for concrete_settings.contrib.frameworks.django30</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
 
-<span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span>
-
+<span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Undefined</span>
 
 <span class="c1"># This is defined here as a do-nothing function because we can&#39;t import</span>
 <span class="c1"># django.utils.translation -- that module depends on the settings.</span>
+<span class="kn">from</span> <span class="nn">concrete_settings.contrib.behaviors</span> <span class="kn">import</span> <span class="n">required</span>
+
+
+<span class="c1"># flake8: noqa</span>
+
 <span class="k">def</span> <span class="nf">gettext_noop</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">s</span>
 
@@ -738,8 +742,7 @@
 
     <span class="c1">#: Default exception reporter filter class used in case none has been</span>
     <span class="c1">#: specifically assigned to the HttpRequest instance.</span>
-    <span class="n">DEFAULT_EXCEPTION_REPORTER_FILTER</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> \
-        <span class="s1">&#39;django.views.debug.SafeExceptionReporterFilter&#39;</span>
+    <span class="n">DEFAULT_EXCEPTION_REPORTER_FILTER</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;django.views.debug.SafeExceptionReporterFilter&#39;</span>
 
     <span class="c1">###########</span>
     <span class="c1"># TESTING #</span>
@@ -805,7 +808,15 @@
     <span class="n">SECURE_REDIRECT_EXEMPT</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">SECURE_REFERRER_POLICY</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">SECURE_SSL_HOST</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">SECURE_SSL_REDIRECT</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></div>
+    <span class="n">SECURE_SSL_REDIRECT</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1">##############</span>
+    <span class="c1"># Undefined</span>
+    <span class="c1">##############</span>
+
+    <span class="c1">#: A string representing the full Python import path to your root URLconf,</span>
+    <span class="c1">#: for example &quot;mydjangoapps.urls&quot;.</span>
+    <span class="n">ROOT_URLCONF</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Undefined</span> <span class="o">@</span> <span class="n">required</span></div>
 </pre></div>
 
            </div>
