@@ -90,7 +90,11 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#django-projects">Django Projects</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#django-3-0">Django 3.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#django-3-0">Django 3.0</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#new-project">New project</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#separate-application-settings">Separate application settings</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -241,6 +245,129 @@ First, there is <a class="reference internal" href="batteries.html#concrete_sett
 class which reflects Django’s <cite>global_settings</cite> definitions.</p>
 <div class="section" id="django-3-0">
 <h3>Django 3.0<a class="headerlink" href="#django-3-0" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="new-project">
+<h4>New project<a class="headerlink" href="#new-project" title="Permalink to this headline">¶</a></h4>
+<p>Here is an example of how one can start up a new Django application with Concrete Settings.
+Let’s consider that a project was created by the traditional <code class="docutils literal notranslate"><span class="pre">djago-admin.py</span> <span class="pre">startproject</span> <span class="pre">mysite</span></code>.
+The good old <code class="docutils literal notranslate"><span class="pre">settings.py</span></code>. Why not instead have all Django settings in a yaml file instead?</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># mysite/django.yml</span>
+
+<span class="nt">SECRET_KEY</span><span class="p">:</span> <span class="s">&#39;xnhdv!(nm6f+y^izff1^e#kdy^v3gdgme87j*p)ahs6)t5-(32&#39;</span>
+
+<span class="nt">DEBUG</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="nt">ALLOWED_HOSTS</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
+
+<span class="nt">INSTALLED_APPS</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">django.contrib.admin</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">django.contrib.auth</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">django.contrib.contenttypes</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">django.contrib.sessions</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">django.contrib.messages</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">django.contrib.staticfiles</span>
+
+<span class="nt">MIDDLEWARE</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">django.middleware.security.SecurityMiddleware</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">django.contrib.sessions.middleware.SessionMiddleware</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">django.middleware.common.CommonMiddleware</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">django.middleware.csrf.CsrfViewMiddleware</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">django.contrib.auth.middleware.AuthenticationMiddleware</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">django.contrib.messages.middleware.MessageMiddleware</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">django.middleware.clickjacking.XFrameOptionsMiddleware</span>
+
+<span class="nt">ROOT_URLCONF</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mysite.urls</span>
+
+<span class="nt">TEMPLATES</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">BACKEND</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">django.template.backends.django.DjangoTemplates</span>
+    <span class="nt">DIRS</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
+    <span class="nt">APP_DIRS</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="nt">OPTIONS</span><span class="p">:</span>
+      <span class="nt">context_processors</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">django.template.context_processors.debug</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">django.template.context_processors.request</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">django.contrib.auth.context_processors.auth</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">django.contrib.messages.context_processors.messages</span>
+
+<span class="nt">WSGI_APPLICATION</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mysite.wsgi.application</span>
+
+<span class="nt">DATABASES</span><span class="p">:</span>
+  <span class="nt">default</span><span class="p">:</span>
+    <span class="nt">ENGINE</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">django.db.backends.sqlite3</span>
+    <span class="nt">NAME</span><span class="p">:</span> <span class="s">&#39;/path/to/db.sqlite3&#39;</span>
+
+<span class="nt">AUTH_PASSWORD_VALIDATORS</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">NAME</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">django.contrib.auth.password_validation.UserAttributeSimilarityValidator</span>
+  <span class="p p-Indicator">-</span> <span class="nt">NAME</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">django.contrib.auth.password_validation.MinimumLengthValidator</span>
+  <span class="p p-Indicator">-</span> <span class="nt">NAME</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">django.contrib.auth.password_validation.CommonPasswordValidator</span>
+  <span class="p p-Indicator">-</span> <span class="nt">NAME</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">django.contrib.auth.password_validation.NumericPasswordValidator</span>
+
+
+<span class="nt">LANGUAGE_CODE</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">en-us</span>
+
+<span class="nt">TIME_ZONE</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">UTC</span>
+
+<span class="nt">USE_I18N</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="nt">USE_L10N</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="nt">USE_TZ</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="nt">STATIC_URL</span><span class="p">:</span> <span class="s">&#39;/static/&#39;</span>
+</pre></div>
+</div>
+<p>To read this file, <code class="docutils literal notranslate"><span class="pre">settings.py</span></code> has to be modified as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span>
+<span class="kn">from</span> <span class="nn">concrete_settings.contrib.frameworks.django30</span> <span class="kn">import</span> <span class="n">Django30Settings</span>
+
+<span class="n">SETTINGS_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+
+<span class="n">settings</span> <span class="o">=</span> <span class="n">Django30Settings</span><span class="p">()</span>
+
+<span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">SETTINGS_DIR</span> <span class="o">+</span> <span class="s1">&#39;/django.yml&#39;</span><span class="p">)</span>
+
+<span class="n">settings</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">settings</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Easy, isn’t it?</p>
+</div>
+<div class="section" id="separate-application-settings">
+<h4>Separate application settings<a class="headerlink" href="#separate-application-settings" title="Permalink to this headline">¶</a></h4>
+<p>Sometimes you need to put application settings to <code class="docutils literal notranslate"><span class="pre">settings.py</span></code> to access
+them from <code class="docutils literal notranslate"><span class="pre">django.conf.settings</span></code>. Let’s modify <code class="docutils literal notranslate"><span class="pre">settings.py</span></code> to separate
+Django and application settings:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span>
+<span class="kn">from</span> <span class="nn">concrete_settings.contrib.frameworks.django30</span> <span class="kn">import</span> <span class="n">Django30Settings</span>
+
+<span class="n">SETTINGS_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+
+
+<span class="k">class</span> <span class="nc">ApplicationSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
+    <span class="n">GREETING_MESSAGE</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Welcome&#39;</span>
+
+
+<span class="k">class</span> <span class="nc">SiteSettings</span><span class="p">(</span><span class="n">ApplicationSettings</span><span class="p">,</span> <span class="n">Django30Settings</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="n">settings</span> <span class="o">=</span> <span class="n">SiteSettings</span><span class="p">()</span>
+
+<span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">SETTINGS_DIR</span> <span class="o">+</span> <span class="s1">&#39;/django.yml&#39;</span><span class="p">)</span>
+<span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">SETTINGS_DIR</span> <span class="o">+</span> <span class="s1">&#39;/application.yml&#39;</span><span class="p">)</span>
+
+<span class="n">settings</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">settings</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>And <code class="docutils literal notranslate"><span class="pre">application.yml</span></code> is:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">GREETING_MESSAGE</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Welcome, Concrete Settings User!</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 </div>
