@@ -169,7 +169,7 @@
 
 <span class="kn">from</span> <span class="nn">.docreader</span> <span class="kn">import</span> <span class="n">extract_doc_comments_from_class_or_module</span>
 <span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">StructureError</span><span class="p">,</span> <span class="n">SettingsValidationError</span><span class="p">,</span> <span class="n">ValidationErrorDetail</span>
-<span class="kn">from</span> <span class="nn">.sources</span> <span class="kn">import</span> <span class="n">get_source</span><span class="p">,</span> <span class="n">AnySource</span><span class="p">,</span> <span class="n">Source</span>
+<span class="kn">from</span> <span class="nn">.sources</span> <span class="kn">import</span> <span class="n">get_source</span><span class="p">,</span> <span class="n">AnySource</span><span class="p">,</span> <span class="n">Source</span><span class="p">,</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">.sources.strategies</span> <span class="kn">import</span> <span class="n">default</span> <span class="k">as</span> <span class="n">default_update_strategy</span>
 <span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">Undefined</span><span class="p">,</span> <span class="n">GuessSettingType</span><span class="p">,</span> <span class="n">type_hints_equal</span>
 <span class="kn">from</span> <span class="nn">.validators</span> <span class="kn">import</span> <span class="n">ValueTypeValidator</span>
@@ -596,8 +596,11 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">update_strategy</span> <span class="o">=</span> <span class="n">default_update_strategy</span>
 
-                <span class="n">current_val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
                 <span class="n">update_to_val</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">setting</span><span class="p">,</span> <span class="n">parents</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">update_to_val</span> <span class="ow">is</span> <span class="n">NotFound</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="n">current_val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
                 <span class="n">new_val</span> <span class="o">=</span> <span class="n">update_strategy</span><span class="p">(</span><span class="n">current_val</span><span class="p">,</span> <span class="n">update_to_val</span><span class="p">)</span>
                 <span class="nb">setattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">new_val</span><span class="p">)</span>
 
