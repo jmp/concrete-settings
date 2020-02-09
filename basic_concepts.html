@@ -444,7 +444,7 @@ during its initialization, validation and setting’s
 and
 <a class="reference internal" href="api.html#concrete_settings.Setting.__set__" title="concrete_settings.Setting.__set__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set</span></code></a>
 descriptors invocations.
-A behavior can be passed in Setting class <a class="reference internal" href="api.html#concrete_settings.Setting" title="concrete_settings.Setting"><code class="xref py py-class docutils literal notranslate"><span class="pre">constructor</span></code></a>
+A behavior can be passed to <a class="reference internal" href="api.html#concrete_settings.Setting" title="concrete_settings.Setting"><code class="xref py py-class docutils literal notranslate"><span class="pre">Setting.__init__()</span></code></a>
 or by using <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> operator: <code class="docutils literal notranslate"><span class="pre">value</span> <span class="pre">&#64;</span> <span class="pre">behavior0</span> <span class="pre">&#64;</span> <span class="pre">behavior1</span> <span class="pre">&#64;</span> <span class="pre">...</span></code></p>
 </div>
 <div class="section" id="nested-settings">
@@ -515,9 +515,31 @@ concrete_settings.exceptions.SettingsValidationError: DB: Expected value of type
 <h2><a class="toc-backref" href="#id7">Combining settings</a><a class="headerlink" href="#combining-settings" title="Permalink to this headline">¶</a></h2>
 <p>Another way of putting settings together is by using Python’s
 multi-inheritance mechanism.
-It can be useful, when you have to mimic a legacy settings
-module interface, but want to keep settings logic separated.</p>
-<p>Let’s combine Database, Log and Cache settings:</p>
+It it very useful when putting a frameworks and application
+settings together. For example, Django settings and
+application settings can be separated as follows:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span>
+<span class="kn">from</span> <span class="nn">concrete_settings.contrib.frameworks.django30</span> <span class="kn">import</span> <span class="n">Django30Settings</span>
+
+<span class="k">class</span> <span class="nc">ApplicationSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
+    <span class="n">GREETING</span> <span class="o">=</span> <span class="s1">&#39;Hello world!&#39;</span>
+
+<span class="k">class</span> <span class="nc">SiteSettings</span><span class="p">(</span><span class="n">ApplicationSettings</span><span class="p">,</span> <span class="n">Django30Settings</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="n">site_settings</span> <span class="o">=</span> <span class="n">SiteSettings</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">site_settings</span><span class="o">.</span><span class="n">GREETING</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">site_settings</span><span class="o">.</span><span class="n">EMAIL_BACKEND</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Hello world!
+django.core.mail.backends.smtp.EmailBackend
+</pre></div>
+</div>
+<p>Another use case is extracting settings to own classes
+and combining them to mimic legacy settings module interface.
+For example, let’s combine Database and Log settings:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">prefix</span>
 
 <span class="nd">@prefix</span><span class="p">(</span><span class="s1">&#39;DB&#39;</span><span class="p">)</span>
@@ -526,11 +548,6 @@ module interface, but want to keep settings logic separated.</p>
     <span class="n">PASSWORD</span>  <span class="o">=</span> <span class="s1">&#39;secret&#39;</span>
     <span class="n">SERVER</span> <span class="o">=</span> <span class="s1">&#39;localhost@5432&#39;</span>
 
-<span class="nd">@prefix</span><span class="p">(</span><span class="s1">&#39;CACHE&#39;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">CacheSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
-    <span class="n">ENGINE</span> <span class="o">=</span> <span class="s1">&#39;DatabaseCache&#39;</span>
-    <span class="n">TIMEOUT</span> <span class="o">=</span> <span class="mi">300</span>
-
 <span class="nd">@prefix</span><span class="p">(</span><span class="s1">&#39;LOG&#39;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">LoggingSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
     <span class="n">LEVEL</span> <span class="o">=</span> <span class="s1">&#39;INFO&#39;</span>
@@ -538,7 +555,6 @@ module interface, but want to keep settings logic separated.</p>
 
 <span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span>
     <span class="n">DBSettings</span><span class="p">,</span>
-    <span class="n">CacheSettings</span><span class="p">,</span>
     <span class="n">LoggingSettings</span>
 <span class="p">):</span>
     <span class="k">pass</span>
@@ -555,13 +571,11 @@ For example <a class="reference internal" href="api.html#concrete_settings.Setti
 must be explicitly called for each of the base classes:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span>
     <span class="n">DBSettings</span><span class="p">,</span>
-    <span class="n">CacheSettings</span><span class="p">,</span>
     <span class="n">LoggingSettings</span>
 <span class="p">):</span>
     <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
         <span class="n">DBSettings</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">CacheSettings</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">LoggingSettings</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 </pre></div>
 </div>
