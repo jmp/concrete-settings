@@ -178,7 +178,7 @@
 <h2>Settings<a class="headerlink" href="#settings" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="concrete_settings.Setting">
-<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.</code><code class="sig-name descname">Setting</code><span class="sig-paren">(</span><em class="sig-param">value: Any = &lt;class 'concrete_settings.types.Undefined'&gt;</em>, <em class="sig-param">*</em>, <em class="sig-param">doc: Union[str</em>, <em class="sig-param">Type[&lt;class 'concrete_settings.types.Undefined'&gt;]] = &lt;class 'concrete_settings.types.Undefined'&gt;</em>, <em class="sig-param">validators: Tuple[Callable</em>, <em class="sig-param">...] = ()</em>, <em class="sig-param">type_hint: Any = &lt;class 'concrete_settings.types.GuessSettingType'&gt;</em>, <em class="sig-param">behaviors: Union[Behaviors</em>, <em class="sig-param">Iterable] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/core.html#Setting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Setting" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.</code><code class="sig-name descname">Setting</code><span class="sig-paren">(</span><em class="sig-param">value: Any = &lt;class 'concrete_settings.types.Undefined'&gt;</em>, <em class="sig-param">*</em>, <em class="sig-param">doc: str = ''</em>, <em class="sig-param">validators: Tuple[concrete_settings.types.Validator</em>, <em class="sig-param">...] = ()</em>, <em class="sig-param">type_hint: Any = &lt;class 'concrete_settings.types.GuessSettingType'&gt;</em>, <em class="sig-param">behaviors: Union[Behaviors</em>, <em class="sig-param">Iterable] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/core.html#Setting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Setting" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="concrete_settings.Setting.__get__">
 <code class="sig-name descname">__get__</code><span class="sig-paren">(</span><em class="sig-param">owner: concrete_settings.core.Settings</em>, <em class="sig-param">owner_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/core.html#Setting.__get__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Setting.__get__" title="Permalink to this definition">¶</a></dt>
@@ -289,18 +289,18 @@ that a Setting type should be guessed from the default value.</p>
 
 </dd></dl>
 
-<span class="target" id="module-concrete_settings.validator"></span></div>
+</div>
 <div class="section" id="validators">
 <h2>Validators<a class="headerlink" href="#validators" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="concrete_settings.validator.Validator">
-<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.validator.</code><code class="sig-name descname">Validator</code><a class="reference internal" href="_modules/concrete_settings/validator.html#Validator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.validator.Validator" title="Permalink to this definition">¶</a></dt>
+<dt id="concrete_settings.types.Validator">
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.types.</code><code class="sig-name descname">Validator</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/types.html#Validator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.types.Validator" title="Permalink to this definition">¶</a></dt>
 <dd><p>A validator is a callable that raises an exception if a value is wrong.</p>
 <p>A validator accepts a value as a mandatory argument, and keyword-only arguments
 referring to settings, setting and setting’s name.</p>
 <dl class="method">
-<dt id="concrete_settings.validator.Validator.__call__">
-<em class="property">abstract </em><code class="sig-name descname">__call__</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">*</em>, <em class="sig-param">name: str = None</em>, <em class="sig-param">owner: Settings = None</em>, <em class="sig-param">setting: Setting = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/validator.html#Validator.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.validator.Validator.__call__" title="Permalink to this definition">¶</a></dt>
+<dt id="concrete_settings.types.Validator.__call__">
+<em class="property">abstract </em><code class="sig-name descname">__call__</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">*</em>, <em class="sig-param">name: str = None</em>, <em class="sig-param">owner: Settings = None</em>, <em class="sig-param">setting: Setting = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/types.html#Validator.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.types.Validator.__call__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Validate a value. Raise <cite>SettingsValidationError</cite> if value is wrong.</p>
 </dd></dl>
 

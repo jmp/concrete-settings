@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to ConcreteSettings &mdash; Concrete Settings  documentation</title>
+  <title>Welcome to Concrete Settings &mdash; Concrete Settings  documentation</title>
   
 
   
@@ -132,7 +132,7 @@
     
       <li><a href="#">Docs</a> &raquo;</li>
         
-      <li>Welcome to ConcreteSettings</li>
+      <li>Welcome to Concrete Settings</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -151,18 +151,30 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="welcome-to-concretesettings">
-<h1>Welcome to ConcreteSettings<a class="headerlink" href="#welcome-to-concretesettings" title="Permalink to this headline">¶</a></h1>
-<p>ConcreteSettings is a Python library which facilitates startup
+  <div class="section" id="welcome-to-concrete-settings">
+<h1>Welcome to Concrete Settings<a class="headerlink" href="#welcome-to-concrete-settings" title="Permalink to this headline">¶</a></h1>
+<p><strong>Concrete Settings</strong> is a small Python library which facilitates
 configuration management in applications.</p>
-<p>Here is an example of a minimal developer-facing setup:</p>
+<p>The settings definition DSL aims to be simple and easy readible.
+It is designed with these concepts in mind:</p>
+<ul class="simple">
+<li><p>Settings are defined in classes.</p></li>
+<li><p>Settings are documented.</p></li>
+<li><p>Settings are type-annotated and validated.</p></li>
+<li><p>Settings can be mixed and nested.</p></li>
+<li><p>Settings can be read from any sources: Python dict, yaml, json, environmental variables etc.</p></li>
+</ul>
+<p>Here is a small example of Settings class with one
+boolean setting <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>. A developer defines the
+settings in application code, while an end-user
+stores the configuration in a YAML file:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span>
 
 <span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
 
     <span class="c1">#: Turns debug mode on/off</span>
-    <span class="n">DEBUG</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
-
+    <span class="n">DEBUG</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="o">..</span>
 <span class="n">app_settings</span> <span class="o">=</span> <span class="n">AppSettings</span><span class="p">()</span>
 <span class="n">app</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;/path/to/user/settings.yml&#39;</span><span class="p">)</span>
 <span class="n">app_settings</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -171,7 +183,7 @@ configuration management in applications.</p>
 <p>While the end-user could set the values in a YAML file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># settings.yml</span>
 
-<span class="nt">DEBUG</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="nt">DEBUG</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
 </pre></div>
 </div>
 <p>Concrete Settings aims to provide a conveniet way to
@@ -259,7 +271,6 @@ Then you are very welcome to ConcreteSettings documentation!</p>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced topics</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="advanced.html#setting-declaration">Setting declaration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="advanced.html#update-strategies">Update strategies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="advanced.html#advanced-validators">Validators</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="batteries.html">Batteries</a><ul>

@@ -171,7 +171,7 @@
 <span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">StructureError</span><span class="p">,</span> <span class="n">SettingsValidationError</span><span class="p">,</span> <span class="n">ValidationErrorDetail</span>
 <span class="kn">from</span> <span class="nn">.sources</span> <span class="kn">import</span> <span class="n">get_source</span><span class="p">,</span> <span class="n">AnySource</span><span class="p">,</span> <span class="n">Source</span><span class="p">,</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">.sources.strategies</span> <span class="kn">import</span> <span class="n">default</span> <span class="k">as</span> <span class="n">default_update_strategy</span>
-<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">Undefined</span><span class="p">,</span> <span class="n">GuessSettingType</span><span class="p">,</span> <span class="n">type_hints_equal</span>
+<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">Undefined</span><span class="p">,</span> <span class="n">GuessSettingType</span><span class="p">,</span> <span class="n">type_hints_equal</span><span class="p">,</span> <span class="n">Validator</span>
 <span class="kn">from</span> <span class="nn">.validators</span> <span class="kn">import</span> <span class="n">ValueTypeValidator</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -188,19 +188,19 @@
     <span class="n">behaviors</span><span class="p">:</span> <span class="s1">&#39;Behaviors&#39;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">value</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">Undefined</span><span class="p">,</span>
-            <span class="o">*</span><span class="p">,</span>
-            <span class="n">doc</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">[</span><span class="n">Undefined</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Undefined</span><span class="p">,</span>
-            <span class="n">validators</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Callable</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
-            <span class="n">type_hint</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">GuessSettingType</span><span class="p">,</span>
-            <span class="n">behaviors</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="s1">&#39;Behaviors&#39;</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">Undefined</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">doc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="n">validators</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Validator</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+        <span class="n">type_hint</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">GuessSettingType</span><span class="p">,</span>
+        <span class="n">behaviors</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="s1">&#39;Behaviors&#39;</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type_hint</span> <span class="o">=</span> <span class="n">type_hint</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">validators</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">validators</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">behaviors</span> <span class="o">=</span> <span class="n">Behaviors</span><span class="p">(</span><span class="n">behaviors</span> <span class="ow">or</span> <span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">doc</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">doc</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">override</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -238,7 +238,7 @@
 <div class="viewcode-block" id="PropertySetting"><a class="viewcode-back" href="../../api.html#concrete_settings.PropertySetting">[docs]</a><span class="k">class</span> <span class="nc">PropertySetting</span><span class="p">(</span><span class="n">Setting</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">decorating_without_arguments</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">callable</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">callable</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">decorating_without_arguments</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_init_decorator_without_arguments</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -309,26 +309,19 @@
 
             <span class="c1"># Make a Setting out of ALL_UPPERCASE_ATTRIBUTE</span>
             <span class="k">if</span> <span class="p">(</span>
-                    <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">Setting</span><span class="p">)</span>
-                    <span class="ow">and</span> <span class="n">mcs</span><span class="o">.</span><span class="n">_is_setting_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-                    <span class="ow">and</span> <span class="n">mcs</span><span class="o">.</span><span class="n">_is_safe_setting_type</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+                <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">Setting</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="n">mcs</span><span class="o">.</span><span class="n">_is_setting_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="n">mcs</span><span class="o">.</span><span class="n">_is_safe_setting_type</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
             <span class="p">):</span>
-                <span class="n">new_field</span> <span class="o">=</span> <span class="n">mcs</span><span class="o">.</span><span class="n">_make_setting_from_attribute</span><span class="p">(</span>
-                    <span class="n">name</span><span class="p">,</span>
-                    <span class="n">field</span><span class="p">,</span>
-                    <span class="n">annotations</span><span class="p">,</span>
-                <span class="p">)</span>
+                <span class="n">new_field</span> <span class="o">=</span> <span class="n">mcs</span><span class="o">.</span><span class="n">_make_setting_from_attribute</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">annotations</span><span class="p">,)</span>
 
             <span class="c1"># Should we try to guess a type_hint for a Setting?</span>
             <span class="k">if</span> <span class="p">(</span>
-                    <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_field</span><span class="p">,</span> <span class="n">Setting</span><span class="p">)</span>
-                    <span class="ow">and</span> <span class="n">new_field</span><span class="o">.</span><span class="n">type_hint</span> <span class="ow">is</span> <span class="n">GuessSettingType</span>
+                <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_field</span><span class="p">,</span> <span class="n">Setting</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="n">new_field</span><span class="o">.</span><span class="n">type_hint</span> <span class="ow">is</span> <span class="n">GuessSettingType</span>
             <span class="p">):</span>
                 <span class="n">new_field</span><span class="o">.</span><span class="n">type_hint</span> <span class="o">=</span> <span class="n">mcs</span><span class="o">.</span><span class="n">_guess_type_hint</span><span class="p">(</span>
-                    <span class="n">name</span><span class="p">,</span>
-                    <span class="n">new_field</span><span class="p">,</span>
-                    <span class="n">annotations</span><span class="p">,</span>
-                    <span class="n">bases</span>
+                    <span class="n">name</span><span class="p">,</span> <span class="n">new_field</span><span class="p">,</span> <span class="n">annotations</span><span class="p">,</span> <span class="n">bases</span>
                 <span class="p">)</span>
 
             <span class="n">new_dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_field</span>
@@ -429,10 +422,10 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">assert</span> <span class="p">(</span>
-                <span class="s1">&#39;value&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span>
+            <span class="s1">&#39;value&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span>
         <span class="p">),</span> <span class="s1">&#39;&quot;value&quot; argument should not be passed to Settings.__init__()&#39;</span>
         <span class="k">assert</span> <span class="p">(</span>
-                <span class="s1">&#39;type_hint&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span>
+            <span class="s1">&#39;type_hint&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span>
         <span class="p">),</span> <span class="s1">&#39;&quot;type_hint&quot; argument should not be passed to Settings.__init__()&#39;</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_hint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -521,7 +514,7 @@
         <span class="k">return</span> <span class="n">errors</span>
 
     <span class="k">def</span> <span class="nf">_validate_setting</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">setting</span><span class="p">:</span> <span class="n">Setting</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">False</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">setting</span><span class="p">:</span> <span class="n">Setting</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValidationErrorDetail</span><span class="p">:</span>
         <span class="n">value</span><span class="p">:</span> <span class="n">Setting</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
@@ -571,11 +564,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_obj</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="p">(),</span> <span class="n">strategies</span><span class="o">=</span><span class="n">strategies</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_update</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">settings</span><span class="p">:</span> <span class="s1">&#39;Settings&#39;</span><span class="p">,</span>
-            <span class="n">source</span><span class="p">:</span> <span class="n">Source</span><span class="p">,</span>
-            <span class="n">parents</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
-            <span class="n">strategies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">settings</span><span class="p">:</span> <span class="s1">&#39;Settings&#39;</span><span class="p">,</span>
+        <span class="n">source</span><span class="p">:</span> <span class="n">Source</span><span class="p">,</span>
+        <span class="n">parents</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+        <span class="n">strategies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Recursively update settings object from dictionary&quot;&quot;&quot;</span>
         <span class="n">strategies</span> <span class="o">=</span> <span class="n">strategies</span> <span class="ow">or</span> <span class="p">{}</span>

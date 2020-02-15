@@ -36,7 +36,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Start me up" href="startup.html" />
-    <link rel="prev" title="Welcome to ConcreteSettings" href="index.html" /> 
+    <link rel="prev" title="Welcome to Concrete Settings" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -344,7 +344,7 @@ to validate each and all settings’ values altogether.</p>
 is called for the first time.
 Validation consists of two stages:</p>
 <ol class="arabic simple">
-<li><p>Each <a class="reference internal" href="api.html#concrete_settings.validator.Validator" title="concrete_settings.validator.Validator"><code class="xref py py-class docutils literal notranslate"><span class="pre">validator</span></code></a>
+<li><p>Each <a class="reference internal" href="api.html#concrete_settings.types.Validator" title="concrete_settings.types.Validator"><code class="xref py py-class docutils literal notranslate"><span class="pre">validator</span></code></a>
 of every setting-field’s <code class="docutils literal notranslate"><span class="pre">.validators</span></code> list is called
 to validate the setting-field’s value.</p></li>
 <li><p><a class="reference internal" href="api.html#concrete_settings.Settings.validate" title="concrete_settings.Settings.validate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Settings.validate()</span></code></a> is called.
@@ -386,7 +386,7 @@ It is intended to be used by validators, like the built-in
 to validate a setting’s value.
 Otherwise it carries no meaning and is just a valid Python object.</p>
 <p>The <a class="reference internal" href="api.html#concrete_settings.validators.ValueTypeValidator" title="concrete_settings.validators.ValueTypeValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueTypeValidator</span></code></a>
-is the <a class="reference internal" href="advanced.html#advanced-validators"><span class="std std-ref">default validator</span></a>
+is the <a class="reference internal" href="advanced.html#setting-declration-validators"><span class="std std-ref">default validator</span></a>
 for settings which have no validators defined explicitly:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span>
 
@@ -599,7 +599,7 @@ A minimal user-friendly setup is shown in <a class="reference internal" href="st
         <a href="startup.html" class="btn btn-neutral float-right" title="Start me up" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to ConcreteSettings" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Concrete Settings" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
