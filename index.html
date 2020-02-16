@@ -164,29 +164,32 @@
 </ul>
 </div>
 <p><strong>Concrete Settings</strong> is a small Python library which facilitates
-configuration management in applications.</p>
+configuration management in big and small applications.</p>
 <p>The settings definition DSL aims to be simple and easy readible.
-It is designed with these concepts in mind:</p>
+Settings are:</p>
 <ul class="simple">
-<li><p>Settings are defined in classes.</p></li>
-<li><p>Settings are documented.</p></li>
-<li><p>Settings are type-annotated and validated.</p></li>
-<li><p>Settings can be mixed and nested.</p></li>
-<li><p>Settings can be read from any sources: Python dict, yaml, json, environmental variables etc.</p></li>
+<li><p>Defined in classes</p></li>
+<li><p>Type-annotated and validated</p></li>
+<li><p>Mixable and nestable</p></li>
+<li><p>Can be read from any sources: Python dict, yaml, json, environmental variables etc.</p></li>
+<li><p>Documentation matters.</p></li>
 </ul>
 <p>Here is a small example of Settings class with one
 boolean setting <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>. A developer defines the
 settings in application code, while an end-user
 stores the configuration in a YAML file:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># settings.py</span>
+
+<span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span>
 
 <span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
 
     <span class="c1">#: Turns debug mode on/off</span>
     <span class="n">DEBUG</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="o">..</span>
+
+
 <span class="n">app_settings</span> <span class="o">=</span> <span class="n">AppSettings</span><span class="p">()</span>
-<span class="n">app</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;/path/to/user/settings.yml&#39;</span><span class="p">)</span>
+<span class="n">app_settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;/path/to/user/settings.yml&#39;</span><span class="p">)</span>
 <span class="n">app_settings</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -200,6 +203,10 @@ stores the configuration in a YAML file:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span> <span class="nb">print</span><span class="p">(</span><span class="n">app_settings</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
 
 <span class="go">True</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">AppSettings</span><span class="o">.</span><span class="n">DEBUG</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
+
+<span class="go">Turns debug mode on/off</span>
 </pre></div>
 </div>
 <p>Concrete Settings aims to provide a conveniet way to
