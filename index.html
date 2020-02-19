@@ -193,7 +193,6 @@ stores the configuration in a YAML file:</p>
 <span class="n">app_settings</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>While the end-user could set the values in a YAML file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># settings.yml</span>
 
 <span class="nt">DEBUG</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
@@ -201,17 +200,15 @@ stores the configuration in a YAML file:</p>
 </div>
 <p>Accessing settings:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span> <span class="nb">print</span><span class="p">(</span><span class="n">app_settings</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
-
 <span class="go">True</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">AppSettings</span><span class="o">.</span><span class="n">DEBUG</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
-
 <span class="go">Turns debug mode on/off</span>
 </pre></div>
 </div>
 <p>Concrete Settings aims to provide a conveniet way to
-define and use application startup settings
-for developers and an end-users:</p>
+define and use application initialization settings
+for developers and end-users:</p>
 <p class="plantuml">
 <img src="_images/plantuml-869a729f6ea139c88b198527affa3e56b2b63880.png" alt="&#64;startuml
 :Developer: as Dev
