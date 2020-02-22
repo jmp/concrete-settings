@@ -238,9 +238,7 @@
 <div class="viewcode-block" id="PropertySetting"><a class="viewcode-back" href="../../api.html#concrete_settings.PropertySetting">[docs]</a><span class="k">class</span> <span class="nc">PropertySetting</span><span class="p">(</span><span class="n">Setting</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">decorating_without_arguments</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-            <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
-            <span class="ow">and</span> <span class="n">callable</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">callable</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">decorating_without_arguments</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_init_decorator_without_arguments</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -321,13 +319,10 @@
                 <span class="ow">and</span> <span class="n">mcs</span><span class="o">.</span><span class="n">_is_setting_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
                 <span class="ow">and</span> <span class="n">mcs</span><span class="o">.</span><span class="n">_can_be_converted_to_setting_automatically</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
             <span class="p">):</span>
-                <span class="n">new_attr</span> <span class="o">=</span> <span class="n">mcs</span><span class="o">.</span><span class="n">_make_setting_from_attribute</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">annotations</span><span class="p">,</span> <span class="p">)</span>
+                <span class="n">new_attr</span> <span class="o">=</span> <span class="n">mcs</span><span class="o">.</span><span class="n">_make_setting_from_attribute</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">annotations</span><span class="p">,)</span>
 
             <span class="c1"># Should we try to guess a type_hint for a Setting?</span>
-            <span class="k">if</span> <span class="p">(</span>
-                <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_attr</span><span class="p">,</span> <span class="n">Setting</span><span class="p">)</span>
-                <span class="ow">and</span> <span class="n">new_attr</span><span class="o">.</span><span class="n">type_hint</span> <span class="ow">is</span> <span class="n">GuessSettingType</span>
-            <span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_attr</span><span class="p">,</span> <span class="n">Setting</span><span class="p">)</span> <span class="ow">and</span> <span class="n">new_attr</span><span class="o">.</span><span class="n">type_hint</span> <span class="ow">is</span> <span class="n">GuessSettingType</span><span class="p">:</span>
                 <span class="n">new_attr</span><span class="o">.</span><span class="n">type_hint</span> <span class="o">=</span> <span class="n">mcs</span><span class="o">.</span><span class="n">_guess_type_hint</span><span class="p">(</span>
                     <span class="n">name</span><span class="p">,</span> <span class="n">new_attr</span><span class="p">,</span> <span class="n">annotations</span><span class="p">,</span> <span class="n">bases</span>
                 <span class="p">)</span>
@@ -337,8 +332,9 @@
         <span class="k">return</span> <span class="n">new_dict</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_make_setting_from_attribute</span><span class="p">(</span><span class="n">mcs</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">annotations</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span>
-            <span class="n">PropertySetting</span><span class="p">,</span> <span class="n">Setting</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">_make_setting_from_attribute</span><span class="p">(</span>
+        <span class="n">mcs</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">annotations</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">PropertySetting</span><span class="p">,</span> <span class="n">Setting</span><span class="p">]:</span>
         <span class="c1"># is it a class method?</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">PropertySetting</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
@@ -384,9 +380,7 @@
             <span class="k">return</span>
 
         <span class="n">settings</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">name</span><span class="p">:</span> <span class="n">attr</span>
-            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">class_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">Setting</span><span class="p">)</span>
+            <span class="n">name</span><span class="p">:</span> <span class="n">attr</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">class_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">Setting</span><span class="p">)</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">settings</span><span class="p">:</span>
             <span class="c1"># class seems to contain to settings</span>
@@ -633,11 +627,24 @@
 
 <span class="k">class</span> <span class="nc">SettingBehaviorMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># Act as a decorator</span>
         <span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Setting</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Setting</span><span class="p">):</span>
+        <span class="n">_decorating_setting_or_method</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+            <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+            <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="n">Setting</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">))</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">_decorating_setting_or_method</span><span class="p">:</span>
             <span class="n">bhv</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__call__</span><span class="p">()</span>
-            <span class="k">return</span> <span class="n">bhv</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">):</span>
+                <span class="n">setting</span> <span class="o">=</span> <span class="n">PropertySetting</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">setting</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="n">bhv</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__call__</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">bhv</span><span class="p">(</span><span class="n">setting</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">bhv</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">bhv</span>
@@ -655,7 +662,14 @@
 <div class="viewcode-block" id="SettingBehavior"><a class="viewcode-back" href="../../api.html#concrete_settings.SettingBehavior">[docs]</a><span class="k">class</span> <span class="nc">SettingBehavior</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">SettingBehaviorMeta</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;The base class for Setting attributes behaviors.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">:</span> <span class="s1">&#39;Setting&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting_or_method</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="s1">&#39;Setting&#39;</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">]):</span>
+        <span class="n">setting</span><span class="p">:</span> <span class="n">Setting</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">setting_or_method</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">):</span>
+            <span class="n">setting</span> <span class="o">=</span> <span class="n">PropertySetting</span><span class="p">(</span><span class="n">setting_or_method</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">setting</span> <span class="o">=</span> <span class="n">setting_or_method</span>
+        <span class="c1"># Act as a decorator</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="n">setting</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__rmatmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
