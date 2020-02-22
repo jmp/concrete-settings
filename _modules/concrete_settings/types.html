@@ -156,7 +156,6 @@
 <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Protocol</span>
 
 
-<span class="c1"># pragma: no_cover</span>
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">.core</span> <span class="kn">import</span> <span class="n">Setting</span><span class="p">,</span> <span class="n">Settings</span>
 
@@ -255,7 +254,7 @@
         <span class="n">setting</span><span class="p">:</span> <span class="s1">&#39;Setting&#39;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Validate a value. Raise `SettingsValidationError` if value is wrong.&quot;&quot;&quot;</span>
-        <span class="k">pass</span></div></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
 </pre></div>
 
            </div>
