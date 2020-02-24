@@ -185,26 +185,28 @@
 </div>
 <div class="section" id="ii-think-of-an-end-user">
 <h3>II. Think of an end-user<a class="headerlink" href="#ii-think-of-an-end-user" title="Permalink to this headline">¶</a></h3>
-<p>Provide a conventient way of entering the application settings to an end-user.
-For example  via a <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file passed as a command-line argument:</p>
+<p>What would be a convenient way to enter the application settings for an end-user?
+Perhaps via a JSON or YAML file or environmental variables?</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># my_app/main.py</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
+<span class="kn">from</span> <span class="nn">concrete_settings.contrib.sources</span> <span class="kn">import</span> <span class="n">EnvVarSource</span>
+
 <span class="kn">from</span> <span class="nn">.app_settings</span> <span class="kn">import</span> <span class="n">ApplicationSettings</span>
 
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Usage:</span>
+    <span class="sd">&quot;&quot;&quot;Usage: python main.py /path/to/settings.[yml|json]&quot;&quot;&quot;</span>
 
-
-<span class="sd">    python main.py /path/to/settings.yaml</span>
-<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">settings</span> <span class="o">=</span> <span class="n">ApplicationSettings</span><span class="p">()</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Reading settings from </span><span class="si">{sys.argv[1]}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reading settings from </span><span class="si">{sys.argv[1]}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading settings from environmental variables&quot;</span><span class="p">)</span>
+    <span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">EnvVarSource</span><span class="p">())</span>
 
     <span class="c1"># validate the settings,</span>
     <span class="c1"># raise exception if something is invalid</span>
@@ -216,7 +218,7 @@ For example  via a <code class="docutils literal notranslate"><span class="pre">
         <span class="o">...</span>
 </pre></div>
 </div>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># settings.yaml</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># settings.yml</span>
 
 <span class="nt">DEBUG</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
 </pre></div>
@@ -247,8 +249,8 @@ integration with new and legacy projects.</p>
 <p>Here is an example of starting up a new Django application with Concrete Settings.
 Let’s consider that a project was created by the traditional <code class="docutils literal notranslate"><span class="pre">djago-admin.py</span> <span class="pre">startproject</span> <span class="pre">mysite</span></code>.
 The project settings are defined in the good old <code class="docutils literal notranslate"><span class="pre">settings.py</span></code>.
-Why not have all Django settings in a YAML file instead?
-(<a class="reference download internal" download="" href="_downloads/c20c76c13eb9668ca27fa1dec059e4ac/django30_template.yml"><code class="xref download docutils literal notranslate"><span class="pre">full</span> <span class="pre">example</span> <span class="pre">source</span></code></a>)</p>
+Why not have all Django project settings in a YAML file instead?
+(<a class="reference download internal" download="" href="_downloads/c20c76c13eb9668ca27fa1dec059e4ac/django30_template.yml"><code class="xref download docutils literal notranslate"><span class="pre">full</span> <span class="pre">source</span></code></a>)</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># mysite/django.yml</span>
 
 <span class="nt">SECRET_KEY</span><span class="p">:</span> <span class="s">&#39;xnhdv!(nm6f+y^izff1^e#kdy^v3gdgme87j*p)ahs6)t5-(32&#39;</span>

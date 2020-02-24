@@ -224,7 +224,7 @@ and a corresponding <code class="docutils literal notranslate"><span class="pre"
 In a nutshell, if a field looks like a setting, but is not explicitly
 defined as an instance of class <a class="reference internal" href="api.html#concrete_settings.Setting" title="concrete_settings.Setting"><code class="xref py py-class docutils literal notranslate"><span class="pre">Setting</span></code></a>,
 a corresponding object is created instead.</p>
-<p><a class="reference internal" href="advanced.html#setting-declration"><span class="std std-ref">Later in the documentation</span></a> the setting creation
+<p><a class="reference internal" href="advanced.html#setting-definition"><span class="std std-ref">Later in the documentation</span></a> the setting creation
 rules are explored in-depth.
 For now please accept that Concrete Settings’ preferred way of declaring
 <em>basic</em> settings is by omitting the <code class="docutils literal notranslate"><span class="pre">Setting(...)</span></code> call at all.
@@ -385,7 +385,7 @@ It is intended to be used by validators like the built-in
 to validate a setting value.
 Otherwise it carries no meaning and is just a valid Python object.</p>
 <p>The <a class="reference internal" href="api.html#concrete_settings.validators.ValueTypeValidator" title="concrete_settings.validators.ValueTypeValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueTypeValidator</span></code></a>
-is the <a class="reference internal" href="advanced.html#setting-declration-validators"><span class="std std-ref">default validator</span></a>
+is the <a class="reference internal" href="advanced.html#setting-definition-validators"><span class="std std-ref">default validator</span></a>
 for settings which have no validators defined explicitly:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span>
 
