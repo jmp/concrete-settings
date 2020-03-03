@@ -3,16 +3,22 @@
 API
 ===
 
-.. module:: concrete_settings
-
 This part of the documentation covers all the interfaces of Concrete Settings.
 
 Settings
 --------
 
 .. autoclass:: concrete_settings.Setting
-   :members:
-   :special-members: __get__,__set__
+
+   A setting is a named object for storing, documenting and validating
+   a certain value.
+
+   :param value: the initial value of a setting. If no value is given,
+   :param doc: a user-friendly setting documentation.
+   :param validators: setting validators.
+   :param type_hint: setting type.
+   :param behaviors: setting behaviors.
+
 
 .. autoclass:: concrete_settings.Settings
    :members:
@@ -74,10 +80,9 @@ DeprecatedValidator
 Behaviors
 ---------
 
-.. module:: concrete_settings.behaviors
+.. autoclass:: concrete_settings.Behavior
 
-.. autoclass:: concrete_settings.SettingBehavior
-
+.. autoclass:: concrete_settings.Behaviors
 
 
 deprecated

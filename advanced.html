@@ -86,7 +86,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced topics</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#setting-definition">Setting definition</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#name">Name</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#default-value">Default value</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initial-value">Initial value</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#type-hint">Type hint</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#validators">Validators</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#behaviors">Behaviors</a></li>
@@ -172,7 +172,7 @@
 <li><p><a class="reference internal" href="#setting-definition" id="id2">Setting definition</a></p>
 <ul>
 <li><p><a class="reference internal" href="#name" id="id3">Name</a></p></li>
-<li><p><a class="reference internal" href="#default-value" id="id4">Default value</a></p></li>
+<li><p><a class="reference internal" href="#initial-value" id="id4">Initial value</a></p></li>
 <li><p><a class="reference internal" href="#type-hint" id="id5">Type hint</a></p></li>
 <li><p><a class="reference internal" href="#validators" id="id6">Validators</a></p></li>
 <li><p><a class="reference internal" href="#behaviors" id="id7">Behaviors</a></p></li>
@@ -198,15 +198,15 @@ is parsed and processed into <a class="reference internal" href="api.html#concre
 descriptor instances.</p>
 <p>In a nutshell Concrete Settings has to get
 a setting field’s <a class="reference internal" href="#setting-definition-name"><span class="std std-ref">name</span></a>,
-<a class="reference internal" href="#setting-definition-default-value"><span class="std std-ref">default value</span></a>
+<a class="reference internal" href="#setting-definition-initial-value"><span class="std std-ref">initial value</span></a>
 and <a class="reference internal" href="#setting-definition-type-hint"><span class="std std-ref">type hint</span></a>,
 its <a class="reference internal" href="#setting-definition-validators"><span class="std std-ref">validators</span></a>,
 <a class="reference internal" href="#setting-definition-behaviors"><span class="std std-ref">behaviors</span></a>
 and <a class="reference internal" href="#setting-definition-documentation"><span class="std std-ref">documentation</span></a>.</p>
 <div class="figure align-center">
 <p class="plantuml">
-<img src="_images/plantuml-6116093f7e698ad7becdf8446b2739eb2001f940.png" alt="&#64;startuml
-(Default value) --&gt; (Setting)
+<img src="_images/plantuml-3679db6b428c234f3245d767448360f83c251e00.png" alt="&#64;startuml
+(Initial value) --&gt; (Setting)
 (Type hint) --&gt; (Setting)
 (Validators) --&gt; (Setting)
 (Behaviors) --&gt; (Setting)
@@ -259,16 +259,16 @@ For example, to set validators:</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="default-value">
-<span id="setting-definition-default-value"></span><h3><a class="toc-backref" href="#id4">Default value</a><a class="headerlink" href="#default-value" title="Permalink to this headline">¶</a></h3>
-<p>The <em>default value</em> is the value assigned to the attribute:</p>
+<div class="section" id="initial-value">
+<span id="setting-definition-initial-value"></span><h3><a class="toc-backref" href="#id4">Initial value</a><a class="headerlink" href="#initial-value" title="Permalink to this headline">¶</a></h3>
+<p>The <em>initial value</em> is the value assigned to the attribute:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
-    <span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># default value is `True`</span>
-    <span class="n">MAX_SPEED</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># default value is `10`</span>
+    <span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">True</span>    <span class="c1"># initial value is `True`</span>
+    <span class="n">MAX_SPEED</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># initial value is `10`</span>
 </pre></div>
 </div>
 <p>You can use the special <a class="reference internal" href="api.html#concrete_settings.types.Undefined" title="concrete_settings.types.Undefined"><code class="xref py py-class docutils literal notranslate"><span class="pre">Undefined</span></code></a>
-value in cases when default value is not available:</p>
+value in cases when initial value is not available:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Undefined</span>
 
 <span class="k">class</span> <span class="nc">DBSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
@@ -280,7 +280,7 @@ value in cases when default value is not available:</p>
 <em>before validation</em>.
 <a class="reference internal" href="api.html#concrete_settings.validators.RequiredValidator" title="concrete_settings.validators.RequiredValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequiredValidator</span></code></a>
 would fail validation if the setting’s value is <code class="docutils literal notranslate"><span class="pre">Undefined</span></code>.</p>
-<p>It does not make much a sense to have a default value for
+<p>It does not make much a sense to have a initial value for
 a property-setting since the value is computed every
 time a setting is read.
 To prevent misuse, passing a <code class="docutils literal notranslate"><span class="pre">value</span></code> argument raises an <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AssertionError" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssertionError</span></code></a>
@@ -310,20 +310,20 @@ when <code class="docutils literal notranslate"><span class="pre">assert</span><
 </pre></div>
 </div>
 <p>If an attribute is not type-annotated, a <em>type hint</em> is computed
-by calling <a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">type()</span></code></a> on the default value. The recognized types
+by calling <a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">type()</span></code></a> on the initial value. The recognized types
 are defined in
 <a class="reference internal" href="api.html#concrete_settings.types.GuessSettingType.KNOWN_TYPES" title="concrete_settings.types.GuessSettingType.KNOWN_TYPES"><code class="xref py py-attr docutils literal notranslate"><span class="pre">GuessSettingType.KNOWN_TYPES</span></code></a>.
 If the type is not recognized, the type hint is set to <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">typing.Any</span></code></a>.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
-    <span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">True</span>     <span class="c1"># default value `True`, type `bool`</span>
-    <span class="n">MAX_SPEED</span> <span class="o">=</span> <span class="mi">300</span>  <span class="c1"># default value `300`, type `int`</span>
+    <span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">True</span>     <span class="c1"># initial value `True`, type `bool`</span>
+    <span class="n">MAX_SPEED</span> <span class="o">=</span> <span class="mi">300</span>  <span class="c1"># initial value `300`, type `int`</span>
 </pre></div>
 </div>
 <p><strong>It is recommended to explicitly annotate a setting with the intended type,
 in order to avoid invalid type detections</strong>:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
-    <span class="n">DEBUG</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>       <span class="c1"># default value `True`, type `bool`</span>
-    <span class="n">MAX_SPEED</span><span class="p">:</span> <span class="nb">float</span>  <span class="o">=</span> <span class="mi">300</span>  <span class="c1"># default value `300`, type `float`</span>
+    <span class="n">DEBUG</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>       <span class="c1"># initial value `True`, type `bool`</span>
+    <span class="n">MAX_SPEED</span><span class="p">:</span> <span class="nb">float</span>  <span class="o">=</span> <span class="mi">300</span>  <span class="c1"># initial value `300`, type `float`</span>
 </pre></div>
 </div>
 <p>Property-settings’ type hint is read from the return type annotation.
@@ -412,7 +412,7 @@ in the validated settings:</p>
 </div>
 <div class="section" id="behaviors">
 <span id="setting-definition-behaviors"></span><h3><a class="toc-backref" href="#id7">Behaviors</a><a class="headerlink" href="#behaviors" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference internal" href="api.html#concrete_settings.SettingBehavior" title="concrete_settings.SettingBehavior"><code class="xref py py-class docutils literal notranslate"><span class="pre">Setting</span> <span class="pre">Behaviors</span></code></a>
+<p><a class="reference internal" href="api.html#concrete_settings.Behavior" title="concrete_settings.Behavior"><code class="xref py py-class docutils literal notranslate"><span class="pre">Setting</span> <span class="pre">Behaviors</span></code></a>
 allow executing some logic on different stages of a Setting lifecycle.</p>
 <p>In addition to defining behaviors in a Setting
 <a class="reference internal" href="api.html#concrete_settings.Setting" title="concrete_settings.Setting"><code class="xref py py-class docutils literal notranslate"><span class="pre">constructor</span></code></a>,
@@ -593,7 +593,7 @@ for such cases:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Zaur Nasibov
+        &copy; Copyright 2020, Zaur Nasibov
 
     </p>
   </div>

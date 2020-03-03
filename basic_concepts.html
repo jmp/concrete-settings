@@ -264,13 +264,13 @@ a Python read-only <a class="reference external" href="https://docs.python.org/3
 </div>
 <p>Before going further, let’s take a look at the contents of a Setting object.
 Each implicitly or explicitly defined setting consists of a
-<strong>name</strong>, <strong>default value</strong>, a <strong>type hint</strong>,
+<strong>name</strong>, <strong>initial value</strong>, a <strong>type hint</strong>,
 <strong>validators</strong>, <strong>behaviors</strong>
 and <strong>documentation</strong>:</p>
 <div class="figure align-center">
 <p class="plantuml">
-<img src="_images/plantuml-6116093f7e698ad7becdf8446b2739eb2001f940.png" alt="&#64;startuml
-(Default value) --&gt; (Setting)
+<img src="_images/plantuml-3679db6b428c234f3245d767448360f83c251e00.png" alt="&#64;startuml
+(Initial value) --&gt; (Setting)
 (Type hint) --&gt; (Setting)
 (Validators) --&gt; (Setting)
 (Behaviors) --&gt; (Setting)
@@ -281,14 +281,14 @@ note left of (Setting) : NAME
 </p>
 </div>
 <ul class="simple">
-<li><p><strong>Default value</strong> is a setting’s initial value.</p></li>
+<li><p><strong>Initial value</strong> is a setting’s default value.</p></li>
 <li><p><strong>Type hint</strong> is a setting type. It is called a hint, since it carries no
 meaning on its own. However a <strong>validator</strong> like the built-in
 <a class="reference internal" href="api.html#concrete_settings.validators.ValueTypeValidator" title="concrete_settings.validators.ValueTypeValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueTypeValidator</span></code></a>
 can use the type hint to check whether the setting value corresponds
 to the required type.</p></li>
 <li><p><strong>Validators</strong> is a collection of callables which validate the value of the setting.</p></li>
-<li><p><strong>Behaviors</strong> is a collection of <a class="reference internal" href="api.html#concrete_settings.SettingBehavior" title="concrete_settings.SettingBehavior"><code class="xref py py-class docutils literal notranslate"><span class="pre">SettingBehavior</span></code></a>
+<li><p><strong>Behaviors</strong> is a collection of <a class="reference internal" href="api.html#concrete_settings.Behavior" title="concrete_settings.Behavior"><code class="xref py py-class docutils literal notranslate"><span class="pre">Behavior</span></code></a>
 objects which modify a setting’s behavior during different stages of its life cycle.</p></li>
 <li><p><strong>Documentation</strong> is a multi-line doc string intended for the end user.</p></li>
 </ul>
@@ -411,7 +411,7 @@ Raising a warning when settings are initialized and
 every time the setting is being read - sounds like a plan.
 A straightforward way to do this is by sublassing the
 <a class="reference internal" href="api.html#concrete_settings.Setting" title="concrete_settings.Setting"><code class="xref py py-class docutils literal notranslate"><span class="pre">Setting</span></code></a> class and overriding
-<a class="reference internal" href="api.html#concrete_settings.Setting.__get__" title="concrete_settings.Setting.__get__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Setting.__get__()</span></code></a>.</p>
+<code class="docutils literal notranslate"><span class="pre">Setting.__get__()</span></code>.</p>
 <p>Another way would be using the supplied Settings Behavior mechanism.
 Behaviors can be passed to a Setting explicitly.
 But the preferred way is to use the syntactic sugar - by “decorating” settings.
@@ -440,11 +440,7 @@ get a warning in stderr:</p>
 </pre></div>
 </div>
 <p>In a nutshell, a <em>behavior</em> is a way to change how a setting field behaves
-during its initialization, validation and setting’s
-<a class="reference internal" href="api.html#concrete_settings.Setting.__get__" title="concrete_settings.Setting.__get__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get</span></code></a>
-and
-<a class="reference internal" href="api.html#concrete_settings.Setting.__set__" title="concrete_settings.Setting.__set__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set</span></code></a>
-descriptors invocations.
+during its initialization, validation, reading and writing operations.
 A behavior can be passed to <a class="reference internal" href="api.html#concrete_settings.Setting" title="concrete_settings.Setting"><code class="xref py py-class docutils literal notranslate"><span class="pre">Setting.__init__()</span></code></a>
 or by using <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> operator: <code class="docutils literal notranslate"><span class="pre">value</span> <span class="pre">&#64;</span> <span class="pre">behavior0</span> <span class="pre">&#64;</span> <span class="pre">behavior1</span> <span class="pre">&#64;</span> <span class="pre">...</span></code></p>
 </div>
@@ -609,7 +605,7 @@ A minimal user-friendly setup is shown in <a class="reference internal" href="st
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Zaur Nasibov
+        &copy; Copyright 2020, Zaur Nasibov
 
     </p>
   </div>
