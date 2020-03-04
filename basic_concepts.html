@@ -163,22 +163,22 @@
            <div itemprop="articleBody">
             
   <div class="section" id="basic-concepts">
-<h1>Basic concepts<a class="headerlink" href="#basic-concepts" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>Basic concepts<a class="headerlink" href="#basic-concepts" title="Permalink to this headline">¶</a></h1>
 <p>In this chapter we cover the essentials of Concrete Settings.</p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><p><a class="reference internal" href="#defining-settings" id="id1">Defining settings</a></p></li>
-<li><p><a class="reference internal" href="#reading-settings" id="id2">Reading settings</a></p></li>
-<li><p><a class="reference internal" href="#validation" id="id3">Validation</a></p></li>
-<li><p><a class="reference internal" href="#type-hint" id="id4">Type hint</a></p></li>
-<li><p><a class="reference internal" href="#behavior" id="id5">Behavior</a></p></li>
-<li><p><a class="reference internal" href="#nested-settings" id="id6">Nested settings</a></p></li>
-<li><p><a class="reference internal" href="#combining-settings" id="id7">Combining settings</a></p></li>
-<li><p><a class="reference internal" href="#what-s-next" id="id8">What’s next?</a></p></li>
+<li><p><a class="reference internal" href="#defining-settings" id="id2">Defining settings</a></p></li>
+<li><p><a class="reference internal" href="#reading-settings" id="id3">Reading settings</a></p></li>
+<li><p><a class="reference internal" href="#validation" id="id4">Validation</a></p></li>
+<li><p><a class="reference internal" href="#type-hint" id="id5">Type hint</a></p></li>
+<li><p><a class="reference internal" href="#behavior" id="id6">Behavior</a></p></li>
+<li><p><a class="reference internal" href="#nested-settings" id="id7">Nested settings</a></p></li>
+<li><p><a class="reference internal" href="#combining-settings" id="id8">Combining settings</a></p></li>
+<li><p><a class="reference internal" href="#what-s-next" id="id9">What’s next?</a></p></li>
 </ul>
 </div>
 <div class="section" id="defining-settings">
-<h2><a class="toc-backref" href="#id1">Defining settings</a><a class="headerlink" href="#defining-settings" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id2">Defining settings</a><a class="headerlink" href="#defining-settings" title="Permalink to this headline">¶</a></h2>
 <p>Defining settings starts
 by subclassing the <a class="reference internal" href="api.html#concrete_settings.Settings" title="concrete_settings.Settings"><code class="xref py py-class docutils literal notranslate"><span class="pre">Settings</span></code></a>
 class.
@@ -294,7 +294,7 @@ objects which modify a setting’s behavior during different stages of its life 
 </ul>
 </div>
 <div class="section" id="reading-settings">
-<h2><a class="toc-backref" href="#id2">Reading settings</a><a class="headerlink" href="#reading-settings" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id3">Reading settings</a><a class="headerlink" href="#reading-settings" title="Permalink to this headline">¶</a></h2>
 <p>After a Settings object has been initialized successfully it can be updated
 with values from different <a class="reference internal" href="api.html#api-sources"><span class="std std-ref">Sources</span></a>, such as
 <a class="reference internal" href="api.html#concrete_settings.contrib.sources.YamlSource" title="concrete_settings.contrib.sources.YamlSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">YAML</span></code></a> or
@@ -336,7 +336,7 @@ For example, to update the settings from a JSON file:</p>
 </div>
 </div>
 <div class="section" id="validation">
-<span id="quickstart-validation"></span><h2><a class="toc-backref" href="#id3">Validation</a><a class="headerlink" href="#validation" title="Permalink to this headline">¶</a></h2>
+<span id="quickstart-validation"></span><h2><a class="toc-backref" href="#id4">Validation</a><a class="headerlink" href="#validation" title="Permalink to this headline">¶</a></h2>
 <p>When Settings values have been finaly loaded, it is time
 to validate each and all settings’ values altogether.</p>
 <p>A Settings object validates its setting-fields and itself when
@@ -378,7 +378,7 @@ It is indtended to validate the Settings object as a whole.</p></li>
 </div>
 </div>
 <div class="section" id="type-hint">
-<h2><a class="toc-backref" href="#id4">Type hint</a><a class="headerlink" href="#type-hint" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id5">Type hint</a><a class="headerlink" href="#type-hint" title="Permalink to this headline">¶</a></h2>
 <p>Type hint is a setting type.
 It is intended to be used by validators like the built-in
 <a class="reference internal" href="api.html#concrete_settings.validators.ValueTypeValidator" title="concrete_settings.validators.ValueTypeValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueTypeValidator</span></code></a>
@@ -404,7 +404,7 @@ for settings which have no validators defined explicitly:</p>
 </div>
 </div>
 <div class="section" id="behavior">
-<span id="quickstart-behavior"></span><h2><a class="toc-backref" href="#id5">Behavior</a><a class="headerlink" href="#behavior" title="Permalink to this headline">¶</a></h2>
+<span id="quickstart-behavior"></span><h2><a class="toc-backref" href="#id6">Behavior</a><a class="headerlink" href="#behavior" title="Permalink to this headline">¶</a></h2>
 <p>Imagine that you would like to notify a user that a certain setting
 has been deprecated.
 Raising a warning when settings are initialized and
@@ -445,7 +445,7 @@ A behavior can be passed to <a class="reference internal" href="api.html#concret
 or by using <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> operator: <code class="docutils literal notranslate"><span class="pre">value</span> <span class="pre">&#64;</span> <span class="pre">behavior0</span> <span class="pre">&#64;</span> <span class="pre">behavior1</span> <span class="pre">&#64;</span> <span class="pre">...</span></code></p>
 </div>
 <div class="section" id="nested-settings">
-<h2><a class="toc-backref" href="#id6">Nested settings</a><a class="headerlink" href="#nested-settings" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id7">Nested settings</a><a class="headerlink" href="#nested-settings" title="Permalink to this headline">¶</a></h2>
 <p>Nesting is a nice and simple way to logically group and isolate settings.
 Let’s try grouping <em>database</em>, <em>cache</em> and <em>logging</em> in
 application settings as follows:</p>
@@ -509,7 +509,7 @@ concrete_settings.exceptions.SettingsValidationError: DB: Expected value of type
 </div>
 </div>
 <div class="section" id="combining-settings">
-<h2><a class="toc-backref" href="#id7">Combining settings</a><a class="headerlink" href="#combining-settings" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id8">Combining settings</a><a class="headerlink" href="#combining-settings" title="Permalink to this headline">¶</a></h2>
 <p>Another way of putting settings together is by using Python’s
 multi-inheritance mechanism.
 It it very useful when putting a framework and application
@@ -578,7 +578,7 @@ must be explicitly called for each of the base classes:</p>
 </div>
 </div>
 <div class="section" id="what-s-next">
-<h2><a class="toc-backref" href="#id8">What’s next?</a><a class="headerlink" href="#what-s-next" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id9">What’s next?</a><a class="headerlink" href="#what-s-next" title="Permalink to this headline">¶</a></h2>
 <p>Now that you know the basics, why not to try adding
 Concrete Settings to your application?
 A minimal user-friendly setup is shown in <a class="reference internal" href="startup.html#startup"><span class="std std-ref">Start me up</span></a> section.</p>

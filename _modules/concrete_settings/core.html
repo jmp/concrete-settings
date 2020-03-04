@@ -413,11 +413,13 @@
 
 
 <div class="viewcode-block" id="Settings"><a class="viewcode-back" href="../../api.html#concrete_settings.Settings">[docs]</a><span class="k">class</span> <span class="nc">Settings</span><span class="p">(</span><span class="n">Setting</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">SettingsMeta</span><span class="p">):</span>
+    <span class="c1">#: Validators which are applied to each Setting that has no validators of their own.</span>
     <span class="n">default_validators</span><span class="p">:</span> <span class="n">Tuple</span> <span class="o">=</span> <span class="p">(</span><span class="n">ValueTypeValidator</span><span class="p">(),)</span>
+    <span class="c1">#: Validators which are applied to every Setting in the class.</span>
     <span class="n">mandatory_validators</span><span class="p">:</span> <span class="n">Tuple</span> <span class="o">=</span> <span class="p">()</span>
 
-    <span class="n">validating</span><span class="p">:</span> <span class="nb">bool</span>
-    <span class="n">validated</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_is_being_validated</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_validated</span><span class="p">:</span> <span class="nb">bool</span>
 
     <span class="n">_errors</span><span class="p">:</span> <span class="n">ValidationErrorDetail</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -431,8 +433,8 @@
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_hint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">validating</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">validated</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_being_validated</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validated</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_verify_structure</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_verify_structure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -487,12 +489,12 @@
 
 <div class="viewcode-block" id="Settings.is_valid"><a class="viewcode-back" href="../../api.html#concrete_settings.Settings.is_valid">[docs]</a>    <span class="k">def</span> <span class="nf">is_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Validate settings and return a boolean indicate whether settings are valid&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">validated</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validated</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_errors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_validation</span><span class="p">(</span><span class="n">raise_exception</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_errors</span> <span class="o">==</span> <span class="p">{}</span></div>
 
     <span class="k">def</span> <span class="nf">_run_validation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValidationErrorDetail</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">validating</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_being_validated</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">errors</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="c1"># validate each setting individually</span>
@@ -510,8 +512,8 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">errors</span><span class="p">[</span><span class="n">INVALID_SETTINGS</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">validating</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">validated</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_being_validated</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validated</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="n">errors</span>
 
     <span class="k">def</span> <span class="nf">_validate_setting</span><span class="p">(</span>
@@ -616,7 +618,21 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">errors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Validation errors&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_errors</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_errors</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_being_validated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Indicates that settings are being validated.</span>
+
+<span class="sd">        Can be used by behaviors to e.g. distinguish between Setting access</span>
+<span class="sd">        during validation and normal usage.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_being_validated</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">validated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Indicates whether the current Settings object havs been validated.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validated</span></div>
 
 
 <span class="k">class</span> <span class="nc">BehaviorMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>

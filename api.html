@@ -173,7 +173,7 @@
             
   <div class="section" id="api">
 <span id="id1"></span><h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
-<p>This part of the documentation covers all the interfaces of Concrete Settings.</p>
+<p>This part of the documentation briefly covers the interfaces of Concrete Settings.</p>
 <div class="section" id="settings">
 <h2>Settings<a class="headerlink" href="#settings" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -184,11 +184,11 @@ a certain value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>value</strong> – the initial value of a setting. If no value is given,</p></li>
-<li><p><strong>doc</strong> – a user-friendly setting documentation.</p></li>
-<li><p><strong>validators</strong> – setting validators.</p></li>
-<li><p><strong>type_hint</strong> – setting type.</p></li>
-<li><p><strong>behaviors</strong> – setting behaviors.</p></li>
+<li><p><strong>value</strong> – the initial value of a setting with the default <a class="reference internal" href="#concrete_settings.types.Undefined" title="concrete_settings.types.Undefined"><code class="xref py py-class docutils literal notranslate"><span class="pre">Undefined</span></code></a>.</p></li>
+<li><p><strong>doc</strong> – an end-user -friendly setting documentation.</p></li>
+<li><p><strong>validators</strong> – setting validators, a tuple of <a class="reference internal" href="#concrete_settings.types.Validator" title="concrete_settings.types.Validator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Validator</span></code></a> callables.</p></li>
+<li><p><strong>type_hint</strong> – setting type, something one would use as type annotation.</p></li>
+<li><p><strong>behaviors</strong> – setting behaviors, a container of <a class="reference internal" href="#concrete_settings.Behavior" title="concrete_settings.Behavior"><code class="xref py py-class docutils literal notranslate"><span class="pre">Behavior</span></code></a> objects.</p></li>
 </ul>
 </dd>
 </dl>
@@ -197,15 +197,13 @@ a certain value.</p>
 <dl class="class">
 <dt id="concrete_settings.Settings">
 <em class="property">class </em><code class="sig-prename descclassname">concrete_settings.</code><code class="sig-name descname">Settings</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/core.html#Settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Settings" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
-<dt id="concrete_settings.Settings.default_validators">
-<code class="sig-name descname">default_validators</code><a class="headerlink" href="#concrete_settings.Settings.default_validators" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<dd><p>Settings is a container for one or more <a class="reference internal" href="#concrete_settings.Setting" title="concrete_settings.Setting"><code class="xref py py-class docutils literal notranslate"><span class="pre">Setting</span></code></a> objects.
+Settings classes can be mixed and nested.</p>
 <dl class="attribute">
-<dt id="concrete_settings.Settings.mandatory_validators">
-<code class="sig-name descname">mandatory_validators</code><a class="headerlink" href="#concrete_settings.Settings.mandatory_validators" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="concrete_settings.Settings.default_validators">
+<code class="sig-name descname">default_validators</code><em class="property"> = (&lt;concrete_settings.validators.value_type.ValueTypeValidator object&gt;,)</em><a class="headerlink" href="#concrete_settings.Settings.default_validators" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validators which are applied to each Setting that has no validators of their own.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="concrete_settings.Settings.errors">
@@ -220,9 +218,23 @@ a certain value.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="concrete_settings.Settings.is_being_validated">
+<em class="property">property </em><code class="sig-name descname">is_being_validated</code><a class="headerlink" href="#concrete_settings.Settings.is_being_validated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates that settings are being validated.</p>
+<p>Can be used by behaviors to e.g. distinguish between Setting access
+during validation and normal usage.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="concrete_settings.Settings.is_valid">
 <code class="sig-name descname">is_valid</code><span class="sig-paren">(</span><em class="sig-param">raise_exception=False</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/concrete_settings/core.html#Settings.is_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Settings.is_valid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Validate settings and return a boolean indicate whether settings are valid</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="concrete_settings.Settings.mandatory_validators">
+<code class="sig-name descname">mandatory_validators</code><em class="property"> = ()</em><a class="headerlink" href="#concrete_settings.Settings.mandatory_validators" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validators which are applied to every Setting in the class.</p>
 </dd></dl>
 
 <dl class="method">
@@ -239,6 +251,12 @@ a certain value.</p>
 settings’ validation is completed without any errors only.
 Override the method in your child Settings classes.</p>
 <p>SettingsValidationError should be raised in case of validation errors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="concrete_settings.Settings.validated">
+<em class="property">property </em><code class="sig-name descname">validated</code><a class="headerlink" href="#concrete_settings.Settings.validated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates whether the current Settings object havs been validated.</p>
 </dd></dl>
 
 </dd></dl>
