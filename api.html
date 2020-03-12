@@ -65,7 +65,7 @@ would invoke type guessing mechanism.</p></li>
 </ul>
 </dd>
 </dl>
-<p>THe corresponding implicit definition of a setting in Settings class is written as following:</p>
+<p>The corresponding implicit definition of a setting in Settings class is written as following:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MySettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
     <span class="n">default_validators</span> <span class="o">=</span> <span class="p">(</span><span class="o">...</span><span class="p">)</span>
     <span class="n">mandatory_validators</span> <span class="o">=</span> <span class="p">(</span><span class="o">...</span><span class="p">)</span>
@@ -85,8 +85,50 @@ would invoke type guessing mechanism.</p></li>
 Settings classes can be mixed and nested.</p>
 <dl class="attribute">
 <dt id="concrete_settings.Settings.default_validators">
-<code class="sig-name descname">default_validators</code><em class="property">: Tuple</em><em class="property"> = (&lt;concrete_settings.validators.value_type.ValueTypeValidator object&gt;,)</em><a class="headerlink" href="#concrete_settings.Settings.default_validators" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validators which are applied to each Setting that has no validators of their own.</p>
+<code class="sig-name descname">default_validators</code><a class="headerlink" href="#concrete_settings.Settings.default_validators" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validators applied to each Setting that have no defined validators.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)">tuple</a>[<a class="reference internal" href="#concrete_settings.types.Validator" title="concrete_settings.types.Validator">Validator</a>]</p>
+</dd>
+<dt class="field-even">Value</dt>
+<dd class="field-even"><p><a class="reference internal" href="#concrete_settings.validators.ValueTypeValidator" title="concrete_settings.validators.ValueTypeValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">(ValueTypeValidator(),</span> <span class="pre">)</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="concrete_settings.Settings.mandatory_validators">
+<code class="sig-name descname">mandatory_validators</code><a class="headerlink" href="#concrete_settings.Settings.mandatory_validators" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validators applied to every Setting in the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)">tuple</a>[<a class="reference internal" href="#concrete_settings.types.Validator" title="concrete_settings.types.Validator">Validator</a>]</p>
+</dd>
+<dt class="field-even">Value</dt>
+<dd class="field-even"><p>()</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="concrete_settings.Settings.is_valid">
+<code class="sig-name descname">is_valid</code><span class="sig-paren">(</span><em class="sig-param">raise_exception=False</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/concrete_settings/core.html#Settings.is_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Settings.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate settings and return <code class="docutils literal notranslate"><span class="pre">True</span></code> if settings are valid.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">raise_exception</span></code> is False, validation errors are stored
+in <code class="docutils literal notranslate"><span class="pre">self.errors</span></code>. Otherwise a ValidationError is raised when
+the first invalid setting is encountered.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="concrete_settings.Settings.validate">
+<code class="sig-name descname">validate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/core.html#Settings.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Settings.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate settings altogether.</p>
+<p>This is a stub method intended to be overriden when needed.
+It is called after individual settings have been validated
+without any errors.</p>
+<p><a class="reference internal" href="#concrete_settings.exceptions.ValidationError" title="concrete_settings.exceptions.ValidationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.ValidationError</span></code></a> should be raised in
+case of validation errors.</p>
 </dd></dl>
 
 <dl class="method">
@@ -98,12 +140,6 @@ Settings classes can be mixed and nested.</p>
 <dd class="field-odd"><p><a class="reference internal" href="#concrete_settings.exceptions.ValidationErrorDetail" title="concrete_settings.exceptions.ValidationErrorDetail"><code class="xref py py-data docutils literal notranslate"><span class="pre">ValidationErrorDetail</span></code></a></p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="concrete_settings.Settings.extract_to">
-<code class="sig-name descname">extract_to</code><span class="sig-paren">(</span><em class="sig-param">destination: Union[module, dict], prefix: str = ''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/core.html#Settings.extract_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Settings.extract_to" title="Permalink to this definition">¶</a></dt>
-<dd><p>Populate settings to dict or module scope.</p>
 </dd></dl>
 
 <dl class="method">
@@ -120,47 +156,9 @@ during validation and normal usage.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="concrete_settings.Settings.is_valid">
-<code class="sig-name descname">is_valid</code><span class="sig-paren">(</span><em class="sig-param">raise_exception=False</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/concrete_settings/core.html#Settings.is_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Settings.is_valid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validate settings and return True if settings are valid.</p>
-<p>If <cite>raise_exception</cite> is False, validation errors are stored
-in <cite>self.errors</cite>. Otherwise a ValidationError is raised when
-the first invalid
-:param bool raise_exception:</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="concrete_settings.Settings.mandatory_validators">
-<code class="sig-name descname">mandatory_validators</code><em class="property">: Tuple</em><em class="property"> = ()</em><a class="headerlink" href="#concrete_settings.Settings.mandatory_validators" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validators which are applied to every Setting in the class.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="concrete_settings.Settings.update">
 <code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">source: Union[Dict[str, Any], str, Source, pathlib.Path], strategies: dict = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/core.html#Settings.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Settings.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the object from given source and strategies.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="concrete_settings.Settings.validate">
-<code class="sig-name descname">validate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/core.html#Settings.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Settings.validate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validate settings altogether.</p>
-<p>This is a stub method intended to be overriden when needed.
-It is called after individual settings have been validated
-without any errors.</p>
-<p><a class="reference internal" href="#concrete_settings.exceptions.ValidationError" title="concrete_settings.exceptions.ValidationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.ValidationError</span></code></a> should be raised in
-case of validation errors.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="concrete_settings.Settings.validated">
-<em class="property">property </em><code class="sig-name descname">validated</code><a class="headerlink" href="#concrete_settings.Settings.validated" title="Permalink to this definition">¶</a></dt>
-<dd><p>Indicates whether the current Settings object has been validated.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></p>
-</dd>
-</dl>
 </dd></dl>
 
 </dd></dl>

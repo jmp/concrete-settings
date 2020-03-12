@@ -283,13 +283,10 @@
 
 
 <div class="viewcode-block" id="Settings"><a class="viewcode-back" href="../../api.html#concrete_settings.Settings">[docs]</a><span class="k">class</span> <span class="nc">Settings</span><span class="p">(</span><span class="n">Setting</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">SettingsMeta</span><span class="p">):</span>
-    <span class="c1">#: Validators which are applied to each Setting that has no validators of their own.</span>
-    <span class="n">default_validators</span><span class="p">:</span> <span class="n">Tuple</span> <span class="o">=</span> <span class="p">(</span><span class="n">ValueTypeValidator</span><span class="p">(),)</span>
-    <span class="c1">#: Validators which are applied to every Setting in the class.</span>
-    <span class="n">mandatory_validators</span><span class="p">:</span> <span class="n">Tuple</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">default_validators</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Validator</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ValueTypeValidator</span><span class="p">(),)</span>
+    <span class="n">mandatory_validators</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Validator</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
 
     <span class="n">_is_being_validated</span><span class="p">:</span> <span class="nb">bool</span>
-    <span class="n">_validated</span><span class="p">:</span> <span class="nb">bool</span>
 
     <span class="n">_errors</span><span class="p">:</span> <span class="n">ValidationErrorDetail</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -304,7 +301,6 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_hint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_is_being_validated</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_validated</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_verify_structure</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_verify_structure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -361,13 +357,6 @@
                 <span class="k">yield</span> <span class="n">name</span><span class="p">,</span> <span class="n">attr</span>
 
 <div class="viewcode-block" id="Settings.is_valid"><a class="viewcode-back" href="../../api.html#concrete_settings.Settings.is_valid">[docs]</a>    <span class="k">def</span> <span class="nf">is_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Validate settings and return True if settings are valid.</span>
-
-<span class="sd">        If `raise_exception` is False, validation errors are stored</span>
-<span class="sd">        in `self.errors`. Otherwise a ValidationError is raised when</span>
-<span class="sd">        the first invalid</span>
-<span class="sd">        :param bool raise_exception:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_errors</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_errors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_validation</span><span class="p">(</span><span class="n">raise_exception</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validated</span> <span class="o">=</span> <span class="kc">True</span>
@@ -480,7 +469,7 @@
                 <span class="n">new_val</span> <span class="o">=</span> <span class="n">update_strategy</span><span class="p">(</span><span class="n">current_val</span><span class="p">,</span> <span class="n">update_to_val</span><span class="p">)</span>
                 <span class="nb">setattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">new_val</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Settings.extract_to"><a class="viewcode-back" href="../../api.html#concrete_settings.Settings.extract_to">[docs]</a>    <span class="k">def</span> <span class="nf">extract_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destination</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">types</span><span class="o">.</span><span class="n">ModuleType</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">extract_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destination</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">types</span><span class="o">.</span><span class="n">ModuleType</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Populate settings to dict or module scope.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">prefix</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
             <span class="n">prefix</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span>
@@ -493,7 +482,7 @@
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">Settings</span><span class="p">):</span>  <span class="c1"># nested settings</span>
                 <span class="n">attr</span><span class="o">.</span><span class="n">extract_to</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">var_name</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">destination</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></div>
+                <span class="n">destination</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">errors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValidationErrorDetail</span><span class="p">:</span>
@@ -513,15 +502,7 @@
 
 <span class="sd">        :type: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_being_validated</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">validated</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Indicates whether the current Settings object has been validated.</span>
-
-<span class="sd">        :type: bool</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validated</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_being_validated</span></div>
 
 
 <span class="k">class</span> <span class="nc">BehaviorMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
