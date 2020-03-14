@@ -54,9 +54,11 @@ a certain value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>) – the initial value of a setting with the default <a class="reference internal" href="#concrete_settings.types.Undefined" title="concrete_settings.types.Undefined"><code class="xref py py-class docutils literal notranslate"><span class="pre">Undefined</span></code></a>.</p></li>
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>) – the initial value of a setting with the default
+<a class="reference internal" href="#concrete_settings.types.Undefined" title="concrete_settings.types.Undefined"><code class="xref py py-class docutils literal notranslate"><span class="pre">Undefined</span></code></a>.</p></li>
 <li><p><strong>doc</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – an end-user -friendly setting documentation.</p></li>
-<li><p><strong>validators</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a>) – setting validators, a tuple of <a class="reference internal" href="#concrete_settings.types.Validator" title="concrete_settings.types.Validator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Validator</span></code></a> callables.</p></li>
+<li><p><strong>validators</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a>) – setting validators, a tuple of
+<a class="reference internal" href="#concrete_settings.validators.Validator" title="concrete_settings.validators.Validator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Validator</span></code></a> callables.</p></li>
 <li><p><strong>type_hint</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>) – setting type, something one would use as type annotation.
 The default value
 (<a class="reference internal" href="#concrete_settings.types.GuessSettingType" title="concrete_settings.types.GuessSettingType"><code class="xref py py-class docutils literal notranslate"><span class="pre">GuessSettingType</span></code></a>)
@@ -73,7 +75,7 @@ would invoke type guessing mechanism.</p></li>
     <span class="c1">#: Documentation is written</span>
     <span class="c1">#: in Sphinx-style comments above</span>
     <span class="c1">#: the setting definition</span>
-    <span class="n">SETTING_NAME</span><span class="p">:</span> <span class="n">type_hint</span> <span class="o">=</span> <span class="n">value</span> <span class="o">@</span> <span class="n">behavior1</span> <span class="o">@</span> <span class="n">behavior2</span> <span class="o">@</span> <span class="o">...</span>
+    <span class="n">SETTING_NAME</span><span class="p">:</span> <span class="n">type_hint</span> <span class="o">=</span> <span class="n">value</span> <span class="nd">@behavior1</span> <span class="nd">@behavior2</span> <span class="o">@...</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -89,7 +91,7 @@ Settings classes can be mixed and nested.</p>
 <dd><p>Validators applied to each Setting that have no defined validators.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)">tuple</a>[<a class="reference internal" href="#concrete_settings.types.Validator" title="concrete_settings.types.Validator">Validator</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)">tuple</a>[<a class="reference internal" href="#concrete_settings.validators.Validator" title="concrete_settings.validators.Validator">Validator</a>]</p>
 </dd>
 <dt class="field-even">Value</dt>
 <dd class="field-even"><p><a class="reference internal" href="#concrete_settings.validators.ValueTypeValidator" title="concrete_settings.validators.ValueTypeValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">(ValueTypeValidator(),</span> <span class="pre">)</span></code></a></p>
@@ -103,7 +105,7 @@ Settings classes can be mixed and nested.</p>
 <dd><p>Validators applied to every Setting in the class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)">tuple</a>[<a class="reference internal" href="#concrete_settings.types.Validator" title="concrete_settings.types.Validator">Validator</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)">tuple</a>[<a class="reference internal" href="#concrete_settings.validators.Validator" title="concrete_settings.validators.Validator">Validator</a>]</p>
 </dd>
 <dt class="field-even">Value</dt>
 <dd class="field-even"><p>()</p>
@@ -116,8 +118,9 @@ Settings classes can be mixed and nested.</p>
 <code class="sig-name descname">is_valid</code><span class="sig-paren">(</span><em class="sig-param">raise_exception=False</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/concrete_settings/core.html#Settings.is_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Settings.is_valid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Validate settings and return <code class="docutils literal notranslate"><span class="pre">True</span></code> if settings are valid.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">raise_exception</span></code> is False, validation errors are stored
-in <code class="docutils literal notranslate"><span class="pre">self.errors</span></code>. Otherwise a ValidationError is raised when
-the first invalid setting is encountered.</p>
+in <a class="reference internal" href="#concrete_settings.Settings.errors" title="concrete_settings.Settings.errors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">self.errors</span></code></a>.
+Otherwise a <a class="reference internal" href="#concrete_settings.exceptions.ValidationError" title="concrete_settings.exceptions.ValidationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValidationError</span></code></a>
+is raised when the first invalid setting is encountered.</p>
 </dd></dl>
 
 <dl class="method">
@@ -127,64 +130,109 @@ the first invalid setting is encountered.</p>
 <p>This is a stub method intended to be overriden when needed.
 It is called after individual settings have been validated
 without any errors.</p>
-<p><a class="reference internal" href="#concrete_settings.exceptions.ValidationError" title="concrete_settings.exceptions.ValidationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.ValidationError</span></code></a> should be raised in
-case of validation errors.</p>
+<p>Raise <a class="reference internal" href="#concrete_settings.exceptions.ValidationError" title="concrete_settings.exceptions.ValidationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValidationError</span></code></a>
+to indicate errors.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="concrete_settings.Settings.errors">
 <em class="property">property </em><code class="sig-name descname">errors</code><a class="headerlink" href="#concrete_settings.Settings.errors" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validation errors.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#concrete_settings.exceptions.ValidationErrorDetail" title="concrete_settings.exceptions.ValidationErrorDetail"><code class="xref py py-data docutils literal notranslate"><span class="pre">ValidationErrorDetail</span></code></a></p>
-</dd>
-</dl>
+<dd><p><code class="docutils literal notranslate"><span class="pre">errors</span></code> property contains validation errors from the last
+<a class="reference internal" href="#concrete_settings.Settings.is_valid" title="concrete_settings.Settings.is_valid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">settings.is_valid(raise_exception=False)</span></code></a>
+call. The errors are packed in recursive
+<a class="reference internal" href="#concrete_settings.exceptions.ValidationErrorDetail" title="concrete_settings.exceptions.ValidationErrorDetail"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValidationErrorDetail</span></code></a>
+structure.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="concrete_settings.Settings.is_being_validated">
 <em class="property">property </em><code class="sig-name descname">is_being_validated</code><a class="headerlink" href="#concrete_settings.Settings.is_being_validated" title="Permalink to this definition">¶</a></dt>
 <dd><p>Indicates that settings are being validated.</p>
-<p>Can be used by behaviors to e.g. distinguish between Setting access
-during validation and normal usage.</p>
+<p>The property is intended to be used by behaviors to
+distinguish between Setting reads during validation
+and normal usage.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="concrete_settings.Settings.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">source</em><span class="optional">[</span>, <em class="sig-param">strategies</em><span class="optional">]</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/core.html#Settings.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Settings.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update settings from the given source.</p>
+<p>The update process consist of two stages:</p>
+<ol class="arabic simple">
+<li><p>Intializing an access and/or reading a source object -
+Python, YAML or JSON file, environmental variables, a dict,
+<code class="docutils literal notranslate"><span class="pre">locals()</span></code> etc.</p></li>
+<li><p>Update the settings by the values read from the sources.</p></li>
+</ol>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> – can either be a dict, an instance of
+<a class="reference internal" href="#concrete_settings.sources.Source" title="concrete_settings.sources.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a>
+or a path to the source file.</p></li>
+<li><p><strong>strategies</strong> – a dictionary of
+{ setting_name:
+<a class="reference internal" href="#concrete_settings.sources.strategies.Strategy" title="concrete_settings.sources.strategies.Strategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Strategy</span></code></a> callable}
+which affect how settings’ values are updated.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="concrete_settings.Settings.update">
-<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">source: Union[Dict[str, Any], str, Source, pathlib.Path], strategies: dict = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/core.html#Settings.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Settings.update" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update the object from given source and strategies.</p>
-</dd></dl>
+<dt id="concrete_settings.Settings.extract_to">
+<code class="sig-name descname">extract_to</code><span class="sig-paren">(</span><em class="sig-param">destination</em><span class="optional">[</span>, <em class="sig-param">prefix</em><span class="optional">]</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/core.html#Settings.extract_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Settings.extract_to" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="concrete_settings.core.PropertySetting">
-<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.core.</code><code class="sig-name descname">PropertySetting</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/core.html#PropertySetting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.core.PropertySetting" title="Permalink to this definition">¶</a></dt>
+<dt id="concrete_settings.setting">
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.</code><code class="sig-name descname">setting</code><a class="headerlink" href="#concrete_settings.setting" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="attribute">
-<dt id="concrete_settings.setting">
-<code class="sig-prename descclassname">concrete_settings.</code><code class="sig-name descname">setting</code><a class="headerlink" href="#concrete_settings.setting" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#concrete_settings.core.PropertySetting" title="concrete_settings.core.PropertySetting"><code class="xref py py-class docutils literal notranslate"><span class="pre">concrete_settings.core.PropertySetting</span></code></a></p>
+<dl class="class">
+<dt id="concrete_settings.core.PropertySetting">
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.core.</code><code class="sig-name descname">PropertySetting</code><a class="headerlink" href="#concrete_settings.core.PropertySetting" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">&#64;setting</span></code> (an alias to <code class="docutils literal notranslate"><span class="pre">PropertySetting</span></code> decorator-class) is used to mark
+class methods as settings. The property-settings are read-only and used to
+compute a value, usually based on other settings. For example:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
+    <span class="n">ADMIN_NAME</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Alex&#39;</span>
+    <span class="n">ADMIN_EMAIL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;alex@example.com&#39;</span>
+
+    <span class="nd">@setting</span>
+    <span class="k">def</span> <span class="nf">ADMIN_FULL_EMAIL</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Full admin email in `name &lt;email&gt;` format&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ADMIN_NAME</span><span class="si">}</span><span class="s1"> &lt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ADMIN_EMAIL</span><span class="si">}</span><span class="s1">&gt;&#39;</span>
+</pre></div>
+</div>
+<p>Note that methods written in UPPER_CASE are converted to
+<code class="docutils literal notranslate"><span class="pre">PropertySetting</span></code> automatically and do not require
+decoration by <code class="docutils literal notranslate"><span class="pre">&#64;setting</span></code>.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="concrete_settings.prefix">
-<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.</code><code class="sig-name descname">prefix</code><span class="sig-paren">(</span><em class="sig-param">prefix: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/core.html#prefix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.prefix" title="Permalink to this definition">¶</a></dt>
-<dd><p>A decorator for Settings classes which
-appends the defined prefix to each Setting attribute.</p>
-</dd></dl>
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.</code><code class="sig-name descname">prefix</code><a class="headerlink" href="#concrete_settings.prefix" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>A decorator for Settings classes which appends
+the defined prefix to each Setting attribute.
+For example:</p>
+</div></blockquote>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@prefix</span><span class="p">(</span><span class="s1">&#39;MY&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
+   <span class="n">SPEED</span> <span class="o">=</span> <span class="mi">10</span>
+   <span class="n">NAME</span> <span class="o">=</span> <span class="s1">&#39;alex&#39;</span>
 
-<dl class="class">
-<dt id="concrete_settings.core.SettingsMeta">
-<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.core.</code><code class="sig-name descname">SettingsMeta</code><a class="reference internal" href="_modules/concrete_settings/core.html#SettingsMeta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.core.SettingsMeta" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="nb">print</span><span class="p">(</span><span class="n">AppSettings</span><span class="p">()</span><span class="o">.</span><span class="n">MY_NAME</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>alex
+</pre></div>
+</div>
+</dd></dl>
 
 </div>
 <div class="section" id="module-concrete_settings.types">
@@ -192,16 +240,26 @@ appends the defined prefix to each Setting attribute.</p>
 <dl class="class">
 <dt id="concrete_settings.types.Undefined">
 <em class="property">class </em><code class="sig-prename descclassname">concrete_settings.types.</code><code class="sig-name descname">Undefined</code><a class="reference internal" href="_modules/concrete_settings/types.html#Undefined"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.types.Undefined" title="Permalink to this definition">¶</a></dt>
-<dd><p><cite>Undefined</cite> is a special value which indicates
-that something has not been explicitly set by a user.</p>
+<dd><p>A special Setting value which indicates
+that a value should be set by other means, e.g. by updating
+the settings object.
+Often used in conjuction with
+<a class="reference internal" href="#concrete_settings.validators.RequiredValidator" title="concrete_settings.validators.RequiredValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequiredValidator</span></code></a>
+and
+<a class="reference internal" href="#concrete_settings.contrib.behaviors.required" title="concrete_settings.contrib.behaviors.required"><code class="xref py py-class docutils literal notranslate"><span class="pre">required</span></code></a> behavior.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
+   <span class="n">SPEED</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Undefined</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="class">
 <dt id="concrete_settings.types.GuessSettingType">
 <em class="property">class </em><code class="sig-prename descclassname">concrete_settings.types.</code><code class="sig-name descname">GuessSettingType</code><a class="reference internal" href="_modules/concrete_settings/types.html#GuessSettingType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.types.GuessSettingType" title="Permalink to this definition">¶</a></dt>
-<dd><p>A special value for Setting.type_hint, which indicates
+<dd><p>A special value for <code class="docutils literal notranslate"><span class="pre">Setting.type_hint</span></code>, which indicates
 that a Setting type should be guessed from the default value.</p>
-<p>For an <cite>Undefined</cite> or an unknown type, the guessed type hint is <cite>typing.Any</cite>.</p>
+<p>For an <code class="docutils literal notranslate"><span class="pre">Undefined</span></code> or an unknown type, the guessed type
+hint is <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">typing.Any</span></code></a>.</p>
 <dl class="attribute">
 <dt id="concrete_settings.types.GuessSettingType.KNOWN_TYPES">
 <code class="sig-name descname">KNOWN_TYPES</code><em class="property"> = [&lt;class 'bool'&gt;, &lt;class 'int'&gt;, &lt;class 'float'&gt;, &lt;class 'complex'&gt;, &lt;class 'list'&gt;, &lt;class 'tuple'&gt;, &lt;class 'range'&gt;, &lt;class 'bytes'&gt;, &lt;class 'str'&gt;, &lt;class 'frozenset'&gt;, &lt;class 'set'&gt;, &lt;class 'dict'&gt;]</em><a class="headerlink" href="#concrete_settings.types.GuessSettingType.KNOWN_TYPES" title="Permalink to this definition">¶</a></dt>
@@ -211,17 +269,17 @@ that a Setting type should be guessed from the default value.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="validators">
-<h2>Validators<a class="headerlink" href="#validators" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-concrete_settings.validators">
+<span id="validators"></span><h2>Validators<a class="headerlink" href="#module-concrete_settings.validators" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="concrete_settings.types.Validator">
-<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.types.</code><code class="sig-name descname">Validator</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/types.html#Validator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.types.Validator" title="Permalink to this definition">¶</a></dt>
+<dt id="concrete_settings.validators.Validator">
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.validators.</code><code class="sig-name descname">Validator</code><span class="sig-paren">(</span><em class="sig-param">Protocol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/validators/validator.html#Validator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.validators.Validator" title="Permalink to this definition">¶</a></dt>
 <dd><p>A validator is a callable that raises an exception if a value is wrong.</p>
 <p>A validator accepts a value as a mandatory argument, and keyword-only arguments
 referring to settings, setting and setting’s name.</p>
 <dl class="method">
-<dt id="concrete_settings.types.Validator.__call__">
-<em class="property">abstract </em><code class="sig-name descname">__call__</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">*</em>, <em class="sig-param">name: str = None</em>, <em class="sig-param">owner: Settings = None</em>, <em class="sig-param">setting: Setting = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/types.html#Validator.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.types.Validator.__call__" title="Permalink to this definition">¶</a></dt>
+<dt id="concrete_settings.validators.Validator.__call__">
+<em class="property">abstract </em><code class="sig-name descname">__call__</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">*</em>, <em class="sig-param">name: str = None</em>, <em class="sig-param">owner: Settings = None</em>, <em class="sig-param">setting: Setting = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/validators/validator.html#Validator.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.validators.Validator.__call__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Validate a value. Raise <cite>ValidationError</cite> if value is wrong.</p>
 </dd></dl>
 
@@ -233,7 +291,7 @@ referring to settings, setting and setting’s name.</p>
 <dd><p>Raised by a setting validator when a setting value is invalid</p>
 </dd></dl>
 
-<span class="target" id="module-concrete_settings.validators"></span><div class="section" id="valuetypevalidator">
+<div class="section" id="valuetypevalidator">
 <h3>ValueTypeValidator<a class="headerlink" href="#valuetypevalidator" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="concrete_settings.validators.ValueTypeValidator">
@@ -278,7 +336,7 @@ referring to settings, setting and setting’s name.</p>
 <dt id="concrete_settings.contrib.behaviors.deprecated">
 <em class="property">class </em><code class="sig-prename descclassname">concrete_settings.contrib.behaviors.</code><code class="sig-name descname">deprecated</code><span class="sig-paren">(</span><em class="sig-param">deprecation_message: str = 'Setting `{name}` in class `{owner}` is deprecated.'</em>, <em class="sig-param">*</em>, <em class="sig-param">warn_on_validation=True</em>, <em class="sig-param">error_on_validation=False</em>, <em class="sig-param">warn_on_get=False</em>, <em class="sig-param">warn_on_set=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/contrib/behaviors/deprecated_behavior.html#deprecated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.contrib.behaviors.deprecated" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds <a class="reference internal" href="#concrete_settings.contrib.validators.DeprecatedValidator" title="concrete_settings.contrib.validators.DeprecatedValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeprecatedValidator</span></code></a>  # noqa: E501 # line too long
-to the setting.</p>
+to setting validators.</p>
 </dd></dl>
 
 </div>
@@ -318,6 +376,53 @@ to the setting.</p>
 </div>
 <div class="section" id="module-concrete_settings.sources.strategies">
 <span id="update-strategies"></span><h3>Update strategies<a class="headerlink" href="#module-concrete_settings.sources.strategies" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="concrete_settings.sources.strategies.Strategy">
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.sources.strategies.</code><code class="sig-name descname">Strategy</code><span class="sig-paren">(</span><em class="sig-param">Protocol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/sources/strategies.html#Strategy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.sources.strategies.Strategy" title="Permalink to this definition">¶</a></dt>
+<dd><p>A strategy decides how a setting value will be <a class="reference internal" href="#concrete_settings.Settings.update" title="concrete_settings.Settings.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">updated</span></code></a>.</p>
+<dl class="field-list">
+<dt class="field-odd">Method</dt>
+<dd class="field-odd"><p>__call__(current_value, new_value)</p>
+<p>The signature of Strategy callables</p>
+<dl class="field-list simple">
+<dt class="field-odd">param current_value</dt>
+<dd class="field-odd"><p>is the current value of a setting</p>
+</dd>
+<dt class="field-even">param new_value</dt>
+<dd class="field-even"><p>is the new_value from a source.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Usually a strategy is a simple and small function.
+For example if a setting is a tuple, the following strategy
+would append values, instead of overwriting the tuple:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the required strategy</span>
+<span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="n">new_val</span><span class="p">,</span> <span class="n">old_val</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">new_val</span> <span class="o">+</span> <span class="n">old_val</span>
+
+<span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
+    <span class="n">ADMIN_EMAILS</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;cto@example.com&#39;</span><span class="p">,</span> <span class="p">)</span>
+
+<span class="n">app_settings</span> <span class="o">=</span> <span class="n">AppSettings</span><span class="p">()</span>
+<span class="n">app_settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+    <span class="n">source</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;ADMIN_EMAILS&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;alex@example.com&#39;</span><span class="p">,</span> <span class="p">)</span>
+    <span class="p">},</span>
+    <span class="n">strategies</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;ADMIN_EMAILS&#39;</span><span class="p">:</span> <span class="n">append</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">app_settings</span><span class="o">.</span><span class="n">ADMIN_EMAILS</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(&#39;cto@example.com&#39;, &#39;alex@example.com&#39;)
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 </div>
 <div class="section" id="module-concrete_settings.exceptions">
@@ -342,7 +447,7 @@ to the setting.</p>
 <li><a class="reference internal" href="#">API</a><ul>
 <li><a class="reference internal" href="#settings">Settings</a></li>
 <li><a class="reference internal" href="#module-concrete_settings.types">Types</a></li>
-<li><a class="reference internal" href="#validators">Validators</a><ul>
+<li><a class="reference internal" href="#module-concrete_settings.validators">Validators</a><ul>
 <li><a class="reference internal" href="#valuetypevalidator">ValueTypeValidator</a></li>
 <li><a class="reference internal" href="#requiredvalidator">RequiredValidator</a></li>
 <li><a class="reference internal" href="#deprecatedvalidator">DeprecatedValidator</a></li>

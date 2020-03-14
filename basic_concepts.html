@@ -99,8 +99,7 @@ The short definition looks like a boring class attribute
 with a sphinx-style documentation above it.
 Still, all the required details are extracted
 and a corresponding <code class="docutils literal notranslate"><span class="pre">Setting</span></code> attribute is created.</p>
-<p>The magic behind the scenes is happening in the metaclass
-<a class="reference internal" href="api.html#concrete_settings.core.SettingsMeta" title="concrete_settings.core.SettingsMeta"><code class="xref py py-class docutils literal notranslate"><span class="pre">SettingsMeta</span></code></a>.
+<p>The magic behind the scenes is happening in the metaclass <code class="docutils literal notranslate"><span class="pre">SettingsMeta</span></code>.
 In a nutshell, if a field looks like a setting, but is not explicitly
 defined as an instance of class <a class="reference internal" href="api.html#concrete_settings.Setting" title="concrete_settings.Setting"><code class="xref py py-class docutils literal notranslate"><span class="pre">Setting</span></code></a>,
 a corresponding object is created instead.</p>
@@ -224,7 +223,7 @@ to validate each and all settings’ values altogether.</p>
 is called for the first time.
 Validation consists of two stages:</p>
 <ol class="arabic simple">
-<li><p>For each setting, call every <a class="reference internal" href="api.html#concrete_settings.types.Validator" title="concrete_settings.types.Validator"><code class="xref py py-class docutils literal notranslate"><span class="pre">validator</span></code></a>
+<li><p>For each setting, call every <a class="reference internal" href="api.html#concrete_settings.validators.Validator" title="concrete_settings.validators.Validator"><code class="xref py py-class docutils literal notranslate"><span class="pre">validator</span></code></a>
 of <code class="docutils literal notranslate"><span class="pre">setting.validators</span></code> collection. This validates a setting value as standalone.</p></li>
 <li><p><a class="reference internal" href="api.html#concrete_settings.Settings.validate" title="concrete_settings.Settings.validate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Settings.validate()</span></code></a> is called.
 It is indtended to validate the Settings object as a whole.</p></li>

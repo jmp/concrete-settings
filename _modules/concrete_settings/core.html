@@ -42,14 +42,25 @@
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">types</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Iterator</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Any</span><span class="p">,</span>
+    <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">Dict</span><span class="p">,</span>
+    <span class="n">Iterable</span><span class="p">,</span>
+    <span class="n">Iterator</span><span class="p">,</span>
+    <span class="n">List</span><span class="p">,</span>
+    <span class="n">Mapping</span><span class="p">,</span>
+    <span class="n">Tuple</span><span class="p">,</span>
+    <span class="n">Type</span><span class="p">,</span>
+    <span class="n">Union</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">.docreader</span> <span class="kn">import</span> <span class="n">extract_doc_comments_from_class_or_module</span>
 <span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">StructureError</span><span class="p">,</span> <span class="n">ValidationError</span><span class="p">,</span> <span class="n">ValidationErrorDetail</span>
 <span class="kn">from</span> <span class="nn">.sources</span> <span class="kn">import</span> <span class="n">get_source</span><span class="p">,</span> <span class="n">AnySource</span><span class="p">,</span> <span class="n">Source</span><span class="p">,</span> <span class="n">NotFound</span>
-<span class="kn">from</span> <span class="nn">.sources.strategies</span> <span class="kn">import</span> <span class="n">default</span> <span class="k">as</span> <span class="n">default_update_strategy</span>
-<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">Undefined</span><span class="p">,</span> <span class="n">GuessSettingType</span><span class="p">,</span> <span class="n">type_hints_equal</span><span class="p">,</span> <span class="n">Validator</span>
-<span class="kn">from</span> <span class="nn">.validators</span> <span class="kn">import</span> <span class="n">ValueTypeValidator</span>
+<span class="kn">from</span> <span class="nn">.sources.strategies</span> <span class="kn">import</span> <span class="n">Strategy</span><span class="p">,</span> <span class="n">default</span> <span class="k">as</span> <span class="n">default_update_strategy</span>
+<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">Undefined</span><span class="p">,</span> <span class="n">GuessSettingType</span><span class="p">,</span> <span class="n">type_hints_equal</span>
+<span class="kn">from</span> <span class="nn">.validators</span> <span class="kn">import</span> <span class="n">Validator</span><span class="p">,</span> <span class="n">ValueTypeValidator</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -106,7 +117,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">behaviors</span><span class="o">.</span><span class="n">set_setting_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">set_value</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="PropertySetting"><a class="viewcode-back" href="../../api.html#concrete_settings.PropertySetting">[docs]</a><span class="k">class</span> <span class="nc">PropertySetting</span><span class="p">(</span><span class="n">Setting</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">PropertySetting</span><span class="p">(</span><span class="n">Setting</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">decorating_without_arguments</span> <span class="o">=</span> <span class="p">(</span>
             <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">callable</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -167,10 +178,10 @@
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">:</span> <span class="s1">&#39;Settings&#39;</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t set attribute: property setting cannot be set&quot;</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t set attribute: property setting cannot be set&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="SettingsMeta"><a class="viewcode-back" href="../../api.html#concrete_settings.SettingsMeta">[docs]</a><span class="k">class</span> <span class="nc">SettingsMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">SettingsMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="n">mcs</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">class_dict</span><span class="p">):</span>
         <span class="n">new_dict</span> <span class="o">=</span> <span class="n">mcs</span><span class="o">.</span><span class="n">class_dict_to_settings</span><span class="p">(</span><span class="n">class_dict</span><span class="p">,</span> <span class="n">bases</span><span class="p">)</span>
         <span class="n">mcs</span><span class="o">.</span><span class="n">_add_settings_help</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">new_dict</span><span class="p">)</span>
@@ -279,7 +290,7 @@
                 <span class="n">setting</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">comments</span><span class="p">[</span><span class="n">comment_key</span><span class="p">]</span>
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                 <span class="c1"># no comment-style documentation exists</span>
-                <span class="k">pass</span></div>
+                <span class="k">pass</span>
 
 
 <div class="viewcode-block" id="Settings"><a class="viewcode-back" href="../../api.html#concrete_settings.Settings">[docs]</a><span class="k">class</span> <span class="nc">Settings</span><span class="p">(</span><span class="n">Setting</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">SettingsMeta</span><span class="p">):</span>
@@ -359,7 +370,6 @@
 <div class="viewcode-block" id="Settings.is_valid"><a class="viewcode-back" href="../../api.html#concrete_settings.Settings.is_valid">[docs]</a>    <span class="k">def</span> <span class="nf">is_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_errors</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_errors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_validation</span><span class="p">(</span><span class="n">raise_exception</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_validated</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_errors</span> <span class="o">==</span> <span class="p">{}</span></div>
 
     <span class="k">def</span> <span class="nf">_run_validation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValidationErrorDetail</span><span class="p">:</span>
@@ -417,20 +427,11 @@
         <span class="k">return</span> <span class="n">errors</span>
 
 <div class="viewcode-block" id="Settings.validate"><a class="viewcode-back" href="../../api.html#concrete_settings.Settings.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Validate settings altogether.</span>
-
-<span class="sd">        This is a stub method intended to be overriden when needed.</span>
-<span class="sd">        It is called after individual settings have been validated</span>
-<span class="sd">        without any errors.</span>
-
-<span class="sd">        :class:`exceptions.ValidationError` should be raised in</span>
-<span class="sd">        case of validation errors.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="Settings.update"><a class="viewcode-back" href="../../api.html#concrete_settings.Settings.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">AnySource</span><span class="p">,</span> <span class="n">strategies</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Update the object from given source and strategies.&quot;&quot;&quot;</span>
-        <span class="n">strategies</span> <span class="o">=</span> <span class="n">strategies</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">strategies</span> <span class="o">=</span> <span class="n">strategies</span> <span class="k">if</span> <span class="n">strategies</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">strategies</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">),</span> <span class="s1">&#39;`strategies` type should be `dict`&#39;</span>
 
         <span class="n">source_obj</span> <span class="o">=</span> <span class="n">get_source</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_obj</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="p">(),</span> <span class="n">strategies</span><span class="o">=</span><span class="n">strategies</span><span class="p">)</span></div>
@@ -440,7 +441,7 @@
         <span class="n">settings</span><span class="p">:</span> <span class="s1">&#39;Settings&#39;</span><span class="p">,</span>
         <span class="n">source</span><span class="p">:</span> <span class="n">Source</span><span class="p">,</span>
         <span class="n">parents</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
-        <span class="n">strategies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">strategies</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Strategy</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Recursively update settings object from dictionary&quot;&quot;&quot;</span>
         <span class="n">strategies</span> <span class="o">=</span> <span class="n">strategies</span> <span class="ow">or</span> <span class="p">{}</span>
@@ -456,7 +457,7 @@
                     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
                         <span class="s1">&#39;Updating setting </span><span class="si">%s</span><span class="s1"> with strategy </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span>
                         <span class="n">full_setting_name</span><span class="p">,</span>
-                        <span class="n">update_strategy</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">,</span>
+                        <span class="nb">getattr</span><span class="p">(</span><span class="n">update_strategy</span><span class="p">,</span> <span class="s1">&#39;__qualname__&#39;</span><span class="p">,</span> <span class="s1">&#39;unknown strategy&#39;</span><span class="p">),</span>
                     <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">update_strategy</span> <span class="o">=</span> <span class="n">default_update_strategy</span>
@@ -469,8 +470,7 @@
                 <span class="n">new_val</span> <span class="o">=</span> <span class="n">update_strategy</span><span class="p">(</span><span class="n">current_val</span><span class="p">,</span> <span class="n">update_to_val</span><span class="p">)</span>
                 <span class="nb">setattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">new_val</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">extract_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destination</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">types</span><span class="o">.</span><span class="n">ModuleType</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Populate settings to dict or module scope.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Settings.extract_to"><a class="viewcode-back" href="../../api.html#concrete_settings.Settings.extract_to">[docs]</a>    <span class="k">def</span> <span class="nf">extract_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destination</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">types</span><span class="o">.</span><span class="n">ModuleType</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">prefix</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
             <span class="n">prefix</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span>
 
@@ -482,26 +482,14 @@
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">Settings</span><span class="p">):</span>  <span class="c1"># nested settings</span>
                 <span class="n">attr</span><span class="o">.</span><span class="n">extract_to</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">var_name</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">destination</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+                <span class="n">destination</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">errors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValidationErrorDetail</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Validation errors.</span>
-
-<span class="sd">        :type: :data:`ValidationErrorDetail</span>
-<span class="sd">               &lt;concrete_settings.exceptions.ValidationErrorDetail&gt;`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_errors</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_being_validated</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Indicates that settings are being validated.</span>
-
-<span class="sd">        Can be used by behaviors to e.g. distinguish between Setting access</span>
-<span class="sd">        during validation and normal usage.</span>
-
-<span class="sd">        :type: bool</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_being_validated</span></div>
 
 
@@ -632,10 +620,7 @@
 <span class="n">identifier_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[^\d\W]\w*\Z&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="prefix"><a class="viewcode-back" href="../../api.html#concrete_settings.prefix">[docs]</a><span class="k">class</span> <span class="nc">prefix</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;A decorator for Settings classes which</span>
-<span class="sd">       appends the defined prefix to each Setting attribute.&quot;&quot;&quot;</span>
-
+<span class="k">class</span> <span class="nc">prefix</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">prefix</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;prefix cannot be empty&#39;</span><span class="p">)</span>
@@ -660,7 +645,7 @@
             <span class="nb">delattr</span><span class="p">(</span><span class="n">settings_cls</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="n">settings_cls</span><span class="p">,</span> <span class="n">new_name</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
             <span class="n">attr</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">new_name</span>
-        <span class="k">return</span> <span class="n">settings_cls</span></div>
+        <span class="k">return</span> <span class="n">settings_cls</span>
 </pre></div>
 
           </div>

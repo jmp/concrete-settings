@@ -36,15 +36,8 @@
           <div class="body" role="main">
             
   <h1>Source code for concrete_settings.types</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">abc</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
-
-<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Protocol</span>
-
-
-<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">.core</span> <span class="kn">import</span> <span class="n">Setting</span><span class="p">,</span> <span class="n">Settings</span>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 
 
 <span class="k">class</span> <span class="nc">UndefinedMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
@@ -56,21 +49,11 @@
 
 
 <div class="viewcode-block" id="Undefined"><a class="viewcode-back" href="../../api.html#concrete_settings.types.Undefined">[docs]</a><span class="k">class</span> <span class="nc">Undefined</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">UndefinedMeta</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;`Undefined` is a special value which indicates</span>
-<span class="sd">    that something has not been explicitly set by a user.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s1"> should not be instantiated&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="GuessSettingType"><a class="viewcode-back" href="../../api.html#concrete_settings.types.GuessSettingType">[docs]</a><span class="k">class</span> <span class="nc">GuessSettingType</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;A special value for Setting.type_hint, which indicates</span>
-<span class="sd">    that a Setting type should be guessed from the default value.</span>
-
-<span class="sd">    For an `Undefined` or an unknown type, the guessed type hint is `typing.Any`.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="c1">#: Recognized Setting value types</span>
     <span class="n">KNOWN_TYPES</span> <span class="o">=</span> <span class="p">[</span>
         <span class="nb">bool</span><span class="p">,</span>  <span class="c1"># bool MUST come before int, as e.g. isinstance(True, int) == True</span>
@@ -123,25 +106,6 @@
         <span class="n">h2</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">hint2</span><span class="p">,</span> <span class="s1">&#39;__extra__&#39;</span><span class="p">,</span> <span class="n">hint2</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">h1</span> <span class="ow">is</span> <span class="n">h2</span>
-
-
-<div class="viewcode-block" id="Validator"><a class="viewcode-back" href="../../api.html#concrete_settings.types.Validator">[docs]</a><span class="k">class</span> <span class="nc">Validator</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A validator is a callable that raises an exception if a value is wrong.</span>
-
-<span class="sd">    A validator accepts a value as a mandatory argument, and keyword-only arguments</span>
-<span class="sd">    referring to settings, setting and setting&#39;s name.&quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="Validator.__call__"><a class="viewcode-back" href="../../api.html#concrete_settings.types.Validator.__call__">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">value</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">owner</span><span class="p">:</span> <span class="s1">&#39;Settings&#39;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">setting</span><span class="p">:</span> <span class="s1">&#39;Setting&#39;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Validate a value. Raise `ValidationError` if value is wrong.&quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
 </pre></div>
 
           </div>
