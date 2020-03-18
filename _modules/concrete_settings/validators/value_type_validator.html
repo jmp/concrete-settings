@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>concrete_settings.validators.required &#8212; Concrete Settings  documentation</title>
+    <title>concrete_settings.validators.value_type_validator &#8212; Concrete Settings  documentation</title>
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
@@ -35,25 +35,31 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for concrete_settings.validators.required</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">concrete_settings.exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
+  <h1>Source code for concrete_settings.validators.value_type_validator</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typeguard</span> <span class="kn">import</span> <span class="n">check_type</span>
+
+<span class="kn">from</span> <span class="nn">concrete_settings.exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
 <span class="kn">from</span> <span class="nn">concrete_settings.types</span> <span class="kn">import</span> <span class="n">Undefined</span>
 <span class="kn">from</span> <span class="nn">.validator</span> <span class="kn">import</span> <span class="n">Validator</span>
 
 
-<div class="viewcode-block" id="RequiredValidator"><a class="viewcode-back" href="../../../api.html#concrete_settings.validators.RequiredValidator">[docs]</a><span class="k">class</span> <span class="nc">RequiredValidator</span><span class="p">(</span><span class="n">Validator</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">message</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s1">&#39;Setting `</span><span class="si">{name}</span><span class="s1">` is required to have a value. &#39;</span>
-                <span class="s1">&#39;Current value is `Undefined`&#39;</span>
-            <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
+<div class="viewcode-block" id="ValueTypeValidator"><a class="viewcode-back" href="../../../api.html#concrete_settings.validators.ValueTypeValidator">[docs]</a><span class="k">class</span> <span class="nc">ValueTypeValidator</span><span class="p">(</span><span class="n">Validator</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_hint</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type_hint</span> <span class="o">=</span> <span class="n">type_hint</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="o">**</span><span class="n">ignore</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="n">Undefined</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="nb">type</span><span class="p">(</span><span class="n">owner</span><span class="p">))</span>
-            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">setting</span><span class="p">,</span> <span class="o">**</span><span class="n">ignore</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="n">Undefined</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">type_hint</span> <span class="o">=</span> <span class="n">setting</span><span class="o">.</span><span class="n">type_hint</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_hint</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_hint</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">check_type</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">type_hint</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Expected value of type `</span><span class="si">{</span><span class="n">type_hint</span><span class="si">}</span><span class="s1">` &#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;got value of type `</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s1">`&#39;</span>
+            <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span></div>
 </pre></div>
 
           </div>

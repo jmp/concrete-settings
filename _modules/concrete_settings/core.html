@@ -528,8 +528,6 @@
 
 
 <div class="viewcode-block" id="Behavior"><a class="viewcode-back" href="../../api.html#concrete_settings.Behavior">[docs]</a><span class="k">class</span> <span class="nc">Behavior</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">BehaviorMeta</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The base class for Setting attributes behaviors.&quot;&quot;&quot;</span>
-
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting_or_method</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Setting</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">]):</span>
         <span class="n">setting</span><span class="p">:</span> <span class="n">Setting</span>
 
@@ -538,7 +536,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">setting</span> <span class="o">=</span> <span class="n">setting_or_method</span>
         <span class="c1"># Act as a decorator</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="n">setting</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="n">setting</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">setting</span>
 
     <span class="k">def</span> <span class="fm">__rmatmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Setting</span>
@@ -546,24 +545,19 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">setting</span><span class="p">,</span> <span class="n">Setting</span><span class="p">):</span>
             <span class="n">setting</span> <span class="o">=</span> <span class="n">Setting</span><span class="p">(</span><span class="n">setting</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="n">setting</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">inject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">:</span> <span class="n">Setting</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Setting</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Inject self to setting behaviors.</span>
-
-<span class="sd">        :setting: Setting to which the behavior is injected.</span>
-<span class="sd">        :return: Passed setting object.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">setting</span><span class="o">.</span><span class="n">behaviors</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="n">setting</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">setting</span>
 
-    <span class="k">def</span> <span class="nf">get_setting_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">get_value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Called when setting.__get__() is invoked.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">get_value</span><span class="p">()</span>
+<div class="viewcode-block" id="Behavior.inject"><a class="viewcode-back" href="../../api.html#concrete_settings.Behavior.inject">[docs]</a>    <span class="k">def</span> <span class="nf">inject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">:</span> <span class="n">Setting</span><span class="p">):</span>
+        <span class="n">setting</span><span class="o">.</span><span class="n">behaviors</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">set_setting_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">set_value</span><span class="p">):</span>
+<div class="viewcode-block" id="Behavior.get_setting_value"><a class="viewcode-back" href="../../api.html#concrete_settings.Behavior.get_setting_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_setting_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">get_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Called when setting.__get__() is invoked.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">get_value</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Behavior.set_setting_value"><a class="viewcode-back" href="../../api.html#concrete_settings.Behavior.set_setting_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_setting_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">set_value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Called when setting.__set__() is invoked.&quot;&quot;&quot;</span>
-        <span class="n">set_value</span><span class="p">(</span><span class="n">val</span><span class="p">)</span></div>
+        <span class="n">set_value</span><span class="p">(</span><span class="n">val</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="Behaviors"><a class="viewcode-back" href="../../api.html#concrete_settings.Behaviors">[docs]</a><span class="k">class</span> <span class="nc">Behaviors</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Container</span><span class="p">):</span>
@@ -614,7 +608,8 @@
 <span class="k">class</span> <span class="nc">override</span><span class="p">(</span><span class="n">Behavior</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">inject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">:</span> <span class="s1">&#39;Setting&#39;</span><span class="p">):</span>
         <span class="n">setting</span><span class="o">.</span><span class="n">override</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="n">setting</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="n">setting</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">setting</span>
 
 
 <span class="n">identifier_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[^\d\W]\w*\Z&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
