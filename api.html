@@ -167,12 +167,12 @@ Python, YAML or JSON file, environmental variables, a dict,
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>source</strong> – can either be a dict, an instance of
+<li><p><strong>source</strong> – can either be a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, an instance of
 <a class="reference internal" href="#concrete_settings.sources.Source" title="concrete_settings.sources.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a>
 or a path to the source file.</p></li>
 <li><p><strong>strategies</strong> – a dictionary of
 { setting_name:
-<a class="reference internal" href="#concrete_settings.sources.strategies.Strategy" title="concrete_settings.sources.strategies.Strategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Strategy</span></code></a> callable}
+<a class="reference internal" href="#concrete_settings.sources.strategies.Strategy" title="concrete_settings.sources.strategies.Strategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Strategy</span></code></a>}
 which affect how settings’ values are updated.</p></li>
 </ul>
 </dd>
@@ -369,17 +369,17 @@ behavior.</p>
 <em class="property">class </em><code class="sig-prename descclassname">concrete_settings.</code><code class="sig-name descname">Behavior</code><a class="reference internal" href="_modules/concrete_settings/core.html#Behavior"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Behavior" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for Setting attributes behaviors.</p>
 <dl class="method">
-<dt id="concrete_settings.Behavior.inject">
-<code class="sig-name descname">inject</code><span class="sig-paren">(</span><em class="sig-param">setting: concrete_settings.core.Setting</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/core.html#Behavior.inject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Behavior.inject" title="Permalink to this definition">¶</a></dt>
-<dd><p>Inject self to Setting attribute behaviors.</p>
+<dt id="concrete_settings.Behavior.attach_to">
+<code class="sig-name descname">attach_to</code><span class="sig-paren">(</span><em class="sig-param">setting: concrete_settings.core.Setting</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/core.html#Behavior.attach_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Behavior.attach_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attach self into Setting attribute behaviors.</p>
 <p>If your custom behavior adds a decorator to the Setting,
 override this method as follows:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">:</span> <span class="s1">&#39;Setting&#39;</span><span class="p">):</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">attach_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">:</span> <span class="s1">&#39;Setting&#39;</span><span class="p">):</span>
    <span class="n">setting</span><span class="o">.</span><span class="n">validators</span> <span class="o">=</span> <span class="p">(</span>
           <span class="n">MyValidator</span><span class="p">()</span>
    <span class="p">)</span> <span class="o">+</span> <span class="n">setting</span><span class="o">.</span><span class="n">validators</span>
 
-   <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="n">setting</span><span class="p">)</span>
+   <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">attach_to</span><span class="p">(</span><span class="n">setting</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -394,14 +394,43 @@ override this method as follows:</p>
 
 <dl class="method">
 <dt id="concrete_settings.Behavior.get_setting_value">
-<code class="sig-name descname">get_setting_value</code><span class="sig-paren">(</span><em class="sig-param">setting</em>, <em class="sig-param">owner</em>, <em class="sig-param">get_value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/core.html#Behavior.get_setting_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Behavior.get_setting_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Called when setting.__get__() is invoked.</p>
+<code class="sig-name descname">get_setting_value</code><span class="sig-paren">(</span><em class="sig-param">setting: concrete_settings.core.Setting</em>, <em class="sig-param">owner: concrete_settings.core.Settings</em>, <em class="sig-param">get_value: Callable</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/core.html#Behavior.get_setting_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Behavior.get_setting_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>A chained callback invoked when Setting is being read.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setting</strong> (<a class="reference internal" href="#concrete_settings.Setting" title="concrete_settings.Setting"><em>Setting</em></a>) – Setting to which behavior is attached.</p></li>
+<li><p><strong>owner</strong> (<a class="reference internal" href="#concrete_settings.Settings" title="concrete_settings.Settings"><em>Settings</em></a>) – Settings object - setting attribute’s owner.</p></li>
+<li><p><strong>get_value</strong><strong>(</strong><strong>)</strong> – a chained behavior’s <code class="docutils literal notranslate"><span class="pre">get_setting_value()</span></code>
+or the base setting value getter if the current
+behavior is the first one attached to the setting.</p></li>
+</ul>
+</dd>
+</dl>
+<p>When overriding this method remember to call <code class="docutils literal notranslate"><span class="pre">get_value()</span></code>.
+This would invoke the chained behaviors down to the setting’s
+original value getter.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="concrete_settings.Behavior.set_setting_value">
-<code class="sig-name descname">set_setting_value</code><span class="sig-paren">(</span><em class="sig-param">setting</em>, <em class="sig-param">owner</em>, <em class="sig-param">val</em>, <em class="sig-param">set_value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/core.html#Behavior.set_setting_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Behavior.set_setting_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Called when setting.__set__() is invoked.</p>
+<code class="sig-name descname">set_setting_value</code><span class="sig-paren">(</span><em class="sig-param">setting: concrete_settings.core.Setting</em>, <em class="sig-param">owner: concrete_settings.core.Settings</em>, <em class="sig-param">value</em>, <em class="sig-param">set_value: Callable</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/core.html#Behavior.set_setting_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Behavior.set_setting_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>А chained callback invoked when Setting is being written.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setting</strong> (<a class="reference internal" href="#concrete_settings.Setting" title="concrete_settings.Setting"><em>Setting</em></a>) – Setting to which behavior is attached.</p></li>
+<li><p><strong>owner</strong> (<a class="reference internal" href="#concrete_settings.Settings" title="concrete_settings.Settings"><em>Settings</em></a>) – Settings object - setting attribute’s owner.</p></li>
+<li><p><strong>value</strong> – Value being written to the setting.</p></li>
+<li><p><strong>set_value</strong><strong>(</strong><strong>value</strong><strong>)</strong> – a chained behavior’s <code class="docutils literal notranslate"><span class="pre">set_setting_value()</span></code>
+or the base setting value setter if the current
+behavior is the first one attached to the setting.</p></li>
+</ul>
+</dd>
+</dl>
+<p>When overriding this method, remember to call <code class="docutils literal notranslate"><span class="pre">set_value(value)</span></code>.
+This would invoke the chained behaviors down to the setting’s
+original value setter.</p>
 </dd></dl>
 
 </dd></dl>
@@ -409,7 +438,7 @@ override this method as follows:</p>
 <dl class="class">
 <dt id="concrete_settings.Behaviors">
 <em class="property">class </em><code class="sig-prename descclassname">concrete_settings.</code><code class="sig-name descname">Behaviors</code><span class="sig-paren">(</span><em class="sig-param">iterable=()</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/core.html#Behaviors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.Behaviors" title="Permalink to this definition">¶</a></dt>
-<dd><p>A container for setting behaviors</p>
+<dd><p>An internal class - a container for Setting behaviors.</p>
 </dd></dl>
 
 <div class="section" id="deprecated">
@@ -417,8 +446,28 @@ override this method as follows:</p>
 <dl class="class">
 <dt id="concrete_settings.contrib.behaviors.deprecated">
 <em class="property">class </em><code class="sig-prename descclassname">concrete_settings.contrib.behaviors.</code><code class="sig-name descname">deprecated</code><span class="sig-paren">(</span><em class="sig-param">deprecation_message: str = 'Setting `{name}` in class `{owner}` is deprecated.'</em>, <em class="sig-param">*</em>, <em class="sig-param">warn_on_validation=True</em>, <em class="sig-param">error_on_validation=False</em>, <em class="sig-param">warn_on_get=False</em>, <em class="sig-param">warn_on_set=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/contrib/behaviors/deprecated_behavior.html#deprecated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.contrib.behaviors.deprecated" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds <a class="reference internal" href="#concrete_settings.contrib.validators.DeprecatedValidator" title="concrete_settings.contrib.validators.DeprecatedValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeprecatedValidator</span></code></a>  # noqa: E501 # line too long
-to setting validators.</p>
+<dd><p>Emit warnings when Setting is read, written or being validated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>deprecation_message</strong> – <p>Warning message template. Placeholders:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">{name}</span></code> - setting name.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{owner}</span></code> - owner <a class="reference internal" href="#concrete_settings.Settings" title="concrete_settings.Settings"><code class="xref py py-class docutils literal notranslate"><span class="pre">Settings</span></code></a> object.</p></li>
+</ul>
+</p></li>
+<li><p><strong>warn_on_validation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – Add warning-raising
+<a class="reference internal" href="#concrete_settings.contrib.validators.DeprecatedValidator" title="concrete_settings.contrib.validators.DeprecatedValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeprecatedValidator</span></code></a>
+to the setting’s validators list.</p></li>
+<li><p><strong>error_on_validation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – Add exception-raising
+<a class="reference internal" href="#concrete_settings.contrib.validators.DeprecatedValidator" title="concrete_settings.contrib.validators.DeprecatedValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeprecatedValidator</span></code></a>
+to the setting’s validators list. When this parameter is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>,
+<code class="docutils literal notranslate"><span class="pre">warn_on_validation</span></code> is ignored.</p></li>
+<li><p><strong>warn_on_get</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – Emit warning when reading the setting.</p></li>
+<li><p><strong>warn_on_set</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – Emit warning when writing the setting.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -438,24 +487,6 @@ to setting validators.</p>
 <em class="property">class </em><code class="sig-prename descclassname">concrete_settings.sources.</code><code class="sig-name descname">Source</code><a class="reference internal" href="_modules/concrete_settings/sources.html#Source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.sources.Source" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<div class="section" id="built-in-sources">
-<h3>Built-in Sources<a class="headerlink" href="#built-in-sources" title="Permalink to this headline">¶</a></h3>
-<dl class="class">
-<dt id="concrete_settings.contrib.sources.YamlSource">
-<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.contrib.sources.</code><code class="sig-name descname">YamlSource</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/contrib/sources/yaml_source.html#YamlSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.contrib.sources.YamlSource" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="concrete_settings.contrib.sources.JsonSource">
-<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.contrib.sources.</code><code class="sig-name descname">JsonSource</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/contrib/sources/json_source.html#JsonSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.contrib.sources.JsonSource" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="concrete_settings.contrib.sources.EnvVarSource">
-<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.contrib.sources.</code><code class="sig-name descname">EnvVarSource</code><a class="reference internal" href="_modules/concrete_settings/contrib/sources/envvar_source.html#EnvVarSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.contrib.sources.EnvVarSource" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</div>
 <div class="section" id="module-concrete_settings.sources.strategies">
 <span id="update-strategies"></span><h3>Update strategies<a class="headerlink" href="#module-concrete_settings.sources.strategies" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
@@ -532,7 +563,6 @@ would append values, instead of overwriting the tuple:</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-concrete_settings.sources">Sources</a><ul>
-<li><a class="reference internal" href="#built-in-sources">Built-in Sources</a></li>
 <li><a class="reference internal" href="#module-concrete_settings.sources.strategies">Update strategies</a></li>
 </ul>
 </li>

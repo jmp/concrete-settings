@@ -47,9 +47,6 @@
 
 
 <div class="viewcode-block" id="deprecated"><a class="viewcode-back" href="../../../../api.html#concrete_settings.contrib.behaviors.deprecated">[docs]</a><span class="k">class</span> <span class="nc">deprecated</span><span class="p">(</span><span class="n">Behavior</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Adds :class:`DeprecatedValidator &lt;concrete_settings.contrib.validators.DeprecatedValidator&gt;`  # noqa: E501 # line too long</span>
-<span class="sd">       to setting validators.&quot;&quot;&quot;</span>
-
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">deprecation_message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Setting `</span><span class="si">{name}</span><span class="s1">` in class `</span><span class="si">{owner}</span><span class="s1">` is deprecated.&#39;</span><span class="p">,</span>
@@ -65,13 +62,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">warn_on_get</span> <span class="o">=</span> <span class="n">warn_on_get</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">warn_on_set</span> <span class="o">=</span> <span class="n">warn_on_set</span>
 
-    <span class="k">def</span> <span class="nf">inject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">:</span> <span class="s1">&#39;Setting&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">attach_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">:</span> <span class="s1">&#39;Setting&#39;</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">warn_on_validation</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_on_validation</span><span class="p">:</span>
             <span class="n">setting</span><span class="o">.</span><span class="n">validators</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">DeprecatedValidator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deprecation_message</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_on_validation</span><span class="p">),</span>
             <span class="p">)</span> <span class="o">+</span> <span class="n">setting</span><span class="o">.</span><span class="n">validators</span>
 
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="n">setting</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">attach_to</span><span class="p">(</span><span class="n">setting</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_setting_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">:</span> <span class="s1">&#39;Setting&#39;</span><span class="p">,</span> <span class="n">owner</span><span class="p">:</span> <span class="s1">&#39;Settings&#39;</span><span class="p">,</span> <span class="n">get_value</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">warn_on_get</span><span class="p">:</span>
@@ -80,12 +77,14 @@
                 <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">get_value</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">set_setting_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">:</span> <span class="s1">&#39;Setting&#39;</span><span class="p">,</span> <span class="n">owner</span><span class="p">:</span> <span class="s1">&#39;Settings&#39;</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">set_value</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">set_setting_value</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">:</span> <span class="s1">&#39;Setting&#39;</span><span class="p">,</span> <span class="n">owner</span><span class="p">:</span> <span class="s1">&#39;Settings&#39;</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">set_value</span>
+    <span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">warn_on_set</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">owner</span><span class="o">.</span><span class="n">is_being_validated</span><span class="p">:</span>
                 <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">deprecation_message</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">owner</span><span class="o">=</span><span class="n">owner</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">setting</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
                 <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
-        <span class="n">set_value</span><span class="p">(</span><span class="n">val</span><span class="p">)</span></div>
+        <span class="n">set_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
