@@ -50,21 +50,26 @@
 <li><p><a class="reference internal" href="#indices-and-tables" id="id5">Indices and tables</a></p></li>
 </ul>
 </div>
-<p><strong>Concrete Settings</strong> is a small Python library which facilitates
-configuration management in big and small applications.</p>
-<p>The settings definition DSL aims to be simple and easy readible.
-Settings are:</p>
-<ul class="simple">
-<li><p>Defined in classes</p></li>
-<li><p>Type-annotated and validated</p></li>
-<li><p>Mixable and nestable</p></li>
-<li><p>Can be read from any sources: Python dict, yaml, json, environmental variables etc.</p></li>
-<li><p>Documentation matters.</p></li>
-</ul>
-<p>Here is a small example of Settings class with one
+<p><strong>Concrete Settings</strong> is a Python library which facilitates
+configuration management in big and small programs.</p>
+<p>The project was born out of necessity to manage a huge
+decade-old Django-based SaaS solution with more than two hundred
+different application settings scattered around <code class="docutils literal notranslate"><span class="pre">settings.py</span></code>.
+<em>What does this setting do?</em>
+<em>What type is it?</em>
+<em>Why does it have such a weird format?</em>
+<em>Is this the final value, or it changes somewhere on the way?</em>
+Sometimes developers spent <em>hours</em> seeking answers to these
+questions.</p>
+<p><strong>Concrete Settigns</strong> tackles these problems altogether.
+It was designed to be developer and end-user friendly.
+The settings are defined via normal Python code with few
+tricks which significantly improve readability
+and maintainability.</p>
+<p>Take a look at a small example of Settings class with one
 boolean setting <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>. A developer defines the
 settings in application code, while an end-user
-stores the configuration in a YAML file:</p>
+controls the final configuration in a YAML file:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># settings.py</span>
 
 <span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span>
@@ -93,11 +98,18 @@ stores the configuration in a YAML file:</p>
 <span class="go">Turns debug mode on/off</span>
 </pre></div>
 </div>
-<p>Concrete Settings aims to provide a conveniet way to
-define and use application initialization settings
-for developers and end-users:</p>
+<p>As you can see, settings are <strong>defined in classes</strong>. Python mechanism
+of inheritance and nesting apply here, so settings can be <strong>mixed</strong> (multiple inheritance)
+and be <strong>nested</strong> (settings as class fields).
+Settings are <strong>type-annotated</strong> and are <strong>validated</strong>.
+Documentation matters! Each settings can be documented in Sphinx-style comments <code class="docutils literal notranslate"><span class="pre">#:</span></code> written
+above its definition.
+An instance of <code class="docutils literal notranslate"><span class="pre">Settings</span></code> can be updated i.e. read from any kind of source:
+YAML, JSON or Python files, environmental variables, Python dicts, and you can add more!</p>
+<p>Finally, <strong>Concrete Settings</strong> comes with batteries like Django 3.0 support out of the box.</p>
+<p>In a nutshell:</p>
 <p class="plantuml">
-<img src="_images/plantuml-869a729f6ea139c88b198527affa3e56b2b63880.png" alt="&#64;startuml
+<img src="_images/plantuml-3d1e7e73ff9b7215d4e59f26343ee42845e6982b.png" alt="&#64;startuml
 :Developer: as Dev
 :Application User: as User
 (.yaml) as (yaml_source)
@@ -122,22 +134,22 @@ User ==&gt; (envvar)
 User ==&gt; (py_source)
 User ==&gt; (...)
 
-note &quot;Read from sources&quot; as note_read_settings
-
 Dev ==&gt; (Settings)
 
-(yaml_source) .. note_read_settings
-(json_source) .. note_read_settings
-(envvar) .. note_read_settings
-(...) .. note_read_settings
-note_read_settings ..&gt; (Settings)
+(yaml_source) .. (Sources)
+(json_source) .. (Sources)
+(envvar) .. (Sources)
+(...) .. (Sources)
 
 note &quot;Verify definition structure&quot; as note_verify
+note &quot;Update Settings from sources&quot; as note_update
 note &quot;Validate values&quot; as note_validate
 
+note_update &lt;== (Sources)
+
 (Settings) .. note_verify
-note_verify ..&gt; (Application)
-(Settings) .. note_validate
+note_verify ..&gt; note_update
+note_update .. note_validate
 note_validate ..&gt; (Application)
 
 &#64;enduml"/>
@@ -148,8 +160,8 @@ note_validate ..&gt; (Application)
 and all the settings required to start it up.</p></li>
 <li><p>A rich feed-execute-output tools like Sphinx documentation.</p></li>
 </ul>
-<p>Sounds interesting?
-Then you are very welcome to ConcreteSettings documentation!</p>
+<p>Are you ready to try it out?
+Then you are very welcome to Concrete Settings documentation!</p>
 </div>
 <div class="section" id="installation">
 <h1><a class="toc-backref" href="#id2">Installation</a><a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
@@ -157,10 +169,14 @@ Then you are very welcome to ConcreteSettings documentation!</p>
 <h2>Python Version<a class="headerlink" href="#python-version" title="Permalink to this headline">¶</a></h2>
 <p>We recommend using the latest version of Python 3.
 Concrete Settings supports Python 3.6 and newer.</p>
+<p>With pip:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install concrete-settings
+</pre></div>
+</div>
 </div>
 <div class="section" id="dependencies">
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
-<p>These distributions will be installed automatically when installing Concrete Settings.</p>
+<p>These distributions will be installed automatically when installing Concrete Settings:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/agronholm/typeguard">Typeguard</a>  provides runtime type checking and allows validating settings values types.</p></li>
 <li><p><a class="reference external" href="https://www.sphinx-doc.org/en/master/">Sphinx</a> allows documenting settings in developer-friendly way - in comments above settings definitions.</p></li>
@@ -183,6 +199,7 @@ Concrete Settings supports Python 3.6 and newer.</p>
 <div class="section" id="source">
 <h2>Source<a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h2>
 <p>The source is available at <a class="reference external" href="https://github.com/basicwolf/concrete-settings">https://github.com/basicwolf/concrete-settings</a>.</p>
+<p>Contributions are warmly welcomed!</p>
 </div>
 </div>
 <div class="section" id="documentation">
