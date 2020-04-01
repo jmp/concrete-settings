@@ -64,6 +64,7 @@ The default value
 (<a class="reference internal" href="#concrete_settings.types.GuessSettingType" title="concrete_settings.types.GuessSettingType"><code class="xref py py-class docutils literal notranslate"><span class="pre">GuessSettingType</span></code></a>)
 would invoke type guessing mechanism.</p></li>
 <li><p><strong>behaviors</strong> – setting behaviors, a container of <a class="reference internal" href="#concrete_settings.Behavior" title="concrete_settings.Behavior"><code class="xref py py-class docutils literal notranslate"><span class="pre">Behavior</span></code></a> objects.</p></li>
+<li><p><strong>override</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – a flag which indicates that settings definiton is explicitly overriden</p></li>
 </ul>
 </dd>
 </dl>
@@ -334,7 +335,10 @@ type match is performed against the given
 <dt id="concrete_settings.validators.RequiredValidator">
 <em class="property">class </em><code class="sig-prename descclassname">concrete_settings.validators.</code><code class="sig-name descname">RequiredValidator</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/validators/required_validator.html#RequiredValidator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.validators.RequiredValidator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Validates that setting value is not
-<a class="reference internal" href="#concrete_settings.types.Undefined" title="concrete_settings.types.Undefined"><code class="xref py py-class docutils literal notranslate"><span class="pre">Undefined</span></code></a></p>
+<a class="reference internal" href="#concrete_settings.types.Undefined" title="concrete_settings.types.Undefined"><code class="xref py py-class docutils literal notranslate"><span class="pre">Undefined</span></code></a>
+For convenient usage, see
+<a class="reference internal" href="#concrete_settings.contrib.behaviors.required" title="concrete_settings.contrib.behaviors.required"><code class="xref py py-class docutils literal notranslate"><span class="pre">required</span></code></a>
+behavior.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>message</strong> – Custom validation error message template.</p>
@@ -441,6 +445,34 @@ original value setter.</p>
 <dd><p>An internal class - a container for Setting behaviors.</p>
 </dd></dl>
 
+<div class="section" id="override">
+<h3>override<a class="headerlink" href="#override" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="concrete_settings.override">
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.</code><code class="sig-name descname">override</code><a class="reference internal" href="_modules/concrete_settings/core.html#override"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.override" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="required">
+<h3>required<a class="headerlink" href="#required" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="concrete_settings.contrib.behaviors.required">
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.contrib.behaviors.</code><code class="sig-name descname">required</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/contrib/behaviors/required_behavior.html#required"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.contrib.behaviors.required" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attaches
+<a class="reference internal" href="#concrete_settings.validators.RequiredValidator" title="concrete_settings.validators.RequiredValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequiredValidator</span></code></a>
+to the setting which
+validates that setting value is not
+<a class="reference internal" href="#concrete_settings.types.Undefined" title="concrete_settings.types.Undefined"><code class="xref py py-class docutils literal notranslate"><span class="pre">Undefined</span></code></a>.</p>
+<p>Usage:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Undefined</span><span class="p">,</span> <span class="n">required</span>
+
+<span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
+    <span class="n">SECRET_STRING</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Undefined</span> <span class="nd">@required</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
 <div class="section" id="deprecated">
 <h3>deprecated<a class="headerlink" href="#deprecated" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
@@ -469,14 +501,6 @@ to the setting’s validators list. When this parameter is set to <code class="d
 </dd>
 </dl>
 </dd></dl>
-
-</div>
-<div class="section" id="required">
-<h3>required<a class="headerlink" href="#required" title="Permalink to this headline">¶</a></h3>
-<dl class="class">
-<dt id="concrete_settings.contrib.behaviors.required">
-<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.contrib.behaviors.</code><code class="sig-name descname">required</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/contrib/behaviors/required_behavior.html#required"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.contrib.behaviors.required" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </div>
 </div>
@@ -558,8 +582,9 @@ would append values, instead of overwriting the tuple:</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#behaviors">Behaviors</a><ul>
-<li><a class="reference internal" href="#deprecated">deprecated</a></li>
+<li><a class="reference internal" href="#override">override</a></li>
 <li><a class="reference internal" href="#required">required</a></li>
+<li><a class="reference internal" href="#deprecated">deprecated</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-concrete_settings.sources">Sources</a><ul>
