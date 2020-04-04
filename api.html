@@ -64,7 +64,7 @@ The default value
 (<a class="reference internal" href="#concrete_settings.types.GuessSettingType" title="concrete_settings.types.GuessSettingType"><code class="xref py py-class docutils literal notranslate"><span class="pre">GuessSettingType</span></code></a>)
 would invoke type guessing mechanism.</p></li>
 <li><p><strong>behaviors</strong> – setting behaviors, a container of <a class="reference internal" href="#concrete_settings.Behavior" title="concrete_settings.Behavior"><code class="xref py py-class docutils literal notranslate"><span class="pre">Behavior</span></code></a> objects.</p></li>
-<li><p><strong>override</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – a flag which indicates that settings definiton is explicitly overriden</p></li>
+<li><p><strong>override</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – a indicates that settings definiton is explicitly overriden.</p></li>
 </ul>
 </dd>
 </dl>
@@ -452,6 +452,18 @@ original value setter.</p>
 <em class="property">class </em><code class="sig-prename descclassname">concrete_settings.</code><code class="sig-name descname">override</code><a class="reference internal" href="_modules/concrete_settings/core.html#override"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.override" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<p>Sets <code class="docutils literal notranslate"><span class="pre">Setting.override</span> <span class="pre">=</span> <span class="pre">True</span></code>.</p>
+<p>Usage:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">override</span>
+
+<span class="k">class</span> <span class="nc">BaseSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
+    <span class="n">SECRET</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100200300400500</span>
+    <span class="o">...</span>
+
+<span class="k">class</span> <span class="nc">DevSettings</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
+    <span class="n">SECRET</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;abcdef12345&#39;</span> <span class="nd">@override</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="required">
 <h3>required<a class="headerlink" href="#required" title="Permalink to this headline">¶</a></h3>

@@ -39,17 +39,7 @@
           <div class="body" role="main">
             
   <div class="section" id="welcome-to-concrete-settings">
-<h1><a class="toc-backref" href="#id1">Welcome to Concrete Settings</a><a class="headerlink" href="#welcome-to-concrete-settings" title="Permalink to this headline">¶</a></h1>
-<div class="contents topic" id="contents">
-<p class="topic-title">Contents</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="#welcome-to-concrete-settings" id="id1">Welcome to Concrete Settings</a></p></li>
-<li><p><a class="reference internal" href="#installation" id="id2">Installation</a></p></li>
-<li><p><a class="reference internal" href="#documentation" id="id3">Documentation</a></p></li>
-<li><p><a class="reference internal" href="#api-reference" id="id4">API Reference</a></p></li>
-<li><p><a class="reference internal" href="#indices-and-tables" id="id5">Indices and tables</a></p></li>
-</ul>
-</div>
+<h1>Welcome to Concrete Settings<a class="headerlink" href="#welcome-to-concrete-settings" title="Permalink to this headline">¶</a></h1>
 <p><strong>Concrete Settings</strong> is a Python library which facilitates
 configuration management in big and small programs.</p>
 <p>The project was born out of necessity to manage a huge
@@ -69,7 +59,7 @@ and maintainability.</p>
 <p>Take a look at a small example of Settings class with one
 boolean setting <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>. A developer defines the
 settings in application code, while an end-user
-controls the final configuration in a YAML file:</p>
+chooses to store the configuration in a YAML file:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># settings.py</span>
 
 <span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span>
@@ -154,21 +144,24 @@ note_validate ..&gt; (Application)
 
 &#64;enduml"/>
 </p>
-<p>This flow is a perfect fit for</p>
+<p>This flow perfectly applies to</p>
 <ul class="simple">
 <li><p>A web application backend. Think of Django or Flask application
 and all the settings required to start it up.</p></li>
 <li><p>A rich feed-execute-output tools like Sphinx documentation.</p></li>
 </ul>
-<p>Are you ready to try it out?
+<p>Concrete Settings are here to improve configuration handling
+whether you are starting from scratch, or dealing with an
+old legacy Cthulhu.
+Are you ready to try it out?
 Then you are very welcome to Concrete Settings documentation!</p>
 </div>
 <div class="section" id="installation">
-<h1><a class="toc-backref" href="#id2">Installation</a><a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="python-version">
 <h2>Python Version<a class="headerlink" href="#python-version" title="Permalink to this headline">¶</a></h2>
 <p>We recommend using the latest version of Python 3.
-Concrete Settings supports Python 3.6 and newer.</p>
+Concrete Settings supports <strong>Python 3.6</strong> and newer.</p>
 <p>With pip:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install concrete-settings
 </pre></div>
@@ -190,12 +183,6 @@ Concrete Settings supports Python 3.6 and newer.</p>
 <li><p><a class="reference external" href="https://pyyaml.org/">PyYAML</a> allows reading settings from YAML sources.</p></li>
 </ul>
 </div>
-<div class="section" id="install-concrete-settings">
-<h2>Install Concrete Settings<a class="headerlink" href="#install-concrete-settings" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install concrete-settings
-</pre></div>
-</div>
-</div>
 <div class="section" id="source">
 <h2>Source<a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h2>
 <p>The source is available at <a class="reference external" href="https://github.com/basicwolf/concrete-settings">https://github.com/basicwolf/concrete-settings</a>.</p>
@@ -203,7 +190,7 @@ Concrete Settings supports Python 3.6 and newer.</p>
 </div>
 </div>
 <div class="section" id="documentation">
-<h1><a class="toc-backref" href="#id3">Documentation</a><a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
+<h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="basic_concepts.html">Basic concepts</a><ul>
@@ -214,17 +201,17 @@ Concrete Settings supports Python 3.6 and newer.</p>
 <li class="toctree-l2"><a class="reference internal" href="basic_concepts.html#behavior">Behavior</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basic_concepts.html#nested-settings">Nested settings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basic_concepts.html#combining-settings">Combining settings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="basic_concepts.html#inheritance-and-overriding-settings">Inheritance and overriding settings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basic_concepts.html#what-s-next">What’s next?</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="startup.html">Start me up</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="startup.html#scratch">Scratch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="startup.html#from-scratch">From scratch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="startup.html#django">Django</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced topics</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="advanced.html#setting-definition">Setting definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#inheritance-and-overriding-settings">Inheritance and overriding settings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="advanced.html#update-strategies">Update strategies</a></li>
 </ul>
 </li>
@@ -237,7 +224,7 @@ Concrete Settings supports Python 3.6 and newer.</p>
 </div>
 </div>
 <div class="section" id="api-reference">
-<h1><a class="toc-backref" href="#id4">API Reference</a><a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
 <p>If you are looking for information on a specific function, class or
 method, this part of the documentation is for you.</p>
 <div class="toctree-wrapper compound">
@@ -254,7 +241,7 @@ method, this part of the documentation is for you.</p>
 </div>
 </div>
 <div class="section" id="indices-and-tables">
-<h1><a class="toc-backref" href="#id5">Indices and tables</a><a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
@@ -275,7 +262,6 @@ method, this part of the documentation is for you.</p>
 <li><a class="reference internal" href="#python-version">Python Version</a></li>
 <li><a class="reference internal" href="#dependencies">Dependencies</a></li>
 <li><a class="reference internal" href="#optional-dependencies">Optional dependencies</a></li>
-<li><a class="reference internal" href="#install-concrete-settings">Install Concrete Settings</a></li>
 <li><a class="reference internal" href="#source">Source</a></li>
 </ul>
 </li>

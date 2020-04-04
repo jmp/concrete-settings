@@ -57,7 +57,8 @@
 <li><p><a class="reference internal" href="#documentation" id="id8">Documentation</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#update-strategies" id="id9">Update strategies</a></p></li>
+<li><p><a class="reference internal" href="#inheritance-and-overriding-settings" id="id9">Inheritance and overriding settings</a></p></li>
+<li><p><a class="reference internal" href="#update-strategies" id="id10">Update strategies</a></p></li>
 </ul>
 </div>
 <div class="section" id="setting-definition">
@@ -410,8 +411,57 @@ constructor:</p>
 </div>
 </div>
 </div>
+<div class="section" id="inheritance-and-overriding-settings">
+<h2><a class="toc-backref" href="#id9">Inheritance and overriding settings</a><a class="headerlink" href="#inheritance-and-overriding-settings" title="Permalink to this headline">¶</a></h2>
+<p>One of classical configuration patterns is to use multi-tier settings
+definitions. For example:</p>
+<div class="figure align-center">
+<p class="plantuml">
+<img src="_images/plantuml-fcd9521e22fd4f8c089b657a122295c5ba89c5f1.png" alt="&#64;startuml
+(Base settings) --&gt; (Dev Setting)
+(Base settings) --&gt; (Production Setting)
+&#64;enduml"/>
+</p>
+</div>
+<p>Imagine a situation, where a setting annotated as <code class="docutils literal notranslate"><span class="pre">int</span></code> in Base settings
+is accidentally redefined in Dev or Production settings as <code class="docutils literal notranslate"><span class="pre">str</span></code>:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span>
+
+<span class="k">class</span> <span class="nc">BaseSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
+    <span class="n">MAX_CONNECTIONS</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="o">...</span>
+
+<span class="k">class</span> <span class="nc">DevSettings</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
+    <span class="n">MAX_CONNECTIONS</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;100&#39;</span>
+</pre></div>
+</div>
+<p>Concrete Settings detects this difference and raises an exception during early structure verification:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>in classes &lt;class &#39;BaseSettings&#39;&gt; and &lt;class &#39;DevSettings&#39;&gt; setting MAX_CONNECTIONS has the following difference(s): types differ: &lt;class &#39;int&#39;&gt; != &lt;class &#39;str&#39;&gt;
+</pre></div>
+</div>
+<p>To tell Concrete Settings that the re-defition is valid, a Setting has to be overriden,
+either explicitly by passing <code class="docutils literal notranslate"><span class="pre">override=True</span></code> or by using <a class="reference internal" href="api.html#concrete_settings.override" title="concrete_settings.override"><code class="xref py py-class docutils literal notranslate"><span class="pre">&#64;override</span></code></a> behavior:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concrete_settings</span> <span class="kn">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Setting</span><span class="p">,</span> <span class="n">override</span>
+
+<span class="k">class</span> <span class="nc">BaseSettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
+    <span class="n">MAX_CONNECTIONS</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="n">MIN_CONNECTIONS</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="o">...</span>
+
+<span class="k">class</span> <span class="nc">DevSettings</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
+    <span class="n">MAX_CONNECTIONS</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;100&#39;</span> <span class="nd">@override</span>
+    <span class="n">MIN_CONNECTIONS</span> <span class="o">=</span> <span class="n">Setting</span><span class="p">(</span><span class="s1">&#39;100&#39;</span><span class="p">,</span> <span class="n">type_hint</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">override</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">DevSettings</span><span class="p">()</span><span class="o">.</span><span class="n">is_valid</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
 <div class="section" id="update-strategies">
-<h2><a class="toc-backref" href="#id9">Update strategies</a><a class="headerlink" href="#update-strategies" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id10">Update strategies</a><a class="headerlink" href="#update-strategies" title="Permalink to this headline">¶</a></h2>
 <p>In most cases, a developer wants to overwrite a setting value
 when updating it from a source. But there are exceptions.
 Think of a list setting, which contains administrators’ emails, e.g.:</p>
@@ -469,6 +519,7 @@ for such cases:</p>
 <li><a class="reference internal" href="#documentation">Documentation</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#inheritance-and-overriding-settings">Inheritance and overriding settings</a></li>
 <li><a class="reference internal" href="#update-strategies">Update strategies</a></li>
 </ul>
 </li>
