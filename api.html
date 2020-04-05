@@ -141,7 +141,7 @@ to indicate errors.</p>
 <dd><p><code class="docutils literal notranslate"><span class="pre">errors</span></code> property contains validation errors from the last
 <a class="reference internal" href="#concrete_settings.Settings.is_valid" title="concrete_settings.Settings.is_valid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">settings.is_valid(raise_exception=False)</span></code></a>
 call. The errors are packed in recursive
-<a class="reference internal" href="#concrete_settings.exceptions.ValidationErrorDetail" title="concrete_settings.exceptions.ValidationErrorDetail"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValidationErrorDetail</span></code></a>
+<a class="reference internal" href="#concrete_settings.exceptions.ValidationErrorDetails" title="concrete_settings.exceptions.ValidationErrorDetails"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValidationErrorDetail</span></code></a>
 structure.</p>
 </dd></dl>
 
@@ -288,21 +288,21 @@ referring to settings, setting and setting’s name.</p>
 
 <dl class="class">
 <dt id="concrete_settings.exceptions.ValidationError">
-<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.exceptions.</code><code class="sig-name descname">ValidationError</code><span class="sig-paren">(</span><em class="sig-param">detail: Union[str, List[ValidationErrorDetail], Dict[str, ValidationErrorDetail]] = ''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/exceptions.html#ValidationError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.exceptions.ValidationError" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.exceptions.</code><code class="sig-name descname">ValidationError</code><span class="sig-paren">(</span><em class="sig-param">details: Union[str, List[ValidationErrorDetail], Dict[str, ValidationErrorDetail]] = ''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/exceptions.html#ValidationError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.exceptions.ValidationError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raised by a setting validator when a setting value is invalid</p>
 </dd></dl>
 
 <dl class="data">
-<dt id="concrete_settings.exceptions.ValidationErrorDetail">
-<code class="sig-prename descclassname">concrete_settings.exceptions.</code><code class="sig-name descname">ValidationErrorDetail</code><em class="property"> = typing.Union[str, typing.List[ForwardRef('ValidationErrorDetail')], typing.Dict[str, ForwardRef('ValidationErrorDetail')]]</em><a class="headerlink" href="#concrete_settings.exceptions.ValidationErrorDetail" title="Permalink to this definition">¶</a></dt>
+<dt id="concrete_settings.exceptions.ValidationErrorDetails">
+<code class="sig-prename descclassname">concrete_settings.exceptions.</code><code class="sig-name descname">ValidationErrorDetails</code><em class="property"> = typing.Union[str, typing.List[ForwardRef('ValidationErrorDetail')], typing.Dict[str, ForwardRef('ValidationErrorDetail')]]</em><a class="headerlink" href="#concrete_settings.exceptions.ValidationErrorDetails" title="Permalink to this definition">¶</a></dt>
 <dd><p>A recursive union type which describes validation errors.</p>
-<p><code class="docutils literal notranslate"><span class="pre">ValidationErrorDetail</span></code> is defined as</p>
+<p><code class="docutils literal notranslate"><span class="pre">ValidationErrorDetails</span></code> is defined as</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">SettingName</span> <span class="o">=</span> <span class="nb">str</span>
 
-<span class="n">ValidationErrorDetail</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span>
+<span class="n">ValidationErrorDetails</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span>
     <span class="nb">str</span><span class="p">,</span>
-    <span class="n">List</span><span class="p">[</span><span class="n">ValidationErrorDetail</span><span class="p">],</span>
-    <span class="n">Dict</span><span class="p">[</span><span class="n">SettingName</span><span class="p">,</span> <span class="n">ValidationErrorDetail</span><span class="p">]</span>
+    <span class="n">List</span><span class="p">[</span><span class="n">ValidationErrorDetails</span><span class="p">],</span>
+    <span class="n">Dict</span><span class="p">[</span><span class="n">SettingName</span><span class="p">,</span> <span class="n">ValidationErrorDetails</span><span class="p">]</span>
 <span class="p">]</span>
 </pre></div>
 </div>
