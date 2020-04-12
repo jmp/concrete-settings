@@ -38,17 +38,22 @@
   <h1>Source code for concrete_settings.sources</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 
 <span class="kn">from</span> <span class="nn">..exceptions</span> <span class="kn">import</span> <span class="n">ConcreteSettingsError</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">strategies</span>  <span class="c1"># noqa: F401 # imported but unused</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">concrete_settings.core</span> <span class="kn">import</span> <span class="n">Setting</span>
+
 
 <span class="n">_registered_sources</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
 <span class="n">AnySource</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;Source&#39;</span><span class="p">,</span> <span class="n">Path</span><span class="p">]</span>
 
 
-<span class="k">class</span> <span class="nc">NotFound</span><span class="p">:</span>
-    <span class="k">pass</span>
+<div class="viewcode-block" id="NotFound"><a class="viewcode-back" href="../../api.html#concrete_settings.sources.NotFound">[docs]</a><span class="k">class</span> <span class="nc">NotFound</span><span class="p">:</span>
+    <span class="k">pass</span></div>
 
 
 <span class="k">def</span> <span class="nf">register_source</span><span class="p">(</span><span class="n">source_cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s1">&#39;Source&#39;</span><span class="p">]):</span>
@@ -78,12 +83,14 @@
 
 
 <div class="viewcode-block" id="Source"><a class="viewcode-back" href="../../api.html#concrete_settings.sources.Source">[docs]</a><span class="k">class</span> <span class="nc">Source</span><span class="p">:</span>
-    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Source.get_source"><a class="viewcode-back" href="../../api.html#concrete_settings.sources.Source.get_source">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_source</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">AnySource</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;Source&#39;</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
 
-    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">,</span> <span class="n">parents</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">())</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">NotFound</span><span class="p">],</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="k">pass</span></div>
+<div class="viewcode-block" id="Source.read"><a class="viewcode-back" href="../../api.html#concrete_settings.sources.Source.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">:</span> <span class="s1">&#39;Setting&#39;</span><span class="p">,</span> <span class="n">parents</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">NotFound</span><span class="p">],</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="k">pass</span></div></div>
 
 
 <span class="k">class</span> <span class="nc">StringSourceMixin</span><span class="p">:</span>
@@ -104,7 +111,7 @@
         <span class="k">return</span> <span class="n">val</span>
 
 
-<span class="nd">@register_source</span>
+<div class="viewcode-block" id="DictSource"><a class="viewcode-back" href="../../api.html#concrete_settings.sources.DictSource">[docs]</a><span class="nd">@register_source</span>
 <span class="k">class</span> <span class="nc">DictSource</span><span class="p">(</span><span class="n">Source</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">s</span>
@@ -118,13 +125,15 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">,</span> <span class="n">parents</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">())</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">NotFound</span><span class="p">],</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">setting</span><span class="p">:</span> <span class="s1">&#39;Setting&#39;</span><span class="p">,</span> <span class="n">parents</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">NotFound</span><span class="p">],</span> <span class="n">Any</span><span class="p">]:</span>
         <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">:</span>
             <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
         <span class="n">val</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">setting</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">NotFound</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">val</span>
+        <span class="k">return</span> <span class="n">val</span></div>
 
 
 <span class="k">class</span> <span class="nc">FileSource</span><span class="p">(</span><span class="n">Source</span><span class="p">):</span>

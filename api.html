@@ -79,6 +79,12 @@ would invoke type guessing mechanism.</p></li>
     <span class="n">SETTING_NAME</span><span class="p">:</span> <span class="n">type_hint</span> <span class="o">=</span> <span class="n">value</span> <span class="nd">@behavior1</span> <span class="nd">@behavior2</span> <span class="o">@...</span>
 </pre></div>
 </div>
+<dl class="attribute">
+<dt id="concrete_settings.Setting.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#concrete_settings.Setting.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setting attribute name (read-only).</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -518,10 +524,71 @@ to the setting’s validators list. When this parameter is set to <code class="d
 </div>
 <div class="section" id="module-concrete_settings.sources">
 <span id="sources"></span><span id="api-sources"></span><h2>Sources<a class="headerlink" href="#module-concrete_settings.sources" title="Permalink to this headline">¶</a></h2>
+<dl class="data">
+<dt>
+<code class="sig-name descname">AnySource = Union[Dict[str, Any], str, 'Source', Path]</code></dt>
+<dd><p>Valid settings sources types union.
+A valid source is either a <code class="docutils literal notranslate"><span class="pre">dict</span></code>, an instance of
+<a class="reference internal" href="#concrete_settings.sources.Source" title="concrete_settings.sources.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a> or
+a path (str or <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>)</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="concrete_settings.sources.Source">
 <em class="property">class </em><code class="sig-prename descclassname">concrete_settings.sources.</code><code class="sig-name descname">Source</code><a class="reference internal" href="_modules/concrete_settings/sources.html#Source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.sources.Source" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>The base class of all Concrete Settings sources.</p>
+<dl class="method">
+<dt id="concrete_settings.sources.Source.get_source">
+<em class="property">static </em><code class="sig-name descname">get_source</code><span class="sig-paren">(</span><em class="sig-param">src: Union[Dict[str, Any], str, Source, pathlib.Path]</em><span class="sig-paren">)</span> &#x2192; Optional[concrete_settings.sources.Source]<a class="reference internal" href="_modules/concrete_settings/sources.html#Source.get_source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.sources.Source.get_source" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <strong>static</strong> method which returns a <code class="docutils literal notranslate"><span class="pre">Source</span></code> instance
+or <code class="docutils literal notranslate"><span class="pre">None</span></code> if <code class="docutils literal notranslate"><span class="pre">src</span></code> is not suitable.
+For example, <a class="reference internal" href="#concrete_settings.sources.DictSource" title="concrete_settings.sources.DictSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictSource</span></code></a>
+implements it as follows:</p>
+</dd></dl>
+
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">get_source</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">AnySource</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;DictSource&#39;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">DictSource</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">DictSource</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">src</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="concrete_settings.sources.Source.read">
+<code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param">setting: Setting</em>, <em class="sig-param">parents: Tuple[str</em>, <em class="sig-param">...] = ()</em><span class="sig-paren">)</span> &#x2192; Union[Type[concrete_settings.sources.NotFound], Any]<a class="reference internal" href="_modules/concrete_settings/sources.html#Source.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.sources.Source.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called for each setting from settings beign read. A source should
+return the corresponding value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setting</strong> (<a class="reference internal" href="#concrete_settings.Setting" title="concrete_settings.Setting"><code class="xref py py-class docutils literal notranslate"><span class="pre">Setting</span></code></a>) – Setting attribute instance being processed.
+Usually <a class="reference internal" href="#concrete_settings.Setting.name" title="concrete_settings.Setting.name"><code class="xref py py-data docutils literal notranslate"><span class="pre">setting.name</span></code></a> is of interest.</p></li>
+<li><p><strong>parents</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>]</em>) – A chain of parent Settings classes names (i.e. in case of nested
+settings). This is used to map <em>source</em> setting keys like
+<code class="docutils literal notranslate"><span class="pre">DB_HOST_PORT</span></code> to <code class="docutils literal notranslate"><span class="pre">AppSettings.DB.HOST.PORT</span></code>.
+In this case <code class="docutils literal notranslate"><span class="pre">parents=('DB',</span> <span class="pre">'HOST')</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">read()</span></code> should return <a class="reference internal" href="#concrete_settings.sources.NotFound" title="concrete_settings.sources.NotFound"><code class="xref py py-class docutils literal notranslate"><span class="pre">NotFound</span></code></a> if setting value was not provided by the source.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="concrete_settings.sources.NotFound">
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.sources.</code><code class="sig-name descname">NotFound</code><a class="reference internal" href="_modules/concrete_settings/sources.html#NotFound"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.sources.NotFound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returned by <a class="reference internal" href="#concrete_settings.sources.Source.read" title="concrete_settings.sources.Source.read"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Source.read</span></code></a> when setting value is not provided by the source.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="concrete_settings.sources.DictSource">
+<em class="property">class </em><code class="sig-prename descclassname">concrete_settings.sources.</code><code class="sig-name descname">DictSource</code><span class="sig-paren">(</span><em class="sig-param">s: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/sources.html#DictSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.sources.DictSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Python <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> -parsing source.</p>
+</dd></dl>
 
 <div class="section" id="module-concrete_settings.sources.strategies">
 <span id="update-strategies"></span><h3>Update strategies<a class="headerlink" href="#module-concrete_settings.sources.strategies" title="Permalink to this headline">¶</a></h3>
@@ -529,20 +596,21 @@ to the setting’s validators list. When this parameter is set to <code class="d
 <dt id="concrete_settings.sources.strategies.Strategy">
 <em class="property">class </em><code class="sig-prename descclassname">concrete_settings.sources.strategies.</code><code class="sig-name descname">Strategy</code><span class="sig-paren">(</span><em class="sig-param">Protocol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/sources/strategies.html#Strategy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.sources.strategies.Strategy" title="Permalink to this definition">¶</a></dt>
 <dd><p>A strategy decides how a setting value will be <a class="reference internal" href="#concrete_settings.Settings.update" title="concrete_settings.Settings.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">updated</span></code></a>.</p>
-<dl class="field-list">
-<dt class="field-odd">Method</dt>
-<dd class="field-odd"><p>__call__(current_value, new_value)</p>
+<dl class="method">
+<dt id="concrete_settings.sources.strategies.Strategy.__call__">
+<em class="property">abstract </em><code class="sig-name descname">__call__</code><span class="sig-paren">(</span><em class="sig-param">current_value</em>, <em class="sig-param">new_value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/concrete_settings/sources/strategies.html#Strategy.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concrete_settings.sources.strategies.Strategy.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call self as a function.</p>
 <p>The signature of Strategy callables</p>
 <dl class="field-list simple">
-<dt class="field-odd">param current_value</dt>
-<dd class="field-odd"><p>is the current value of a setting</p>
-</dd>
-<dt class="field-even">param new_value</dt>
-<dd class="field-even"><p>is the new_value from a source.</p>
-</dd>
-</dl>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>current_value</strong> – is the current value of a setting</p></li>
+<li><p><strong>new_value</strong> – is the new_value from a source.</p></li>
+</ul>
 </dd>
 </dl>
+</dd></dl>
+
 <p>Usually a strategy is a simple and small function.
 For example if a setting is a tuple, the following strategy
 would append values, instead of overwriting the tuple:</p>
